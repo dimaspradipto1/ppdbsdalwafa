@@ -13,6 +13,16 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public const ROLES = [
+        'super_admin'    => 'Super Admin',
+        'admin_ppdb'     => 'Admin PPDB',
+        'verifikator'    => 'Panitia Verifikasi',
+        'kepala_sekolah' => 'Kepala Sekolah',
+        'bendahara'      => 'Bendahara',
+        'guru'           => 'Guru / Wali Kelas',
+        'pendaftar'      => 'Calon Siswa / Orang Tua',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -46,5 +56,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Cek apakah user memiliki salah satu dari role yang ditentukan
+     */
+    public function hasRole(...$roles): bool
+    {
+        if (in_array('*', $roles)) {
+            return true;
+        }
+
+        return in_array($this->role, $roles);
     }
 }
