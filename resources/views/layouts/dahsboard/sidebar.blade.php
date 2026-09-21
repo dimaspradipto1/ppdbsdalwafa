@@ -24,10 +24,10 @@
           <li class="nav-heading">Pengaturan & Master</li>
 
           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*') ? '' : 'collapsed' }}" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*', 'pekerjaan.*') ? '' : 'collapsed' }}" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
               <i class="bi bi-sliders2"></i><span>Pengaturan & Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="master-nav" class="nav-content collapse {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="master-nav" class="nav-content collapse {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*', 'pekerjaan.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
               {{-- 1. Users (Khusus Super Admin) --}}
               @if($user->hasRole('super_admin'))
@@ -140,7 +140,7 @@
               {{-- 12. Pekerjaan --}}
               @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
-                  <a href="#">
+                  <a href="{{ route('pekerjaan.index') }}" class="{{ request()->routeIs('pekerjaan.*') ? 'active' : '' }}">
                     <i class="bi bi-briefcase"></i><span>Pekerjaan</span>
                   </a>
                 </li>
