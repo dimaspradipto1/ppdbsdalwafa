@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgamaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SekolahController;
@@ -38,5 +39,10 @@ Route::middleware(['checkrole:*'])->group(function () {
     // Pengaturan & Master: Sekolah (Super Admin, Admin PPDB, Kepala Sekolah)
     Route::middleware(['checkrole:super_admin,admin_ppdb,kepala_sekolah'])->group(function () {
         Route::resource('sekolah', SekolahController::class);
+    });
+
+    // Pengaturan & Master: Agama (Super Admin, Admin PPDB)
+    Route::middleware(['checkrole:super_admin,admin_ppdb'])->group(function () {
+        Route::resource('agama', AgamaController::class);
     });
 });

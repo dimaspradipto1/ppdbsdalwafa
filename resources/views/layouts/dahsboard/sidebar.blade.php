@@ -24,10 +24,10 @@
           <li class="nav-heading">Pengaturan & Master</li>
 
           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('users.*', 'sekolah.*') ? '' : 'collapsed' }}" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*') ? '' : 'collapsed' }}" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
               <i class="bi bi-sliders2"></i><span>Pengaturan & Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="master-nav" class="nav-content collapse {{ request()->routeIs('users.*', 'sekolah.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="master-nav" class="nav-content collapse {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
               {{-- 1. Users (Khusus Super Admin) --}}
               @if($user->hasRole('super_admin'))
@@ -158,7 +158,7 @@
               {{-- 14. Agama --}}
               @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
-                  <a href="#">
+                  <a href="{{ route('agama.index') }}" class="{{ request()->routeIs('agama.*') ? 'active' : '' }}">
                     <i class="bi bi-moon-stars"></i><span>Agama</span>
                   </a>
                 </li>
