@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AgamaSeeder::class,
             PendidikanSeeder::class,
             PekerjaanSeeder::class,
+            PenghasilanSeeder::class,
         ]);
     }
 }
