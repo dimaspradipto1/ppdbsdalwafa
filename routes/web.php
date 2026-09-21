@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AgamaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KebutuhanKhususController;
 use App\Http\Controllers\PekerjaanController;
@@ -52,5 +53,10 @@ Route::middleware(['checkrole:*'])->group(function () {
         Route::resource('pekerjaan', PekerjaanController::class);
         Route::resource('penghasilan', PenghasilanController::class);
         Route::resource('kebutuhan-khusus', KebutuhanKhususController::class)->parameters(['kebutuhan-khusus' => 'kebutuhanKhusus']);
+    });
+
+    // Data Pendaftaran: Calon Siswa (Super Admin, Admin PPDB, Verifikator, Kepala Sekolah, Bendahara, Guru, Pendaftar)
+    Route::middleware(['checkrole:super_admin,admin_ppdb,verifikator,kepala_sekolah,bendahara,guru,pendaftar'])->group(function () {
+        Route::resource('calon-siswa', CalonSiswaController::class)->parameters(['calon-siswa' => 'calonSiswa']);
     });
 });

@@ -184,10 +184,10 @@
         <li class="nav-heading">Pendaftaran</li>
 
         <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#pendaftaran-nav" data-bs-toggle="collapse" href="#">
+          <a class="nav-link {{ request()->routeIs('calon-siswa.*') ? '' : 'collapsed' }}" data-bs-target="#pendaftaran-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-folder2-open"></i><span>Data Pendaftaran</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-          <ul id="pendaftaran-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <ul id="pendaftaran-nav" class="nav-content collapse {{ request()->routeIs('calon-siswa.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
             {{-- 1. Pendaftaran --}}
             @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'bendahara', 'pendaftar'))
@@ -239,7 +239,7 @@
             {{-- 6. Calon Siswa --}}
             @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'bendahara', 'guru', 'pendaftar'))
               <li>
-                <a href="#">
+                <a href="{{ route('calon-siswa.index') }}" class="{{ request()->routeIs('calon-siswa.*') ? 'active' : '' }}">
                   <i class="bi bi-person-badge"></i>
                   <span>{{ $user->hasRole('pendaftar') ? 'Biodata Siswa' : 'Calon Siswa' }}</span>
                 </a>
