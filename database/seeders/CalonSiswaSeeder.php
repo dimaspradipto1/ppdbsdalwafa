@@ -28,11 +28,11 @@ class CalonSiswaSeeder extends Seeder
         $pekSwasta = Pekerjaan::where('nama_pekerjaan', 'like', '%Karyawan Swasta%')->first() ?? Pekerjaan::first();
         $pekWira = Pekerjaan::where('nama_pekerjaan', 'like', '%Wiraswasta%')->first() ?? Pekerjaan::first();
 
-        $penS1 = Pendidikan::where('nama_pendidikan', 'S1')->first() ?? Pendidikan::first();
-        $penSma = Pendidikan::where('nama_pendidikan', 'SMA')->first() ?? Pendidikan::first();
+        $penS1 = Pendidikan::where('nama_pendidikan', 'like', '%S1%')->first() ?? Pendidikan::first();
+        $penSma = Pendidikan::where('nama_pendidikan', 'like', '%SMA%')->first() ?? Pendidikan::first();
 
-        $penghasilan1 = Penghasilan::first();
-        $penghasilan2 = Penghasilan::skip(1)->first() ?? $penghasilan1;
+        $penghasilanTinggi = Penghasilan::where('label', 'like', '%5.000.000%')->first() ?? Penghasilan::first();
+        $penghasilanSedang = Penghasilan::where('label', 'like', '%2.000.000%')->first() ?? Penghasilan::first();
 
         // Contoh Calon Siswa 1
         $siswa1 = CalonSiswa::create([
@@ -68,14 +68,14 @@ class CalonSiswaSeeder extends Seeder
             'pekerjaan_ayah_id'      => $pekSwasta?->id_pekerjaan,
             'pendidikan_ayah_id'     => $penS1?->id_pendidikan,
             'agama_ayah_id'          => $agamaIslam?->id_agama,
-            'penghasilan_ayah_id'    => $penghasilan2?->id_penghasilan,
+            'penghasilan_ayah_id'    => $penghasilanTinggi?->id_penghasilan,
             'nama_ibu'               => 'Siti Fatimah, S.Pd.',
             'tempat_lahir_ibu'       => 'Medan',
             'tanggal_lahir_ibu'      => '1990-07-22',
             'pekerjaan_ibu_id'       => $pekPns?->id_pekerjaan,
             'pendidikan_ibu_id'      => $penS1?->id_pendidikan,
             'agama_ibu_id'           => $agamaIslam?->id_agama,
-            'penghasilan_ibu_id'     => $penghasilan1?->id_penghasilan,
+            'penghasilan_ibu_id'     => $penghasilanSedang?->id_penghasilan,
             'status'                 => 'menunggu_verifikasi',
         ]);
 
@@ -139,14 +139,14 @@ class CalonSiswaSeeder extends Seeder
             'pekerjaan_ayah_id'      => $pekWira?->id_pekerjaan,
             'pendidikan_ayah_id'     => $penS1?->id_pendidikan,
             'agama_ayah_id'          => $agamaIslam?->id_agama,
-            'penghasilan_ayah_id'    => $penghasilan2?->id_penghasilan,
+            'penghasilan_ayah_id'    => $penghasilanTinggi?->id_penghasilan,
             'nama_ibu'               => 'Nurul Hidayah',
             'tempat_lahir_ibu'       => 'Bandung',
             'tanggal_lahir_ibu'      => '1987-09-18',
             'pekerjaan_ibu_id'       => $pekSwasta?->id_pekerjaan,
             'pendidikan_ibu_id'      => $penSma?->id_pendidikan,
             'agama_ibu_id'           => $agamaIslam?->id_agama,
-            'penghasilan_ibu_id'     => $penghasilan1?->id_penghasilan,
+            'penghasilan_ibu_id'     => $penghasilanSedang?->id_penghasilan,
             'status'                 => 'diverifikasi',
         ]);
 

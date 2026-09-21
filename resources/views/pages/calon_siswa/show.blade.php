@@ -27,12 +27,37 @@
   .section-header {
     background-color: #0d6efd;
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 0.55rem 1rem;
     font-weight: 700;
-    border-radius: 6px;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    margin-top: 1.75rem;
+    margin-bottom: 0.9rem;
     font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .ortu-card {
+    border-radius: 10px;
+    background: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .table-ortu th {
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: #6c757d;
+    width: 100px;
+    padding: 0.45rem 0.25rem;
+    border-bottom: 1px dashed #e9ecef;
+    white-space: nowrap;
+  }
+  .table-ortu td {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.25rem;
+    border-bottom: 1px dashed #e9ecef;
+    color: #212529;
+  }
+  .table-ortu tr:last-child th,
+  .table-ortu tr:last-child td {
+    border-bottom: none;
   }
 </style>
 @endpush
@@ -188,58 +213,175 @@
           </table>
 
           <!-- 3. DATA ORANG TUA KANDUNG & WALI -->
-          <div class="section-header" style="background-color: #198754;">3. DATA ORANG TUA & WALI</div>
+          <div class="section-header" style="background-color: #198754;">3. DATA ORANG TUA KANDUNG & WALI</div>
           <div class="row g-3 mb-4">
-            <!-- Ayah -->
+            
+            <!-- A. DATA AYAH KANDUNG -->
             <div class="col-md-4">
-              <div class="card h-100 border-primary shadow-none">
-                <div class="card-header bg-primary text-white fw-bold py-2">
-                  <i class="bi bi-gender-male me-1"></i> Data Ayah Kandung
+              <div class="card h-100 border border-primary-subtle shadow-sm ortu-card">
+                <div class="card-header bg-primary text-white fw-bold py-2 px-3 d-flex align-items-center justify-content-between">
+                  <span><i class="bi bi-gender-male me-1"></i> Data Ayah Kandung</span>
+                  <span class="badge bg-white text-primary rounded-pill px-2" style="font-size: 0.7rem;">Ayah</span>
                 </div>
-                <div class="card-body p-3 small">
-                  <div class="mb-2"><strong>Nama:</strong> {{ $calonSiswa->nama_ayah ?? '-' }}</div>
-                  <div class="mb-2"><strong>TTL:</strong> {{ $calonSiswa->tempat_lahir_ayah ?? '-' }}, {{ optional($calonSiswa->tanggal_lahir_ayah)->translatedFormat('d M Y') ?? '-' }}</div>
-                  <div class="mb-2"><strong>Pekerjaan:</strong> {{ optional($calonSiswa->pekerjaanAyah)->nama_pekerjaan ?? '-' }}</div>
-                  <div class="mb-2"><strong>Pendidikan:</strong> {{ optional($calonSiswa->pendidikanAyah)->nama_pendidikan ?? '-' }}</div>
-                  <div class="mb-2"><strong>Agama:</strong> {{ optional($calonSiswa->agamaAyah)->nama_agama ?? '-' }}</div>
-                  <div><strong>Penghasilan:</strong> {{ optional($calonSiswa->penghasilanAyah)->label ?? '-' }}</div>
+                <div class="card-body p-3">
+                  <table class="table table-sm table-borderless table-ortu align-middle mb-0">
+                    <tbody>
+                      <tr>
+                        <th><i class="bi bi-person me-1 text-primary"></i>Nama</th>
+                        <td><span class="me-1 text-muted">:</span> <span class="fw-bold text-dark">{{ $calonSiswa->nama_ayah ?: '-' }}</span></td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-calendar3 me-1 text-primary"></i>TTL</th>
+                        <td><span class="me-1 text-muted">:</span> 
+                          @if($calonSiswa->tempat_lahir_ayah || $calonSiswa->tanggal_lahir_ayah)
+                            {{ $calonSiswa->tempat_lahir_ayah }}{{ $calonSiswa->tempat_lahir_ayah && $calonSiswa->tanggal_lahir_ayah ? ', ' : '' }}{{ optional($calonSiswa->tanggal_lahir_ayah)->translatedFormat('d M Y') }}
+                          @else
+                            <span class="text-muted">-</span>
+                          @endif
+                        </td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-briefcase me-1 text-primary"></i>Pekerjaan</th>
+                        <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->pekerjaanAyah)->nama_pekerjaan ?: '-' }}</td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-mortarboard me-1 text-primary"></i>Pendidikan</th>
+                        <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->pendidikanAyah)->nama_pendidikan ?: '-' }}</td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-moon-stars me-1 text-primary"></i>Agama</th>
+                        <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->agamaAyah)->nama_agama ?: '-' }}</td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-cash-stack me-1 text-primary"></i>Penghasilan</th>
+                        <td><span class="me-1 text-muted">:</span> 
+                          @if($calonSiswa->penghasilanAyah)
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle fw-medium px-2 py-1">{{ $calonSiswa->penghasilanAyah->label }}</span>
+                          @else
+                            <span class="text-muted">-</span>
+                          @endif
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
 
-            <!-- Ibu -->
+            <!-- B. DATA IBU KANDUNG -->
             <div class="col-md-4">
-              <div class="card h-100 border-danger shadow-none">
-                <div class="card-header bg-danger text-white fw-bold py-2">
-                  <i class="bi bi-gender-female me-1"></i> Data Ibu Kandung
+              <div class="card h-100 border border-danger-subtle shadow-sm ortu-card">
+                <div class="card-header bg-danger text-white fw-bold py-2 px-3 d-flex align-items-center justify-content-between">
+                  <span><i class="bi bi-gender-female me-1"></i> Data Ibu Kandung</span>
+                  <span class="badge bg-white text-danger rounded-pill px-2" style="font-size: 0.7rem;">Ibu</span>
                 </div>
-                <div class="card-body p-3 small">
-                  <div class="mb-2"><strong>Nama:</strong> {{ $calonSiswa->nama_ibu ?? '-' }}</div>
-                  <div class="mb-2"><strong>TTL:</strong> {{ $calonSiswa->tempat_lahir_ibu ?? '-' }}, {{ optional($calonSiswa->tanggal_lahir_ibu)->translatedFormat('d M Y') ?? '-' }}</div>
-                  <div class="mb-2"><strong>Pekerjaan:</strong> {{ optional($calonSiswa->pekerjaanIbu)->nama_pekerjaan ?? '-' }}</div>
-                  <div class="mb-2"><strong>Pendidikan:</strong> {{ optional($calonSiswa->pendidikanIbu)->nama_pendidikan ?? '-' }}</div>
-                  <div class="mb-2"><strong>Agama:</strong> {{ optional($calonSiswa->agamaIbu)->nama_agama ?? '-' }}</div>
-                  <div><strong>Penghasilan:</strong> {{ optional($calonSiswa->penghasilanIbu)->label ?? '-' }}</div>
+                <div class="card-body p-3">
+                  <table class="table table-sm table-borderless table-ortu align-middle mb-0">
+                    <tbody>
+                      <tr>
+                        <th><i class="bi bi-person me-1 text-danger"></i>Nama</th>
+                        <td><span class="me-1 text-muted">:</span> <span class="fw-bold text-dark">{{ $calonSiswa->nama_ibu ?: '-' }}</span></td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-calendar3 me-1 text-danger"></i>TTL</th>
+                        <td><span class="me-1 text-muted">:</span> 
+                          @if($calonSiswa->tempat_lahir_ibu || $calonSiswa->tanggal_lahir_ibu)
+                            {{ $calonSiswa->tempat_lahir_ibu }}{{ $calonSiswa->tempat_lahir_ibu && $calonSiswa->tanggal_lahir_ibu ? ', ' : '' }}{{ optional($calonSiswa->tanggal_lahir_ibu)->translatedFormat('d M Y') }}
+                          @else
+                            <span class="text-muted">-</span>
+                          @endif
+                        </td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-briefcase me-1 text-danger"></i>Pekerjaan</th>
+                        <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->pekerjaanIbu)->nama_pekerjaan ?: '-' }}</td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-mortarboard me-1 text-danger"></i>Pendidikan</th>
+                        <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->pendidikanIbu)->nama_pendidikan ?: '-' }}</td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-moon-stars me-1 text-danger"></i>Agama</th>
+                        <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->agamaIbu)->nama_agama ?: '-' }}</td>
+                      </tr>
+                      <tr>
+                        <th><i class="bi bi-cash-stack me-1 text-danger"></i>Penghasilan</th>
+                        <td><span class="me-1 text-muted">:</span> 
+                          @if($calonSiswa->penghasilanIbu)
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle fw-medium px-2 py-1">{{ $calonSiswa->penghasilanIbu->label }}</span>
+                          @else
+                            <span class="text-muted">-</span>
+                          @endif
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
 
-            <!-- Wali -->
+            <!-- C. DATA WALI -->
             <div class="col-md-4">
-              <div class="card h-100 border-secondary shadow-none">
-                <div class="card-header bg-secondary text-white fw-bold py-2">
-                  <i class="bi bi-person-check me-1"></i> Data Wali
+              <div class="card h-100 border border-secondary-subtle shadow-sm ortu-card">
+                <div class="card-header bg-secondary text-white fw-bold py-2 px-3 d-flex align-items-center justify-content-between">
+                  <span><i class="bi bi-person-check me-1"></i> Data Wali</span>
+                  <span class="badge bg-white text-secondary rounded-pill px-2" style="font-size: 0.7rem;">Wali</span>
                 </div>
-                <div class="card-body p-3 small">
-                  <div class="mb-2"><strong>Nama:</strong> {{ $calonSiswa->nama_wali ?? '-' }}</div>
-                  <div class="mb-2"><strong>TTL:</strong> {{ $calonSiswa->tempat_lahir_wali ?? '-' }}, {{ optional($calonSiswa->tanggal_lahir_wali)->translatedFormat('d M Y') ?? '-' }}</div>
-                  <div class="mb-2"><strong>Pekerjaan:</strong> {{ optional($calonSiswa->pekerjaanWali)->nama_pekerjaan ?? '-' }}</div>
-                  <div class="mb-2"><strong>Pendidikan:</strong> {{ optional($calonSiswa->pendidikanWali)->nama_pendidikan ?? '-' }}</div>
-                  <div class="mb-2"><strong>Agama:</strong> {{ optional($calonSiswa->agamaWali)->nama_agama ?? '-' }}</div>
-                  <div><strong>Penghasilan:</strong> {{ optional($calonSiswa->penghasilanWali)->label ?? '-' }}</div>
+                <div class="card-body p-3">
+                  @if(!empty($calonSiswa->nama_wali))
+                    <table class="table table-sm table-borderless table-ortu align-middle mb-0">
+                      <tbody>
+                        <tr>
+                          <th><i class="bi bi-person me-1 text-secondary"></i>Nama</th>
+                          <td><span class="me-1 text-muted">:</span> <span class="fw-bold text-dark">{{ $calonSiswa->nama_wali }}</span></td>
+                        </tr>
+                        <tr>
+                          <th><i class="bi bi-calendar3 me-1 text-secondary"></i>TTL</th>
+                          <td><span class="me-1 text-muted">:</span> 
+                            @if($calonSiswa->tempat_lahir_wali || $calonSiswa->tanggal_lahir_wali)
+                              {{ $calonSiswa->tempat_lahir_wali }}{{ $calonSiswa->tempat_lahir_wali && $calonSiswa->tanggal_lahir_wali ? ', ' : '' }}{{ optional($calonSiswa->tanggal_lahir_wali)->translatedFormat('d M Y') }}
+                            @else
+                              <span class="text-muted">-</span>
+                            @endif
+                          </td>
+                        </tr>
+                        <tr>
+                          <th><i class="bi bi-briefcase me-1 text-secondary"></i>Pekerjaan</th>
+                          <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->pekerjaanWali)->nama_pekerjaan ?: '-' }}</td>
+                        </tr>
+                        <tr>
+                          <th><i class="bi bi-mortarboard me-1 text-secondary"></i>Pendidikan</th>
+                          <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->pendidikanWali)->nama_pendidikan ?: '-' }}</td>
+                        </tr>
+                        <tr>
+                          <th><i class="bi bi-moon-stars me-1 text-secondary"></i>Agama</th>
+                          <td><span class="me-1 text-muted">:</span> {{ optional($calonSiswa->agamaWali)->nama_agama ?: '-' }}</td>
+                        </tr>
+                        <tr>
+                          <th><i class="bi bi-cash-stack me-1 text-secondary"></i>Penghasilan</th>
+                          <td><span class="me-1 text-muted">:</span> 
+                            @if($calonSiswa->penghasilanWali)
+                              <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-medium px-2 py-1">{{ $calonSiswa->penghasilanWali->label }}</span>
+                            @else
+                              <span class="text-muted">-</span>
+                            @endif
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  @else
+                    <div class="d-flex flex-column align-items-center justify-content-center h-100 py-4 text-center">
+                      <div class="bg-secondary-subtle text-secondary rounded-circle p-3 mb-2 d-inline-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="bi bi-people" style="font-size: 1.3rem;"></i>
+                      </div>
+                      <div class="fw-semibold text-secondary">Tidak Ada Data Wali</div>
+                      <div class="small text-muted fst-italic mt-1">Calon siswa diasuh langsung oleh orang tua kandung.</div>
+                    </div>
+                  @endif
                 </div>
               </div>
             </div>
+
           </div>
 
           <!-- 4. CATATAN PRESTASI -->
