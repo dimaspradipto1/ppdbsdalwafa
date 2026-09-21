@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PenghasilanSeeder::class,
             KebutuhanKhususSeeder::class,
             CalonSiswaSeeder::class,
+            JenisDokumenSeeder::class,
         ]);
     }
 }

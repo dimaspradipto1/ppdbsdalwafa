@@ -184,10 +184,10 @@
         <li class="nav-heading">Pendaftaran</li>
 
         <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('calon-siswa.*') ? '' : 'collapsed' }}" data-bs-target="#pendaftaran-nav" data-bs-toggle="collapse" href="#">
+          <a class="nav-link {{ request()->routeIs('calon-siswa.*', 'dokumen.*') ? '' : 'collapsed' }}" data-bs-target="#pendaftaran-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-folder2-open"></i><span>Data Pendaftaran</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-          <ul id="pendaftaran-nav" class="nav-content collapse {{ request()->routeIs('calon-siswa.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+          <ul id="pendaftaran-nav" class="nav-content collapse {{ request()->routeIs('calon-siswa.*', 'dokumen.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
             {{-- 1. Pendaftaran --}}
             @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'bendahara', 'pendaftar'))
@@ -202,7 +202,7 @@
             {{-- 2. Dokumen --}}
             @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'pendaftar'))
               <li>
-                <a href="#">
+                <a href="{{ route('dokumen.index') }}" class="{{ request()->routeIs('dokumen.*') ? 'active' : '' }}">
                   <i class="bi bi-file-earmark-arrow-up"></i>
                   <span>{{ $user->hasRole('pendaftar') ? 'Unggah Dokumen' : 'Dokumen' }}</span>
                 </a>
