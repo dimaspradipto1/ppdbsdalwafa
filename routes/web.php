@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgamaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KebutuhanKhususController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\PenghasilanController;
@@ -44,11 +45,12 @@ Route::middleware(['checkrole:*'])->group(function () {
         Route::resource('sekolah', SekolahController::class);
     });
 
-    // Pengaturan & Master: Agama, Pendidikan, Pekerjaan & Penghasilan (Super Admin, Admin PPDB)
+    // Pengaturan & Master: Agama, Pendidikan, Pekerjaan, Penghasilan & Kebutuhan Khusus (Super Admin, Admin PPDB)
     Route::middleware(['checkrole:super_admin,admin_ppdb'])->group(function () {
         Route::resource('agama', AgamaController::class);
         Route::resource('pendidikan', PendidikanController::class);
         Route::resource('pekerjaan', PekerjaanController::class);
         Route::resource('penghasilan', PenghasilanController::class);
+        Route::resource('kebutuhan-khusus', KebutuhanKhususController::class)->parameters(['kebutuhan-khusus' => 'kebutuhanKhusus']);
     });
 });

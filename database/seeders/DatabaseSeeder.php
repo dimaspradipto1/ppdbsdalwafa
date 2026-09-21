@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PendidikanSeeder::class,
             PekerjaanSeeder::class,
             PenghasilanSeeder::class,
+            KebutuhanKhususSeeder::class,
         ]);
     }
 }
