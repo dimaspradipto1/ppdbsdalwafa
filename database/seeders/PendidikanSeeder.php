@@ -27,12 +27,12 @@ class PendidikanSeeder extends Seeder
                 'is_active'       => true,
             ],
             [
-                'nama_pendidikan' => 'SD / Sederajat',
+                'nama_pendidikan' => 'SD',
                 'keterangan'      => 'Sekolah Dasar / Madrasah Ibtidaiyah',
                 'is_active'       => true,
             ],
             [
-                'nama_pendidikan' => 'SMP / Sederajat',
+                'nama_pendidikan' => 'SMP',
                 'keterangan'      => 'Sekolah Menengah Pertama / Madrasah Tsanawiyah',
                 'is_active'       => true,
             ],
