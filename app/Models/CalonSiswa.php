@@ -143,6 +143,16 @@ class CalonSiswa extends Model
         return $this->hasMany(DokumenSiswa::class, 'id_calon_siswa', 'id_calon_siswa');
     }
 
+    public function pembayaran(): HasMany
+    {
+        return $this->hasMany(Pembayaran::class, 'id_calon_siswa', 'id_calon_siswa');
+    }
+
+    public function nilaiSeleksi(): HasMany
+    {
+        return $this->hasMany(NilaiSeleksi::class, 'id_calon_siswa', 'id_calon_siswa');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

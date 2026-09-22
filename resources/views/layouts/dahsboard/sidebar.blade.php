@@ -192,61 +192,34 @@
         <li class="nav-heading">Proses & Seleksi</li>
 
         <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#proses-nav" data-bs-toggle="collapse" href="#">
+          <a class="nav-link {{ request()->routeIs('pembayaran.*', 'nilai-seleksi.*', 'pengumuman.*') ? '' : 'collapsed' }}" data-bs-target="#proses-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-arrow-repeat"></i><span>Proses PPDB</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-          <ul id="proses-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <ul id="proses-nav" class="nav-content collapse {{ request()->routeIs('pembayaran.*', 'nilai-seleksi.*', 'pengumuman.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
-            {{-- 1. Pengumuman --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-megaphone"></i><span>Pengumuman</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 2. Verifikasi --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-check2-circle"></i><span>Verifikasi</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 3. Seleksi --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah', 'guru'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-ui-checks"></i><span>Seleksi</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 4. Status --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'bendahara', 'guru', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-hourglass-split"></i><span>Status</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 5. Pembayaran --}}
+            {{-- 1. Pembayaran PPDB --}}
             @if($user->hasRole('super_admin', 'admin_ppdb', 'bendahara', 'pendaftar'))
               <li>
-                <a href="#">
-                  <i class="bi bi-credit-card"></i><span>Pembayaran</span>
+                <a href="{{ route('pembayaran.index') }}" class="{{ request()->routeIs('pembayaran.*') ? 'active' : '' }}">
+                  <i class="bi bi-credit-card"></i><span>Pembayaran PPDB</span>
                 </a>
               </li>
             @endif
 
-            {{-- 6. Nilai Seleksi --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah', 'guru', 'pendaftar'))
+            {{-- 2. Penilaian & Ujian Seleksi --}}
+            @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah', 'guru'))
               <li>
-                <a href="#">
-                  <i class="bi bi-card-checklist"></i><span>Nilai Seleksi</span>
+                <a href="{{ route('nilai-seleksi.index') }}" class="{{ request()->routeIs('nilai-seleksi.*') ? 'active' : '' }}">
+                  <i class="bi bi-card-checklist"></i><span>Penilaian Seleksi</span>
+                </a>
+              </li>
+            @endif
+
+            {{-- 3. Pengumuman Kelulusan --}}
+            @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah', 'pendaftar'))
+              <li>
+                <a href="{{ route('pengumuman.index') }}" class="{{ request()->routeIs('pengumuman.*') ? 'active' : '' }}">
+                  <i class="bi bi-megaphone"></i><span>Pengumuman Kelulusan</span>
                 </a>
               </li>
             @endif
