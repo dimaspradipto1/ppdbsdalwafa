@@ -103,6 +103,45 @@
               <!-- 1. IDENTITAS PESERTA DIDIK                                    -->
               <!-- ============================================================= -->
               <div class="tab-pane fade show active" id="tab-identitas" role="tabpanel">
+                <div class="card bg-primary-subtle border border-primary-subtle mb-4 p-3 rounded-3 shadow-none">
+                  <div class="fw-bold text-primary mb-2"><i class="bi bi-info-circle me-1"></i> Program & Jalur Pendaftaran PPDB</div>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label for="id_tahun_ajaran" class="form-label fw-semibold text-dark">Tahun Ajaran</label>
+                      <select name="id_tahun_ajaran" id="id_tahun_ajaran" class="form-select bg-white">
+                        <option value="">-- Pilih Tahun Ajaran --</option>
+                        @foreach($daftarTahunAjaran as $ta)
+                          <option value="{{ $ta->id_tahun_ajaran }}" {{ old('id_tahun_ajaran', $calonSiswa->id_tahun_ajaran) == $ta->id_tahun_ajaran ? 'selected' : '' }}>
+                            {{ $ta->tahun_ajaran }} {{ $ta->is_active ? '(Aktif)' : '' }}
+                          </option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="id_gelombang" class="form-label fw-semibold text-dark">Gelombang Pendaftaran</label>
+                      <select name="id_gelombang" id="id_gelombang" class="form-select bg-white">
+                        <option value="">-- Pilih Gelombang --</option>
+                        @foreach($daftarGelombang as $gel)
+                          <option value="{{ $gel->id_gelombang }}" {{ old('id_gelombang', $calonSiswa->id_gelombang) == $gel->id_gelombang ? 'selected' : '' }}>
+                            {{ $gel->nama_gelombang }}
+                          </option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="id_jalur" class="form-label fw-semibold text-dark">Jalur Pendaftaran</label>
+                      <select name="id_jalur" id="id_jalur" class="form-select bg-white">
+                        <option value="">-- Pilih Jalur --</option>
+                        @foreach($daftarJalur as $j)
+                          <option value="{{ $j->id_jalur }}" {{ old('id_jalur', $calonSiswa->id_jalur) == $j->id_jalur ? 'selected' : '' }}>
+                            {{ $j->nama_jalur }} (Kuota: {{ $j->kuota ?? 'Tak Terbatas' }})
+                          </option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="section-card-title"><i class="bi bi-person-badge text-primary me-2"></i>1. Identitas Peserta Didik</div>
                 
                 <div class="row g-3">

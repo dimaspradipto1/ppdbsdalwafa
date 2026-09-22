@@ -162,86 +162,22 @@
           </a>
           <ul id="pendaftaran-nav" class="nav-content collapse {{ request()->routeIs('calon-siswa.*', 'dokumen.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
-            {{-- 1. Pendaftaran --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'bendahara', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-person-lines-fill"></i>
-                  <span>{{ $user->hasRole('pendaftar') ? 'Formulir Pendaftaran' : 'Pendaftaran' }}</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 2. Dokumen --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'pendaftar'))
-              <li>
-                <a href="{{ route('dokumen.index') }}" class="{{ request()->routeIs('dokumen.*') ? 'active' : '' }}">
-                  <i class="bi bi-file-earmark-arrow-up"></i>
-                  <span>{{ $user->hasRole('pendaftar') ? 'Unggah Dokumen' : 'Dokumen' }}</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 3. Orang Tua Wali --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-people-fill"></i><span>Orang Tua Wali</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 4. Alamat --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-geo-alt"></i><span>Alamat</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 5. Beasiswa --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah', 'bendahara', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-award"></i><span>Beasiswa</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 6. Calon Siswa --}}
+            {{-- 1. Calon Siswa / Data Pendaftaran Terpadu --}}
             @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'bendahara', 'guru', 'pendaftar'))
               <li>
                 <a href="{{ route('calon-siswa.index') }}" class="{{ request()->routeIs('calon-siswa.*') ? 'active' : '' }}">
-                  <i class="bi bi-person-badge"></i>
-                  <span>{{ $user->hasRole('pendaftar') ? 'Biodata Siswa' : 'Calon Siswa' }}</span>
+                  <i class="bi bi-person-lines-fill"></i>
+                  <span>{{ $user->hasRole('pendaftar') ? 'Formulir Pendaftaran' : 'Data Pendaftaran' }}</span>
                 </a>
               </li>
             @endif
 
-            {{-- 7. Prestasi --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'guru', 'pendaftar'))
+            {{-- 2. Verifikasi Dokumen & Berkas Siswa --}}
+            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'pendaftar'))
               <li>
-                <a href="#">
-                  <i class="bi bi-trophy"></i><span>Prestasi</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 8. Sekolah Asal --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'guru', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-bank"></i><span>Sekolah Asal</span>
-                </a>
-              </li>
-            @endif
-
-            {{-- 9. Siswa Kebutuhan Khusus --}}
-            @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'guru', 'pendaftar'))
-              <li>
-                <a href="#">
-                  <i class="bi bi-bandaid"></i><span>Siswa Kebutuhan Khusus</span>
+                <a href="{{ route('dokumen.index') }}" class="{{ request()->routeIs('dokumen.*') ? 'active' : '' }}">
+                  <i class="bi bi-file-earmark-check"></i>
+                  <span>{{ $user->hasRole('pendaftar') ? 'Unggah Dokumen' : 'Verifikasi Dokumen' }}</span>
                 </a>
               </li>
             @endif

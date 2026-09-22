@@ -75,6 +75,7 @@ Route::middleware(['checkrole:*'])->group(function () {
 
     // Data Pendaftaran: Calon Siswa & Dokumen (Super Admin, Admin PPDB, Verifikator, Kepala Sekolah, Bendahara, Guru, Pendaftar)
     Route::middleware(['checkrole:super_admin,admin_ppdb,verifikator,kepala_sekolah,bendahara,guru,pendaftar'])->group(function () {
+        Route::patch('calon-siswa/{calonSiswa}/status', [CalonSiswaController::class, 'updateStatus'])->name('calon-siswa.update-status');
         Route::resource('calon-siswa', CalonSiswaController::class)->parameters(['calon-siswa' => 'calonSiswa']);
         Route::resource('dokumen', DokumenSiswaController::class)->parameters(['dokumen' => 'dokumen']);
     });

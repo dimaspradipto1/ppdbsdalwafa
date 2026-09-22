@@ -22,6 +22,11 @@ class StoreCalonSiswaRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // 0. PPDB Master Relasi
+            'id_tahun_ajaran'        => 'nullable|exists:tahun_ajaran,id_tahun_ajaran',
+            'id_gelombang'           => 'nullable|exists:gelombang,id_gelombang',
+            'id_jalur'               => 'nullable|exists:jalur,id_jalur',
+
             // 1. Identitas Peserta Didik
             'nama_lengkap'           => 'required|string|max:150',
             'jenis_kelamin'          => 'required|in:Laki-laki,Perempuan',
