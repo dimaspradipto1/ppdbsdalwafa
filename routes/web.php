@@ -76,16 +76,20 @@ Route::middleware(['checkrole:*'])->group(function () {
         Route::resource('kebutuhan-khusus', KebutuhanKhususController::class)->parameters(['kebutuhan-khusus' => 'kebutuhanKhusus']);
     });
 
-    // Data Pendaftaran: Calon Siswa & Dokumen (Super Admin, Admin PPDB, Verifikator, Kepala Sekolah, Bendahara, Guru, Pendaftar)
+    // Data Pendaftaran: Calon Siswa & Dokumen (Semua role terkait pendaftaran)
     Route::middleware(['checkrole:super_admin,admin_ppdb,verifikator,kepala_sekolah,bendahara,guru,pendaftar'])->group(function () {
-        Route::patch('calon-siswa/{calonSiswa}/status', [CalonSiswaController::class, 'updateStatus'])->name('calon-siswa.update-status');
+        Route::patch('calon-siswa/{calonSiswa}/status', [CalonSiswaController::class, 'updateStatus'])
+            ->middleware('checkrole:super_admin,admin_ppdb,verifikator,kepala_sekolah')
+            ->name('calon-siswa.update-status');
         Route::resource('calon-siswa', CalonSiswaController::class)->parameters(['calon-siswa' => 'calonSiswa']);
         Route::resource('dokumen', DokumenSiswaController::class)->parameters(['dokumen' => 'dokumen']);
     });
 
     // Proses PPDB: Pembayaran (Super Admin, Admin PPDB, Bendahara, Pendaftar)
     Route::middleware(['checkrole:super_admin,admin_ppdb,bendahara,pendaftar'])->group(function () {
-        Route::patch('pembayaran/{pembayaran}/status', [PembayaranController::class, 'updateStatus'])->name('pembayaran.update-status');
+        Route::patch('pembayaran/{pembayaran}/status', [PembayaranController::class, 'updateStatus'])
+            ->middleware('checkrole:super_admin,admin_ppdb,bendahara')
+            ->name('pembayaran.update-status');
         Route::get('pembayaran/{pembayaran}/kwitansi', [PembayaranController::class, 'kwitansi'])->name('pembayaran.kwitansi');
         Route::resource('pembayaran', PembayaranController::class);
     });
@@ -95,9 +99,12 @@ Route::middleware(['checkrole:*'])->group(function () {
         Route::resource('nilai-seleksi', NilaiSeleksiController::class)->only(['index', 'edit', 'update'])->parameters(['nilai-seleksi' => 'calonSiswa']);
     });
 
-    // Proses PPDB: Pengumuman Kelulusan (Super Admin, Admin PPDB, Kepala Sekolah, Pendaftar)
+    // Proses PPDB: Pengumuman Kelulusan
+    Route::middleware(['checkrole:super_admin,admin_ppdb,kepala_sekolah'])->group(function () {
+        Route::resource('pengumuman', PengumumanController::class)->except(['index', 'show']);
+    });
     Route::middleware(['checkrole:super_admin,admin_ppdb,kepala_sekolah,pendaftar'])->group(function () {
         Route::get('pengumuman/surat-kelulusan/{calonSiswa}', [PengumumanController::class, 'suratKelulusan'])->name('pengumuman.surat-kelulusan');
-        Route::resource('pengumuman', PengumumanController::class);
+        Route::resource('pengumuman', PengumumanController::class)->only(['index', 'show']);
     });
 });

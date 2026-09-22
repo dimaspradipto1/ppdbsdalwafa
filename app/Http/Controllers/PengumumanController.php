@@ -22,6 +22,11 @@ class PengumumanController extends Controller
             $query = Pengumuman::with(['tahunAjaran', 'gelombang', 'creator'])
                 ->select('pengumuman_ppdb.*');
 
+            $user = Auth::user();
+            if ($user && $user->role === 'pendaftar') {
+                $query->where('is_published', true);
+            }
+
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('info_pengumuman', function ($row) {
@@ -46,10 +51,14 @@ class PengumumanController extends Controller
                     $editUrl = route('pengumuman.edit', $row->id_pengumuman);
                     $deleteUrl = route('pengumuman.destroy', $row->id_pengumuman);
 
+                    $user = Auth::user();
                     $buttons = '<div class="d-inline-flex align-items-center justify-content-center gap-1 text-nowrap">';
                     $buttons .= '<a href="' . $showUrl . '" class="btn btn-sm btn-info text-white d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.78rem;" title="Lihat Hasil & Daftar Siswa"><i class="bi bi-eye"></i><span>Hasil</span></a>';
-                    $buttons .= '<a href="' . $editUrl . '" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.78rem;" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $buttons .= '<button type="button" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 px-2 py-1 btn-delete" data-id="' . $row->id_pengumuman . '" data-name="' . e($row->judul) . '" data-url="' . $deleteUrl . '" style="font-size: 0.78rem;" title="Hapus"><i class="bi bi-trash3"></i></button>';
+
+                    if ($user && in_array($user->role, ['super_admin', 'admin_ppdb', 'kepala_sekolah'])) {
+                        $buttons .= '<a href="' . $editUrl . '" class="btn btn-sm btn-warning text-white d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.78rem;" title="Edit Pengumuman"><i class="bi bi-pencil-square"></i><span>Edit</span></a>';
+                        $buttons .= '<button type="button" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 px-2 py-1 btn-delete" data-id="' . $row->id_pengumuman . '" data-name="' . e($row->judul) . '" data-url="' . $deleteUrl . '" style="font-size: 0.78rem;" title="Hapus Pengumuman"><i class="bi bi-trash3"></i><span>Hapus</span></button>';
+                    }
                     $buttons .= '</div>';
 
                     return $buttons;
@@ -111,6 +120,11 @@ class PengumumanController extends Controller
      */
     public function show(Pengumuman $pengumuman)
     {
+        $user = Auth::user();
+        if ($user && $user->role === 'pendaftar' && !$pengumuman->is_published) {
+            abort(403, 'Pengumuman kelulusan belum dipublikasikan.');
+        }
+
         $pengumuman->load(['tahunAjaran', 'gelombang', 'creator']);
 
         $query = CalonSiswa::query();
@@ -119,6 +133,10 @@ class PengumumanController extends Controller
         }
         if ($pengumuman->id_gelombang) {
             $query->where('id_gelombang', $pengumuman->id_gelombang);
+        }
+
+        if ($user && $user->role === 'pendaftar') {
+            $query->where('user_id', $user->id);
         }
 
         $daftarSiswa = $query->with(['jalur', 'nilaiSeleksi'])->orderBy('status')->orderBy('nama_lengkap')->get();

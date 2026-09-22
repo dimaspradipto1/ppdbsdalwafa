@@ -45,6 +45,12 @@ class CalonSiswaController extends Controller
             ])
             ->select('calon_siswa.*');
 
+            // Batasi pendaftar hanya dapat melihat data calon siswa miliknya sendiri
+            $user = Auth::user();
+            if ($user && $user->role === 'pendaftar') {
+                $query->where('calon_siswa.user_id', $user->id);
+            }
+
             // Filter Tahun Ajaran
             if ($request->filled('id_tahun_ajaran')) {
                 $query->where('id_tahun_ajaran', $request->id_tahun_ajaran);

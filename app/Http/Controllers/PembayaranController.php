@@ -24,6 +24,14 @@ class PembayaranController extends Controller
             $query = Pembayaran::with(['calonSiswa.tahunAjaran', 'biaya', 'verifikator'])
                 ->select('pembayaran_ppdb.*');
 
+            // Batasi pendaftar hanya dapat melihat pembayaran calon siswanya sendiri
+            $user = Auth::user();
+            if ($user && $user->role === 'pendaftar') {
+                $query->whereHas('calonSiswa', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                });
+            }
+
             if ($request->filled('status_pembayaran')) {
                 $query->where('status_pembayaran', $request->status_pembayaran);
             }

@@ -23,6 +23,14 @@ class DokumenSiswaController extends Controller
             $query = DokumenSiswa::with(['calonSiswa', 'jenisDokumen', 'verifikator'])
                 ->select('dokumen_siswa.*');
 
+            // Batasi pendaftar hanya dapat melihat dokumen milik calon siswanya sendiri
+            $user = Auth::user();
+            if ($user && $user->role === 'pendaftar') {
+                $query->whereHas('calonSiswa', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                });
+            }
+
             // Filter berdasarkan kategori dokumen jika ada
             if ($request->filled('kategori')) {
                 $query->whereHas('jenisDokumen', function ($q) use ($request) {
