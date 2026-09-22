@@ -22,9 +22,10 @@ class UpdateSekolahRequest extends FormRequest
      */
     public function rules(): array
     {
-        $sekolahId = $this->route('sekolah') instanceof \App\Models\Sekolah 
-            ? $this->route('sekolah')->id_sekolah 
-            : $this->route('sekolah');
+        $sekolah = $this->route('sekolah');
+        $sekolahId = $sekolah instanceof \App\Models\Sekolah 
+            ? $sekolah->id_sekolah 
+            : ($sekolah ?? optional(\App\Models\Sekolah::first())->id_sekolah);
 
         return [
             'npsn'           => ['nullable', 'string', 'max:20', Rule::unique('sekolah', 'npsn')->ignore($sekolahId, 'id_sekolah')],
@@ -41,7 +42,7 @@ class UpdateSekolahRequest extends FormRequest
             'telepon'        => 'nullable|string|max:30',
             'email'          => 'nullable|email|max:255',
             'website'        => 'nullable|string|max:255',
-            'logo'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'logo'           => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'latitude'       => 'nullable|numeric|between:-90,90',
             'longitude'      => 'nullable|numeric|between:-180,180',
         ];

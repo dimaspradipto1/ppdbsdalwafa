@@ -22,29 +22,14 @@ class SekolahTest extends TestCase
         );
     }
 
-    public function test_super_admin_can_access_sekolah_index(): void
+    public function test_super_admin_can_access_sekolah_profile_index(): void
     {
         $admin = $this->getSuperAdmin();
 
         $response = $this->actingAs($admin)->get(route('sekolah.index'));
         $response->assertStatus(200);
-        $response->assertSee('Data Sekolah');
-    }
-
-    public function test_datatables_ajax_returns_sekolah_json(): void
-    {
-        $admin = $this->getSuperAdmin();
-
-        $response = $this->actingAs($admin)
-            ->get(route('sekolah.index'), ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'draw',
-            'recordsTotal',
-            'recordsFiltered',
-            'data'
-        ]);
+        $response->assertSee('Profil & Data Sekolah', false);
+        $response->assertSee('Simpan Perubahan Sekolah');
     }
 
     public function test_unauthorized_role_cannot_access_sekolah(): void
@@ -60,36 +45,6 @@ class SekolahTest extends TestCase
 
         $response = $this->actingAs($pendaftar)->get(route('sekolah.index'));
         $response->assertStatus(403);
-    }
-
-    public function test_super_admin_can_create_sekolah(): void
-    {
-        $admin = $this->getSuperAdmin();
-
-        Sekolah::where('npsn', '12345678')->delete();
-
-        $data = [
-            'npsn'           => '12345678',
-            'nama_sekolah'   => 'TK Islam Plus Al-Wafa',
-            'jenjang'        => 'TK',
-            'status_sekolah' => 'Swasta',
-            'nama_yayasan'   => 'Yayasan Daarul Aitam Batam',
-            'alamat'         => 'Perumahan Bida Asri 2 Blok I No. 5-6',
-            'desa_kelurahan' => 'Belian',
-            'kecamatan'      => 'Batam Kota',
-            'kabupaten_kota' => 'Kota Batam',
-            'provinsi'       => 'Kepulauan Riau',
-            'telepon'        => '07787495611',
-            'email'          => 'tkalwafa@gmail.com',
-        ];
-
-        $response = $this->actingAs($admin)->post(route('sekolah.store'), $data);
-        $response->assertRedirect(route('sekolah.index'));
-
-        $this->assertDatabaseHas('sekolah', [
-            'npsn'         => '12345678',
-            'nama_sekolah' => 'TK Islam Plus Al-Wafa',
-        ]);
     }
 
     public function test_super_admin_can_update_sekolah(): void
@@ -111,6 +66,7 @@ class SekolahTest extends TestCase
             'jenjang'        => 'SD',
             'status_sekolah' => 'Swasta',
             'telepon'        => '082323222606',
+            'nama_yayasan'   => 'Yayasan Daarul Aitam Batam',
         ];
 
         $response = $this->actingAs($admin)->put(route('sekolah.update', $sekolah->id_sekolah), $updateData);
@@ -118,23 +74,52 @@ class SekolahTest extends TestCase
 
         $sekolah->refresh();
         $this->assertEquals('SD Islam Plus Al-Wafa Batam Updated', $sekolah->nama_sekolah);
+        $this->assertEquals('082323222606', $sekolah->telepon);
     }
 
-    public function test_super_admin_can_delete_sekolah(): void
+    public function test_super_admin_can_view_sekolah_json(): void
     {
         $admin = $this->getSuperAdmin();
+        $sekolah = Sekolah::first();
 
-        $sekolah = Sekolah::create([
-            'npsn'           => '99999999',
-            'nama_sekolah'   => 'Sekolah Test Delete',
+        $response = $this->actingAs($admin)->get(route('sekolah.show', $sekolah->id_sekolah));
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'id_sekolah',
+            'nama_sekolah',
+            'jenjang',
+            'status_sekolah',
+        ]);
+    }
+
+    public function test_super_admin_can_update_logo_via_ajax(): void
+    {
+        $admin = $this->getSuperAdmin();
+        $sekolah = Sekolah::first() ?? Sekolah::create([
+            'nama_sekolah'   => 'SD Islam Plus Al-Wafa',
             'jenjang'        => 'SD',
             'status_sekolah' => 'Swasta',
         ]);
 
+        $file = UploadedFile::fake()->image('new_logo.png', 200, 200);
+
         $response = $this->actingAs($admin)
-            ->delete(route('sekolah.destroy', $sekolah->id_sekolah), [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->post(route('sekolah.update-logo'), [
+                'logo' => $file,
+            ], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('sekolah', ['id_sekolah' => $sekolah->id_sekolah]);
+        $response->assertJson([
+            'success' => true,
+        ]);
+
+        $sekolah->refresh();
+        $this->assertNotNull($sekolah->logo_path);
+        $this->assertFileExists(public_path($sekolah->logo_path));
+
+        // Clean up test generated file
+        if (file_exists(public_path($sekolah->logo_path))) {
+            @unlink(public_path($sekolah->logo_path));
+        }
     }
 }

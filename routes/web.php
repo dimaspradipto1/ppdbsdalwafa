@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokumenSiswaController;
+use App\Http\Controllers\GelombangController;
 use App\Http\Controllers\KebutuhanKhususController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PendidikanController;
@@ -43,10 +44,12 @@ Route::middleware(['checkrole:*'])->group(function () {
         Route::resource('users', UserController::class);
     });
 
-    // Pengaturan & Master: Sekolah & Tahun Ajaran (Super Admin, Admin PPDB, Kepala Sekolah)
+    // Pengaturan & Master: Sekolah, Tahun Ajaran & Gelombang (Super Admin, Admin PPDB, Kepala Sekolah)
     Route::middleware(['checkrole:super_admin,admin_ppdb,kepala_sekolah'])->group(function () {
+        Route::post('sekolah/update-logo', [SekolahController::class, 'updateLogo'])->name('sekolah.update-logo');
         Route::resource('sekolah', SekolahController::class);
         Route::resource('tahun-ajaran', TahunAjaranController::class)->parameters(['tahun-ajaran' => 'tahunAjaran']);
+        Route::resource('gelombang', GelombangController::class);
     });
 
     // Pengaturan & Master: Agama, Pendidikan, Pekerjaan, Penghasilan & Kebutuhan Khusus (Super Admin, Admin PPDB)
