@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\AgamaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BiayaController;
 use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokumenSiswaController;
 use App\Http\Controllers\GelombangController;
+use App\Http\Controllers\JalurController;
+use App\Http\Controllers\JenisDokumenController;
 use App\Http\Controllers\KebutuhanKhususController;
+use App\Http\Controllers\KomponenSeleksiController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\PenghasilanController;
@@ -44,16 +48,24 @@ Route::middleware(['checkrole:*'])->group(function () {
         Route::resource('users', UserController::class);
     });
 
-    // Pengaturan & Master: Sekolah, Tahun Ajaran & Gelombang (Super Admin, Admin PPDB, Kepala Sekolah)
+    // Pengaturan & Master: Sekolah, Tahun Ajaran, Gelombang, Jalur, & Komponen Seleksi (Super Admin, Admin PPDB, Kepala Sekolah)
     Route::middleware(['checkrole:super_admin,admin_ppdb,kepala_sekolah'])->group(function () {
         Route::post('sekolah/update-logo', [SekolahController::class, 'updateLogo'])->name('sekolah.update-logo');
         Route::resource('sekolah', SekolahController::class);
         Route::resource('tahun-ajaran', TahunAjaranController::class)->parameters(['tahun-ajaran' => 'tahunAjaran']);
         Route::resource('gelombang', GelombangController::class);
+        Route::resource('jalur', JalurController::class);
+        Route::resource('komponen-seleksi', KomponenSeleksiController::class)->parameters(['komponen-seleksi' => 'komponenSeleksi']);
     });
 
-    // Pengaturan & Master: Agama, Pendidikan, Pekerjaan, Penghasilan & Kebutuhan Khusus (Super Admin, Admin PPDB)
+    // Pengaturan & Master: Tarif & Biaya PPDB (Super Admin, Admin PPDB, Bendahara)
+    Route::middleware(['checkrole:super_admin,admin_ppdb,bendahara'])->group(function () {
+        Route::resource('biaya', BiayaController::class);
+    });
+
+    // Pengaturan & Master: Persyaratan Dokumen & Biodata (Super Admin, Admin PPDB)
     Route::middleware(['checkrole:super_admin,admin_ppdb'])->group(function () {
+        Route::resource('persyaratan-dokumen', JenisDokumenController::class)->parameters(['persyaratan-dokumen' => 'jenisDokumen']);
         Route::resource('agama', AgamaController::class);
         Route::resource('pendidikan', PendidikanController::class);
         Route::resource('pekerjaan', PekerjaanController::class);

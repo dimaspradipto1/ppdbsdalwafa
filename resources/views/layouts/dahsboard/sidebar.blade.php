@@ -24,10 +24,10 @@
           <li class="nav-heading">Pengaturan & Master</li>
 
           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*', 'pekerjaan.*', 'penghasilan.*', 'kebutuhan-khusus.*', 'tahun-ajaran.*', 'gelombang.*') ? '' : 'collapsed' }}" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*', 'pekerjaan.*', 'penghasilan.*', 'kebutuhan-khusus.*', 'tahun-ajaran.*', 'gelombang.*', 'persyaratan-dokumen.*', 'jalur.*', 'biaya.*', 'komponen-seleksi.*') ? '' : 'collapsed' }}" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
               <i class="bi bi-sliders2"></i><span>Pengaturan & Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="master-nav" class="nav-content collapse {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*', 'pekerjaan.*', 'penghasilan.*', 'kebutuhan-khusus.*', 'tahun-ajaran.*', 'gelombang.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="master-nav" class="nav-content collapse {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*', 'pekerjaan.*', 'penghasilan.*', 'kebutuhan-khusus.*', 'tahun-ajaran.*', 'gelombang.*', 'persyaratan-dokumen.*', 'jalur.*', 'biaya.*', 'komponen-seleksi.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
               {{-- 1. Users (Khusus Super Admin) --}}
               @if($user->hasRole('super_admin'))
@@ -42,48 +42,12 @@
               @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah'))
                 <li>
                   <a href="{{ route('sekolah.index') }}" class="{{ request()->routeIs('sekolah.*') ? 'active' : '' }}">
-                    <i class="bi bi-building"></i><span>Sekolah</span>
+                    <i class="bi bi-building"></i><span>Profil Sekolah</span>
                   </a>
                 </li>
               @endif
 
-              {{-- 3. Jenis Dokumen --}}
-              @if($user->hasRole('super_admin', 'admin_ppdb'))
-                <li>
-                  <a href="#">
-                    <i class="bi bi-file-earmark-text"></i><span>Jenis Dokumen</span>
-                  </a>
-                </li>
-              @endif
-
-              {{-- 3.1 Syarat Dokumen --}}
-              @if($user->hasRole('super_admin', 'admin_ppdb'))
-                <li>
-                  <a href="#">
-                    <i class="bi bi-file-earmark-check"></i><span>Syarat Dokumen</span>
-                  </a>
-                </li>
-              @endif
-
-              {{-- 4. Jalur --}}
-              @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah'))
-                <li>
-                  <a href="#">
-                    <i class="bi bi-signpost-split"></i><span>Jalur</span>
-                  </a>
-                </li>
-              @endif
-
-              {{-- 5. Kuota Jalur --}}
-              @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah'))
-                <li>
-                  <a href="#">
-                    <i class="bi bi-pie-chart"></i><span>Kuota Jalur</span>
-                  </a>
-                </li>
-              @endif
-
-              {{-- 6. Tahun Ajaran --}}
+              {{-- 3. Tahun Ajaran --}}
               @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah'))
                 <li>
                   <a href="{{ route('tahun-ajaran.index') }}" class="{{ request()->routeIs('tahun-ajaran.*') ? 'active' : '' }}">
@@ -92,7 +56,7 @@
                 </li>
               @endif
 
-              {{-- 7. Gelombang --}}
+              {{-- 4. Gelombang --}}
               @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah'))
                 <li>
                   <a href="{{ route('gelombang.index') }}" class="{{ request()->routeIs('gelombang.*') ? 'active' : '' }}">
@@ -101,28 +65,37 @@
                 </li>
               @endif
 
-              {{-- 8. Tarif Biaya --}}
-              @if($user->hasRole('super_admin', 'admin_ppdb', 'bendahara'))
+              {{-- 5. Persyaratan Dokumen (Integrasi Jenis & Syarat Dokumen) --}}
+              @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
-                  <a href="#">
-                    <i class="bi bi-cash-coin"></i><span>Tarif Biaya</span>
+                  <a href="{{ route('persyaratan-dokumen.index') }}" class="{{ request()->routeIs('persyaratan-dokumen.*') ? 'active' : '' }}">
+                    <i class="bi bi-file-earmark-check"></i><span>Persyaratan Dokumen</span>
                   </a>
                 </li>
               @endif
 
-              {{-- 9. Jenis Biaya --}}
-              @if($user->hasRole('super_admin', 'admin_ppdb', 'bendahara'))
-                <li>
-                  <a href="#">
-                    <i class="bi bi-tags"></i><span>Jenis Biaya</span>
-                  </a>
-                </li>
-              @endif
-
-              {{-- 10. Komponen Seleksi --}}
+              {{-- 6. Jalur & Kuota Pendaftaran --}}
               @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah'))
                 <li>
-                  <a href="#">
+                  <a href="{{ route('jalur.index') }}" class="{{ request()->routeIs('jalur.*') ? 'active' : '' }}">
+                    <i class="bi bi-signpost-split"></i><span>Jalur & Kuota</span>
+                  </a>
+                </li>
+              @endif
+
+              {{-- 7. Tarif & Biaya PPDB (Integrasi Jenis & Tarif Biaya) --}}
+              @if($user->hasRole('super_admin', 'admin_ppdb', 'bendahara'))
+                <li>
+                  <a href="{{ route('biaya.index') }}" class="{{ request()->routeIs('biaya.*') ? 'active' : '' }}">
+                    <i class="bi bi-cash-coin"></i><span>Tarif & Biaya</span>
+                  </a>
+                </li>
+              @endif
+
+              {{-- 8. Komponen Seleksi --}}
+              @if($user->hasRole('super_admin', 'admin_ppdb', 'kepala_sekolah'))
+                <li>
+                  <a href="{{ route('komponen-seleksi.index') }}" class="{{ request()->routeIs('komponen-seleksi.*') ? 'active' : '' }}">
                     <i class="bi bi-clipboard-check"></i><span>Komponen Seleksi</span>
                   </a>
                 </li>

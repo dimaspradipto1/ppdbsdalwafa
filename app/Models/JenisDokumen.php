@@ -14,6 +14,12 @@ class JenisDokumen extends Model
 
     protected $primaryKey = 'id_jenis_dokumen';
 
+    public const KATEGORI = [
+        'semua'          => 'Semua Siswa',
+        'siswa_baru'     => 'Siswa Baru',
+        'siswa_pindahan' => 'Siswa Pindahan',
+    ];
+
     protected $fillable = [
         'kode',
         'nama_dokumen',

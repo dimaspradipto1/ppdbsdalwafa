@@ -26,6 +26,9 @@ class DatabaseSeeder extends Seeder
             JenisDokumenSeeder::class,
             TahunAjaranSeeder::class,
             GelombangSeeder::class,
+            JalurSeeder::class,
+            BiayaSeeder::class,
+            KomponenSeleksiSeeder::class,
         ]);
     }
 }
