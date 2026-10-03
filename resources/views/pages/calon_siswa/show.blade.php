@@ -74,9 +74,13 @@
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-      <li class="breadcrumb-item">Pendaftaran</li>
-      <li class="breadcrumb-item"><a href="{{ route('calon-siswa.index') }}">Data Pendaftaran</a></li>
-      <li class="breadcrumb-item active">{{ $calonSiswa->nama_lengkap }}</li>
+      @if(auth()->user() && (auth()->user()->role === 'pendaftar' || auth()->user()->role === 'user'))
+        <li class="breadcrumb-item active">Formulir Pendaftaran</li>
+      @else
+        <li class="breadcrumb-item">Pendaftaran</li>
+        <li class="breadcrumb-item"><a href="{{ route('calon-siswa.index') }}">Data Pendaftaran</a></li>
+        <li class="breadcrumb-item active">{{ $calonSiswa->nama_lengkap }}</li>
+      @endif
     </ol>
   </nav>
 </div><!-- End Page Title -->
@@ -95,13 +99,21 @@
 
       <!-- Action toolbar (no print) -->
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 no-print">
-        <a href="{{ route('calon-siswa.index') }}" class="btn btn-secondary btn-sm">
-          <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
-        </a>
+        @if(auth()->user() && (auth()->user()->role === 'pendaftar' || auth()->user()->role === 'user'))
+          <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard
+          </a>
+        @else
+          <a href="{{ route('calon-siswa.index') }}" class="btn btn-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
+          </a>
+        @endif
         <div class="d-flex gap-2">
-          <button type="button" class="btn btn-warning btn-sm text-dark fw-medium" data-bs-toggle="modal" data-bs-target="#modalStatusShow">
-            <i class="bi bi-patch-check me-1"></i> Verifikasi Status
-          </button>
+          @if(auth()->user() && auth()->user()->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah'))
+            <button type="button" class="btn btn-warning btn-sm text-dark fw-medium" data-bs-toggle="modal" data-bs-target="#modalStatusShow">
+              <i class="bi bi-patch-check me-1"></i> Verifikasi Status
+            </button>
+          @endif
           <a href="{{ route('dokumen.create', ['id_calon_siswa' => $calonSiswa->id_calon_siswa]) }}" class="btn btn-outline-primary btn-sm">
             <i class="bi bi-upload me-1"></i> Unggah Berkas
           </a>
@@ -588,35 +600,63 @@
 
           <!-- 3. DATA ORANG TUA KANDUNG & WALI -->
           <div class="section-header" style="background-color: #198754;">3. DATA ORANG TUA KANDUNG & WALI</div>
-          <div class="row g-3 mb-4">
-            <div class="col-4">
-              <div class="p-2 border rounded">
-                <strong class="d-block text-primary border-bottom pb-1 mb-2">Ayah Kandung</strong>
-                <div class="small"><strong>Nama:</strong> {{ $calonSiswa->nama_ayah ?: '-' }}</div>
-                <div class="small"><strong>Pekerjaan:</strong> {{ optional($calonSiswa->pekerjaanAyah)->nama_pekerjaan ?: '-' }}</div>
-                <div class="small"><strong>Pendidikan:</strong> {{ optional($calonSiswa->pendidikanAyah)->nama_pendidikan ?: '-' }}</div>
-                <div class="small"><strong>Penghasilan:</strong> {{ optional($calonSiswa->penghasilanAyah)->label ?: '-' }}</div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="p-2 border rounded">
-                <strong class="d-block text-danger border-bottom pb-1 mb-2">Ibu Kandung</strong>
-                <div class="small"><strong>Nama:</strong> {{ $calonSiswa->nama_ibu ?: '-' }}</div>
-                <div class="small"><strong>Pekerjaan:</strong> {{ optional($calonSiswa->pekerjaanIbu)->nama_pekerjaan ?: '-' }}</div>
-                <div class="small"><strong>Pendidikan:</strong> {{ optional($calonSiswa->pendidikanIbu)->nama_pendidikan ?: '-' }}</div>
-                <div class="small"><strong>Penghasilan:</strong> {{ optional($calonSiswa->penghasilanIbu)->label ?: '-' }}</div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="p-2 border rounded">
-                <strong class="d-block text-secondary border-bottom pb-1 mb-2">Wali</strong>
-                <div class="small"><strong>Nama:</strong> {{ $calonSiswa->nama_wali ?: '-' }}</div>
-                <div class="small"><strong>Pekerjaan:</strong> {{ optional($calonSiswa->pekerjaanWali)->nama_pekerjaan ?: '-' }}</div>
-                <div class="small"><strong>Pendidikan:</strong> {{ optional($calonSiswa->pendidikanWali)->nama_pendidikan ?: '-' }}</div>
-                <div class="small"><strong>Penghasilan:</strong> {{ optional($calonSiswa->penghasilanWali)->label ?: '-' }}</div>
-              </div>
-            </div>
-          </div>
+          <table class="table table-bordered table-biodata align-middle mb-4">
+            <thead class="table-light">
+              <tr class="text-center">
+                <th style="width: 22%;">Informasi</th>
+                <th style="width: 26%;" class="text-primary"><i class="bi bi-gender-male me-1"></i> Ayah Kandung</th>
+                <th style="width: 26%;" class="text-danger"><i class="bi bi-gender-female me-1"></i> Ibu Kandung</th>
+                <th style="width: 26%;" class="text-secondary"><i class="bi bi-shield-shaded me-1"></i> Wali</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Nama Lengkap</th>
+                <td class="fw-semibold text-dark">{{ $calonSiswa->nama_ayah ?: '-' }}</td>
+                <td class="fw-semibold text-dark">{{ $calonSiswa->nama_ibu ?: '-' }}</td>
+                <td class="fw-semibold text-dark">{{ $calonSiswa->nama_wali ?: '-' }}</td>
+              </tr>
+              <tr>
+                <th>Tempat, Tanggal Lahir</th>
+                <td>
+                  {{ $calonSiswa->tempat_lahir_ayah ? $calonSiswa->tempat_lahir_ayah . ', ' : '' }}
+                  {{ optional($calonSiswa->tanggal_lahir_ayah)->translatedFormat('d F Y') ?: '-' }}
+                </td>
+                <td>
+                  {{ $calonSiswa->tempat_lahir_ibu ? $calonSiswa->tempat_lahir_ibu . ', ' : '' }}
+                  {{ optional($calonSiswa->tanggal_lahir_ibu)->translatedFormat('d F Y') ?: '-' }}
+                </td>
+                <td>
+                  {{ $calonSiswa->tempat_lahir_wali ? $calonSiswa->tempat_lahir_wali . ', ' : '' }}
+                  {{ optional($calonSiswa->tanggal_lahir_wali)->translatedFormat('d F Y') ?: '-' }}
+                </td>
+              </tr>
+              <tr>
+                <th>Pekerjaan</th>
+                <td>{{ optional($calonSiswa->pekerjaanAyah)->nama_pekerjaan ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->pekerjaanIbu)->nama_pekerjaan ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->pekerjaanWali)->nama_pekerjaan ?: '-' }}</td>
+              </tr>
+              <tr>
+                <th>Pendidikan Terakhir</th>
+                <td>{{ optional($calonSiswa->pendidikanAyah)->nama_pendidikan ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->pendidikanIbu)->nama_pendidikan ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->pendidikanWali)->nama_pendidikan ?: '-' }}</td>
+              </tr>
+              <tr>
+                <th>Agama</th>
+                <td>{{ optional($calonSiswa->agamaAyah)->nama_agama ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->agamaIbu)->nama_agama ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->agamaWali)->nama_agama ?: '-' }}</td>
+              </tr>
+              <tr>
+                <th>Penghasilan Bulanan</th>
+                <td>{{ optional($calonSiswa->penghasilanAyah)->label ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->penghasilanIbu)->label ?: '-' }}</td>
+                <td>{{ optional($calonSiswa->penghasilanWali)->label ?: '-' }}</td>
+              </tr>
+            </tbody>
+          </table>
 
           <!-- Lembar Tanda Tangan Cetak -->
           <div class="row mt-5 pt-3 border-top d-none d-print-flex">

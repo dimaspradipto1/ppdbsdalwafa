@@ -27,6 +27,17 @@ class CalonSiswaController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+
+        // Khusus role pendaftar: langsung tampilkan detail formulirnya, jangan tampilkan index tabel lagi
+        if ($user && ($user->role === 'pendaftar' || $user->role === 'user')) {
+            $calonSiswa = CalonSiswa::where('user_id', $user->id)->first();
+            if ($calonSiswa) {
+                return redirect()->route('calon-siswa.show', $calonSiswa->id_calon_siswa);
+            }
+            return redirect()->route('calon-siswa.create')->with('info', 'Silakan lengkapi formulir pendaftaran calon siswa terlebih dahulu.');
+        }
+
         if ($request->ajax()) {
             $query = CalonSiswa::with([
                 'tahunAjaran',
@@ -196,22 +207,22 @@ class CalonSiswaController extends Controller
     {
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated, $request) {
+        $calonSiswa = DB::transaction(function () use ($validated, $request) {
             $siswaData = collect($validated)->except(['prestasi', 'beasiswa'])->toArray();
 
             // Set user_id jika login sebagai pendaftar
-            if (Auth::check() && Auth::user()->role === 'pendaftar' && empty($siswaData['user_id'])) {
+            if (Auth::check() && (Auth::user()->role === 'pendaftar' || Auth::user()->role === 'user') && empty($siswaData['user_id'])) {
                 $siswaData['user_id'] = Auth::id();
             }
 
             // Simpan Calon Siswa (no_pendaftaran auto-generated in Model booted)
-            $calonSiswa = CalonSiswa::create($siswaData);
+            $newSiswa = CalonSiswa::create($siswaData);
 
             // Simpan Catatan Prestasi
             if ($request->has('prestasi') && is_array($request->prestasi)) {
                 foreach ($request->prestasi as $item) {
                     if (!empty($item['nama_prestasi'])) {
-                        $calonSiswa->prestasi()->create([
+                        $newSiswa->prestasi()->create([
                             'jenis_prestasi' => $item['jenis_prestasi'] ?? '04. Lain-lain',
                             'tingkat'        => $item['tingkat'] ?? 'Sekolah',
                             'nama_prestasi'  => $item['nama_prestasi'],
@@ -226,7 +237,7 @@ class CalonSiswaController extends Controller
             if ($request->has('beasiswa') && is_array($request->beasiswa)) {
                 foreach ($request->beasiswa as $item) {
                     if (!empty($item['jenis_beasiswa'])) {
-                        $calonSiswa->beasiswa()->create([
+                        $newSiswa->beasiswa()->create([
                             'jenis_beasiswa' => $item['jenis_beasiswa'],
                             'penyelenggara'  => $item['penyelenggara'] ?? '-',
                             'tahun_mulai'    => $item['tahun_mulai'] ?? date('Y'),
@@ -235,7 +246,13 @@ class CalonSiswaController extends Controller
                     }
                 }
             }
+
+            return $newSiswa;
         });
+
+        if (Auth::check() && (Auth::user()->role === 'pendaftar' || Auth::user()->role === 'user')) {
+            return redirect()->route('calon-siswa.show', $calonSiswa->id_calon_siswa)->with('success', 'Formulir pendaftaran calon siswa berhasil disimpan!');
+        }
 
         return redirect()->route('calon-siswa.index')->with('success', 'Data pendaftaran calon siswa berhasil disimpan!');
     }
@@ -245,6 +262,15 @@ class CalonSiswaController extends Controller
      */
     public function show(CalonSiswa $calonSiswa)
     {
+        $user = Auth::user();
+        if ($user && ($user->role === 'pendaftar' || $user->role === 'user') && $calonSiswa->user_id !== $user->id) {
+            $mySiswa = CalonSiswa::where('user_id', $user->id)->first();
+            if ($mySiswa) {
+                return redirect()->route('calon-siswa.show', $mySiswa->id_calon_siswa);
+            }
+            return redirect()->route('calon-siswa.create')->with('info', 'Silakan lengkapi formulir pendaftaran calon siswa terlebih dahulu.');
+        }
+
         $calonSiswa->load([
             'tahunAjaran',
             'gelombang',
@@ -278,6 +304,15 @@ class CalonSiswaController extends Controller
      */
     public function edit(CalonSiswa $calonSiswa)
     {
+        $user = Auth::user();
+        if ($user && ($user->role === 'pendaftar' || $user->role === 'user') && $calonSiswa->user_id !== $user->id) {
+            $mySiswa = CalonSiswa::where('user_id', $user->id)->first();
+            if ($mySiswa) {
+                return redirect()->route('calon-siswa.edit', $mySiswa->id_calon_siswa);
+            }
+            return redirect()->route('calon-siswa.create');
+        }
+
         $calonSiswa->load(['prestasi', 'beasiswa']);
         $dataMaster = $this->getMasterData();
 
@@ -289,6 +324,11 @@ class CalonSiswaController extends Controller
      */
     public function update(UpdateCalonSiswaRequest $request, CalonSiswa $calonSiswa)
     {
+        $user = Auth::user();
+        if ($user && ($user->role === 'pendaftar' || $user->role === 'user') && $calonSiswa->user_id !== $user->id) {
+            abort(403, 'Anda tidak berhak memperbarui data calon siswa ini.');
+        }
+
         $validated = $request->validated();
 
         DB::transaction(function () use ($validated, $request, $calonSiswa) {
@@ -327,6 +367,10 @@ class CalonSiswaController extends Controller
                 }
             }
         });
+
+        if (Auth::check() && (Auth::user()->role === 'pendaftar' || Auth::user()->role === 'user')) {
+            return redirect()->route('calon-siswa.show', $calonSiswa->id_calon_siswa)->with('success', 'Formulir pendaftaran calon siswa berhasil diperbarui!');
+        }
 
         return redirect()->route('calon-siswa.index')->with('success', 'Data calon siswa berhasil diperbarui!');
     }

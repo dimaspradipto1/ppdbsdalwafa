@@ -68,4 +68,9 @@ class Biaya extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function pembayaran(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Pembayaran::class, 'id_biaya', 'id_biaya');
+    }
 }

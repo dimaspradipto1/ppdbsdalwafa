@@ -67,6 +67,13 @@ class User extends Authenticatable
             return true;
         }
 
-        return in_array($this->role, $roles);
+        $myRole = $this->role;
+        if ($myRole === 'admin') {
+            $myRole = 'admin_ppdb';
+        } elseif ($myRole === 'user') {
+            $myRole = 'pendaftar';
+        }
+
+        return in_array($myRole, $roles) || in_array($this->role, $roles);
     }
 }

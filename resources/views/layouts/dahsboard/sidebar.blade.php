@@ -165,10 +165,21 @@
             {{-- 1. Calon Siswa / Data Pendaftaran Terpadu --}}
             @if($user->hasRole('super_admin', 'admin_ppdb', 'verifikator', 'kepala_sekolah', 'bendahara', 'guru', 'pendaftar'))
               <li>
-                <a href="{{ route('calon-siswa.index') }}" class="{{ request()->routeIs('calon-siswa.*') ? 'active' : '' }}">
-                  <i class="bi bi-person-lines-fill"></i>
-                  <span>{{ $user->hasRole('pendaftar') ? 'Formulir Pendaftaran' : 'Data Pendaftaran' }}</span>
-                </a>
+                @if($user->hasRole('pendaftar'))
+                  @php
+                    $mySiswa = \App\Models\CalonSiswa::where('user_id', $user->id)->first();
+                    $formulirUrl = $mySiswa ? route('calon-siswa.show', $mySiswa->id_calon_siswa) : route('calon-siswa.create');
+                  @endphp
+                  <a href="{{ $formulirUrl }}" class="{{ request()->routeIs('calon-siswa.*') ? 'active' : '' }}">
+                    <i class="bi bi-file-earmark-person"></i>
+                    <span>Formulir Pendaftaran</span>
+                  </a>
+                @else
+                  <a href="{{ route('calon-siswa.index') }}" class="{{ request()->routeIs('calon-siswa.*') ? 'active' : '' }}">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <span>Data Pendaftaran</span>
+                  </a>
+                @endif
               </li>
             @endif
 

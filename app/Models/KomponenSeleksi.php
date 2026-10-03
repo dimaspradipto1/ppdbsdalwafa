@@ -34,4 +34,9 @@ class KomponenSeleksi extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function nilaiSeleksi(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(NilaiSeleksi::class, 'id_komponen_seleksi', 'id_komponen_seleksi');
+    }
 }

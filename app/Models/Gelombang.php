@@ -46,4 +46,9 @@ class Gelombang extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function calonSiswa(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CalonSiswa::class, 'id_gelombang', 'id_gelombang');
+    }
 }
