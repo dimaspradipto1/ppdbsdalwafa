@@ -17,6 +17,37 @@
 
       @if($user)
 
+        {{-- Menu Homepage (Khusus Admin: super_admin & admin_ppdb) --}}
+        @if($user->hasRole('super_admin', 'admin_ppdb'))
+          <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('homepage-banner.*', 'homepage-setting.*') ? '' : 'collapsed' }}" data-bs-target="#homepage-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-window-desktop"></i><span>Homepage PPDB</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="homepage-nav" class="nav-content collapse {{ request()->routeIs('homepage-banner.*', 'homepage-setting.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+              <li>
+                <a href="{{ route('homepage-banner.index') }}" class="{{ request()->routeIs('homepage-banner.*') ? 'active' : '' }}">
+                  <i class="bi bi-images"></i><span>Banner Homepage</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('pengumuman.index') }}" class="{{ request()->routeIs('pengumuman.*') ? 'active' : '' }}">
+                  <i class="bi bi-megaphone"></i><span>Pengumuman & Info</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('homepage-setting.index') }}" class="{{ request()->routeIs('homepage-setting.*') ? 'active' : '' }}">
+                  <i class="bi bi-sliders"></i><span>Konten & Pengaturan</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('homepage') }}" target="_blank">
+                  <i class="bi bi-box-arrow-up-right"></i><span>Lihat Website</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        @endif
+
         {{-- ========================================================================= --}}
         {{-- 1. PENGATURAN DAN MASTER                                                  --}}
         {{-- ========================================================================= --}}

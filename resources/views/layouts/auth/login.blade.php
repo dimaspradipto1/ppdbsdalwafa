@@ -451,6 +451,27 @@
         font-size: 1.45rem;
       }
     }
+
+    .btn-back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #047857;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-back-home:hover {
+      background: #047857;
+      color: #ffffff;
+      border-color: #047857;
+      transform: translateX(-3px);
+    }
   </style>
 </head>
 
@@ -523,6 +544,14 @@
               <h3>SD Islam Plus Al-Wafa</h3>
               <p>Portal PPDB & Sistem Informasi</p>
             </div>
+          </div>
+
+          <!-- Navigasi Cepat Kembali ke Homepage -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="{{ route('homepage') }}" class="btn-back-home" title="Kembali ke Beranda PPDB SD Islam Plus Al-Wafa">
+              <i class="bi bi-arrow-left"></i> Kembali ke Beranda
+            </a>
+            <span class="badge bg-light text-muted small border px-2 py-1">PPDB Online</span>
           </div>
 
           <div class="form-header">
@@ -620,7 +649,12 @@
               <a href="{{ route('register') }}">Daftar PPDB Baru</a>
             </div>
 
-
+            <!-- Link Langsung ke Homepage -->
+            <div class="text-center mt-3 pt-3 border-top">
+              <a href="{{ route('homepage') }}" class="text-muted small text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.83rem;">
+                <i class="bi bi-house-door-fill text-success"></i> Kembali ke Halaman Utama (Homepage)
+              </a>
+            </div>
 
           </form>
 

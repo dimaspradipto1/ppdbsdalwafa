@@ -237,6 +237,28 @@
       text-decoration: underline;
     }
 
+    .btn-back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #047857;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-bottom: 1rem;
+    }
+    .btn-back-home:hover {
+      background: #047857;
+      color: #ffffff;
+      border-color: #047857;
+      transform: translateX(-3px);
+    }
+
     @media (max-width: 576px) {
       .auth-card {
         padding: 1.75rem 1.25rem;
@@ -252,8 +274,15 @@
 
   <main class="auth-wrapper">
     <div class="auth-card">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <a href="{{ route('homepage') }}" class="btn-back-home">
+          <i class="bi bi-arrow-left"></i> Beranda
+        </a>
+        <span class="badge bg-light text-muted small border px-2 py-1">PPDB 2026/2027</span>
+      </div>
+
       <div class="brand-header">
-        <a href="{{ route('login') }}" class="logo-container">
+        <a href="{{ route('homepage') }}" class="logo-container">
           <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo SD Al-Wafa">
         </a>
         <h2>Pendaftaran Akun PPDB</h2>
@@ -361,6 +390,12 @@
         <div class="login-prompt">
           Sudah memiliki akun? 
           <a href="{{ route('login') }}">Masuk di sini</a>
+        </div>
+
+        <div class="text-center mt-3 pt-3 border-top">
+          <a href="{{ route('homepage') }}" class="text-muted small text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.83rem;">
+            <i class="bi bi-house-door-fill text-success"></i> Kembali ke Halaman Utama (Homepage)
+          </a>
         </div>
       </form>
     </div>

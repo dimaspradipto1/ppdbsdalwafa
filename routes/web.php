@@ -7,6 +7,9 @@ use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokumenSiswaController;
 use App\Http\Controllers\GelombangController;
+use App\Http\Controllers\HomepageBannerController;
+use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\HomepageSettingController;
 use App\Http\Controllers\JalurController;
 use App\Http\Controllers\JenisDokumenController;
 use App\Http\Controllers\KebutuhanKhususController;
@@ -15,21 +18,19 @@ use App\Http\Controllers\NilaiSeleksiController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendidikanController;
-use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PenghasilanController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
+Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/', 'login')->name('login');
-    Route::get('/login', 'login');
+    Route::get('/login', 'login')->name('login');
     Route::post('/login', 'loginproses')->name('login.proses');
     Route::get('/loginproses', 'loginproses');
     Route::post('/loginproses', 'loginproses')->name('loginproses');
@@ -39,12 +40,18 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/registerproses', 'registerproses');
     Route::post('/registerproses', 'registerproses')->name('registerproses');
 
-    Route::post('/logout', 'logout')->name('logout');
-    Route::get('/logout', 'logout');
+    Route::match(['get', 'post'], '/logout', 'logout')->name('logout');
 });
 
 Route::middleware(['checkrole:*'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Kelola Homepage (Super Admin & Admin PPDB)
+    Route::middleware(['checkrole:super_admin,admin_ppdb'])->group(function () {
+        Route::resource('homepage-banner', HomepageBannerController::class)->parameters(['homepage-banner' => 'homepageBanner']);
+        Route::get('homepage-setting', [HomepageSettingController::class, 'index'])->name('homepage-setting.index');
+        Route::post('homepage-setting', [HomepageSettingController::class, 'update'])->name('homepage-setting.update');
+    });
 
     // Pengaturan & Master: Users (Super Admin)
     Route::middleware(['checkrole:super_admin'])->group(function () {
