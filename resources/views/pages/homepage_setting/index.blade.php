@@ -242,8 +242,13 @@
               <div class="tab-pane fade" id="tab-tatacara" role="tabpanel">
                 <div class="row g-3">
                   <div class="col-12">
-                    <div class="alert alert-info small mb-3">
-                      <i class="bi bi-info-circle me-1"></i> Bagian ini ditampilkan di kolom kanan pada kartu <strong>Tata Cara Pendaftaran Siswa Baru</strong> di halaman depan.
+                    <div class="alert alert-info small mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                      <div>
+                        <i class="bi bi-info-circle me-1"></i> Bagian ini ditampilkan di kolom kanan pada kartu <strong>Tata Cara Pendaftaran Siswa Baru</strong> di halaman depan.
+                      </div>
+                      <a href="{{ route('tatacara-setting.index') }}" class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold">
+                        <i class="bi bi-journal-text me-1"></i> Buka Menu Khusus Kelola Tata Cara PPDB &rarr;
+                      </a>
                     </div>
                   </div>
                   <div class="col-md-6">

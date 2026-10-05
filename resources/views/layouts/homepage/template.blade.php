@@ -680,6 +680,7 @@
       <ul class="navbar-nav mx-auto mt-3 mt-lg-0">
         <li class="nav-item"><a class="nav-link active" href="#home">Beranda</a></li>
         <li class="nav-item"><a class="nav-link" href="#jalur">Jalur Pendaftaran</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('tatacara.publik') }}">Tata Cara</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ route('biaya.publik') }}">Brosur &amp; Biaya</a></li>
         <li class="nav-item"><a class="nav-link" href="#informasi">Informasi &amp; Pengumuman</a></li>
       </ul>
@@ -809,43 +810,65 @@
          data-bs-toggle="collapse" 
          data-bs-target="#collapseTataCara" 
          style="cursor: pointer;">
-      <h6 class="mb-0 fw-bold text-dark">
-        <i class="bi bi-info-circle text-success me-2"></i> Tata Cara Pendaftaran Calon Siswa Baru
+      <h6 class="mb-0 fw-bold text-dark d-flex align-items-center gap-2">
+        <i class="bi bi-info-circle text-success fs-5"></i> 
+        <span>{{ $settings['tatacara_accordion_judul'] ?? 'Tata Cara Pendaftaran Calon Siswa Baru' }}</span>
       </h6>
-      <i class="bi bi-chevron-down text-muted transition-chevron"></i>
+      <div class="d-flex align-items-center gap-2">
+        <a href="{{ route('tatacara.publik') }}" class="badge bg-success-subtle text-success text-decoration-none border border-success-subtle py-2 px-3 rounded-pill d-none d-sm-inline-flex align-items-center gap-1">
+          <span>Panduan Lengkap</span>
+          <i class="bi bi-arrow-right"></i>
+        </a>
+        <i class="bi bi-chevron-down text-muted transition-chevron"></i>
+      </div>
     </div>
     <div id="collapseTataCara" class="collapse">
       <div class="card-body px-4 pt-1 pb-4 text-muted small border-top">
-        <div class="row g-3 mt-1">
+        <div class="row g-3 mt-1 mb-3">
           <div class="col-md-3">
             <div class="p-3 bg-light rounded-3 text-center h-100 border">
               <span class="badge bg-success rounded-pill mb-2">Langkah 1</span>
-              <div class="fw-bold text-dark mb-1">Pilih Jalur &amp; Gelombang</div>
-              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Pilih jalur pendaftaran aktif (Reguler, Prestasi, atau Siswa Pindahan).</p>
+              <div class="fw-bold text-dark mb-1">{{ $settings['tatacara_1_judul'] ?? 'Pilih Jalur & Gelombang' }}</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">{{ $settings['tatacara_1_desc'] ?? 'Pilih jalur pendaftaran aktif (Reguler, Prestasi, atau Siswa Pindahan).' }}</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="p-3 bg-light rounded-3 text-center h-100 border">
               <span class="badge bg-success rounded-pill mb-2">Langkah 2</span>
-              <div class="fw-bold text-dark mb-1">Registrasi Akun</div>
-              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Buat akun wali murid dengan melengkapi nama, email, dan nomor WhatsApp aktif.</p>
+              <div class="fw-bold text-dark mb-1">{{ $settings['tatacara_2_judul'] ?? 'Registrasi Akun' }}</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">{{ $settings['tatacara_2_desc'] ?? 'Buat akun wali murid dengan melengkapi nama, email, dan nomor WhatsApp aktif.' }}</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="p-3 bg-light rounded-3 text-center h-100 border">
               <span class="badge bg-success rounded-pill mb-2">Langkah 3</span>
-              <div class="fw-bold text-dark mb-1">Bayar Formulir &amp; Berkas</div>
-              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Selesaikan pembayaran formulir, lalu isi formulir biodata &amp; unggah berkas (KK/Akta).</p>
+              <div class="fw-bold text-dark mb-1">{{ $settings['tatacara_3_judul'] ?? 'Bayar Formulir & Berkas' }}</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">{{ $settings['tatacara_3_desc'] ?? 'Selesaikan pembayaran formulir, lalu isi formulir biodata & unggah berkas (KK/Akta).' }}</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="p-3 bg-light rounded-3 text-center h-100 border">
               <span class="badge bg-success rounded-pill mb-2">Langkah 4</span>
-              <div class="fw-bold text-dark mb-1">Observasi &amp; Kelulusan</div>
-              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Ikuti observasi kematangan dan tes baca Al-Qur'an, lalu cek surat pengumuman kelulusan.</p>
+              <div class="fw-bold text-dark mb-1">{{ $settings['tatacara_4_judul'] ?? 'Observasi & Kelulusan' }}</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">{{ $settings['tatacara_4_desc'] ?? 'Ikuti observasi kematangan dan tes baca Al-Qur\'an, lalu cek surat pengumuman kelulusan.' }}</p>
             </div>
           </div>
         </div>
+
+        <div class="p-3 rounded-3 border d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: linear-gradient(135deg, #f0fdf4 0%, #e6f7ef 100%); border-color: #86efac !important;">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-journal-bookmark-fill text-success fs-4"></i>
+            <div>
+              <strong class="text-dark d-block">Butuh Panduan &amp; Tata Cara Lebih Mendalam?</strong>
+              <span class="text-muted" style="font-size: 0.8rem;">Lihat 7 tahapan lengkap, berkas persyaratan siswa baru &amp; pindahan, batas usia, serta tanya jawab (FAQ).</span>
+            </div>
+          </div>
+          <a href="{{ route('tatacara.publik') }}" class="btn btn-sm btn-success rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2 text-nowrap">
+            <i class="bi bi-box-arrow-up-right"></i>
+            <span>Buka Halaman Tata Cara Lengkap</span>
+          </a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1076,9 +1099,12 @@
             </li>
           </ul>
 
-          <div class="mt-4 pt-3 border-top text-center">
-            <a href="{{ route('register') }}" class="btn-uis-primary w-100 py-2">
+          <div class="mt-4 pt-3 border-top d-flex flex-column gap-2">
+            <a href="{{ route('register') }}" class="btn-uis-primary w-100 py-2 justify-content-center text-center">
               <i class="bi bi-pencil-square me-1"></i> Daftar Akun PPDB Sekarang
+            </a>
+            <a href="{{ route('tatacara.publik') }}" class="btn-uis-outline w-100 py-2 justify-content-center text-center">
+              <i class="bi bi-journal-text me-1"></i> Lihat Alur &amp; Syarat Lengkap
             </a>
           </div>
         </div>
@@ -1210,9 +1236,9 @@
                 <i class="bi bi-whatsapp"></i> WhatsApp
               </a>
             @endif
-            <button type="button" class="btn-cta-white" data-bs-toggle="modal" data-bs-target="#modalPetunjuk">
-              <i class="bi bi-book"></i> Petunjuk Pendaftaran
-            </button>
+            <a href="{{ route('tatacara.publik') }}" class="btn-cta-white">
+              <i class="bi bi-journal-check"></i> Petunjuk &amp; Tata Cara
+            </a>
           </div>
         </div>
       </div>
@@ -1270,6 +1296,7 @@
         <ul class="footer-uis-list">
           <li><a href="#home"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Beranda</a></li>
           <li><a href="#jalur"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Jalur Pendaftaran</a></li>
+          <li><a href="{{ route('tatacara.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Tata Cara</a></li>
           <li><a href="{{ route('biaya.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Brosur &amp; Biaya</a></li>
           <li><a href="#informasi"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Informasi &amp; Pengumuman</a></li>
         </ul>
@@ -1279,11 +1306,11 @@
       <div class="col-6 col-lg-3 col-md-6">
         <div class="footer-uis-heading">Tautan</div>
         <ul class="footer-uis-list">
-          <li><a href="#"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Yayasan Daarul Aitam</a></li>
+          <li><a href="{{ route('register') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Registrasi Siswa Baru</a></li>
           <li><a href="{{ route('login') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Portal PPDB Online</a></li>
+          <li><a href="{{ route('tatacara.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Alur &amp; Syarat Berkas</a></li>
           <li><a href="{{ route('biaya.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Rincian Tarif &amp; Brosur</a></li>
           <li><a href="#"><i class="bi bi-chevron-right small me-1 opacity-50"></i> NPSN: {{ $settings['npsn'] ?? '69888848' }}</a></li>
-          <li><a href="#modalPetunjuk" data-bs-toggle="modal"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Petunjuk Pendaftaran</a></li>
         </ul>
       </div>
     </div>

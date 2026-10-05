@@ -25,11 +25,15 @@ use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaAdminController;
 use App\Http\Controllers\BrosurAdminController;
+use App\Http\Controllers\TatacaraAdminController;
 use Illuminate\Support\Facades\Route;
 
 
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
+Route::get('/tata-cara', [HomepageController::class, 'tatacaraIndex'])->name('tatacara.publik');
+Route::get('/alur-pendaftaran', [HomepageController::class, 'tatacaraIndex']);
+Route::get('/panduan', [HomepageController::class, 'tatacaraIndex']);
 Route::get('/informasi', [HomepageController::class, 'informasiIndex'])->name('informasi.index');
 Route::get('/informasi/{id}', [HomepageController::class, 'informasiDetail'])->name('informasi.detail');
 Route::get('/biaya-dan-brosur', [HomepageController::class, 'biayaIndex'])->name('biaya.publik');
@@ -67,6 +71,10 @@ Route::middleware(['checkrole:*'])->group(function () {
         // Pengaturan Khusus Brosur PPDB (Upload & Link Drive)
         Route::get('brosur-setting', [BrosurAdminController::class, 'index'])->name('brosur-setting.index');
         Route::post('brosur-setting', [BrosurAdminController::class, 'update'])->name('brosur-setting.update');
+
+        // Pengaturan Khusus Tata Cara PPDB
+        Route::get('tatacara-setting', [TatacaraAdminController::class, 'index'])->name('tatacara-setting.index');
+        Route::post('tatacara-setting', [TatacaraAdminController::class, 'update'])->name('tatacara-setting.update');
     });
 
     // Pengaturan & Master: Users (Super Admin)

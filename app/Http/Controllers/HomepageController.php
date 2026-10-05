@@ -7,6 +7,7 @@ use App\Models\Gelombang;
 use App\Models\HomepageBanner;
 use App\Models\HomepageSetting;
 use App\Models\Jalur;
+use App\Models\JenisDokumen;
 use App\Models\Pengumuman;
 use App\Models\Sekolah;
 use App\Models\TahunAjaran;
@@ -157,5 +158,39 @@ class HomepageController extends Controller
         $totalBiayaWajib = $biayaList->where('is_wajib', true)->sum('nominal');
 
         return view('pages.biaya.publik', compact('settings', 'sekolah', 'biayaList', 'tahunAktif', 'totalBiayaWajib'));
+    }
+
+    /**
+     * Tampilkan Halaman Publik Panduan & Tata Cara Pendaftaran Siswa Baru
+     */
+    public function tatacaraIndex()
+    {
+        $settings = HomepageSetting::getAllGrouped();
+        $sekolah = Sekolah::first();
+        $tahunAktif = TahunAjaran::where('is_active', true)->first() ?? TahunAjaran::latest()->first();
+        $gelombangList = Gelombang::where('is_active', true)->orderBy('tanggal_mulai')->get();
+        $jalurList = Jalur::where('is_active', true)->get();
+
+        $dokumenWajibBaru = JenisDokumen::where('is_active', true)
+            ->whereIn('kategori', ['siswa_baru', 'semua'])
+            ->get();
+
+        $dokumenPindahan = JenisDokumen::where('is_active', true)
+            ->where('kategori', 'siswa_pindahan')
+            ->get();
+
+        $biayaDaftar = Biaya::where('jenis_biaya', 'pendaftaran')->where('is_active', true)->first();
+        $biayaDaftarNominal = $biayaDaftar ? 'Rp. ' . number_format($biayaDaftar->nominal, 0, ',', '.') : 'Rp. 250.000';
+
+        return view('pages.tatacara.publik', compact(
+            'settings',
+            'sekolah',
+            'tahunAktif',
+            'gelombangList',
+            'jalurList',
+            'dokumenWajibBaru',
+            'dokumenPindahan',
+            'biayaDaftarNominal'
+        ));
     }
 }

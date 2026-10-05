@@ -29,6 +29,26 @@
   <!-- Template Main CSS File -->
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
+  <style>
+    /* Layering / Z-Index Fix: Pastikan Header, Dropdown Profil & Notifikasi, serta Modal selalu di layer paling depan */
+    #header.header {
+      z-index: 1030 !important;
+    }
+    .header-nav .dropdown-menu {
+      z-index: 1035 !important;
+    }
+    .modal-backdrop {
+      z-index: 1050 !important;
+    }
+    .modal {
+      z-index: 1055 !important;
+    }
+    /* Pastikan elemen sticky di dalam halaman konten tidak menimpa header atau dropdown */
+    .main .sticky-top {
+      z-index: 10 !important;
+    }
+  </style>
+
   @stack('styles')
 </head>
 

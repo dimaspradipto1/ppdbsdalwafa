@@ -407,10 +407,10 @@
           <a class="nav-link" href="{{ route('homepage') }}#jalur">Jalur &amp; Gelombang</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('homepage') }}#biaya">Biaya &amp; Brosur</a>
+          <a class="nav-link" href="{{ route('tatacara.publik') }}">Tata Cara</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('homepage') }}#tatacara">Tata Cara</a>
+          <a class="nav-link" href="{{ route('biaya.publik') }}">Brosur &amp; Biaya</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" href="{{ route('informasi.index') }}">Informasi &amp; Pengumuman</a>
@@ -573,6 +573,7 @@
         <ul class="footer-links">
           <li><a href="{{ route('homepage') }}#home"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Beranda</a></li>
           <li><a href="{{ route('homepage') }}#jalur"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Jalur &amp; Gelombang</a></li>
+          <li><a href="{{ route('tatacara.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Tata Cara Pendaftaran</a></li>
           <li><a href="{{ route('biaya.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Rincian Biaya &amp; Brosur</a></li>
           <li><a href="{{ route('informasi.index') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Informasi &amp; Pengumuman</a></li>
           <li><a href="{{ route('login') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Masuk Portal PPDB</a></li>
