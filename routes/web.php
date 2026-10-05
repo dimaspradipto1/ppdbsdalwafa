@@ -23,11 +23,18 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WaAdminController;
+use App\Http\Controllers\BrosurAdminController;
 use Illuminate\Support\Facades\Route;
 
 
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
+Route::get('/informasi', [HomepageController::class, 'informasiIndex'])->name('informasi.index');
+Route::get('/informasi/{id}', [HomepageController::class, 'informasiDetail'])->name('informasi.detail');
+Route::get('/biaya-dan-brosur', [HomepageController::class, 'biayaIndex'])->name('biaya.publik');
+Route::get('/biaya', [HomepageController::class, 'biayaIndex']);
+Route::get('/brosur', [HomepageController::class, 'biayaIndex']);
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
@@ -45,12 +52,21 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::middleware(['checkrole:*'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/notifikasi-realtime', [\App\Http\Controllers\NotifikasiController::class, 'index'])->name('notifikasi.realtime');
 
-    // Kelola Homepage (Super Admin & Admin PPDB)
+    // Kelola Homepage & Layanan WA (Super Admin & Admin PPDB)
     Route::middleware(['checkrole:super_admin,admin_ppdb'])->group(function () {
         Route::resource('homepage-banner', HomepageBannerController::class)->parameters(['homepage-banner' => 'homepageBanner']);
         Route::get('homepage-setting', [HomepageSettingController::class, 'index'])->name('homepage-setting.index');
         Route::post('homepage-setting', [HomepageSettingController::class, 'update'])->name('homepage-setting.update');
+
+        // Pengaturan Khusus WhatsApp Admin
+        Route::get('wa-admin', [WaAdminController::class, 'index'])->name('wa-admin.index');
+        Route::post('wa-admin', [WaAdminController::class, 'update'])->name('wa-admin.update');
+
+        // Pengaturan Khusus Brosur PPDB (Upload & Link Drive)
+        Route::get('brosur-setting', [BrosurAdminController::class, 'index'])->name('brosur-setting.index');
+        Route::post('brosur-setting', [BrosurAdminController::class, 'update'])->name('brosur-setting.update');
     });
 
     // Pengaturan & Master: Users (Super Admin)

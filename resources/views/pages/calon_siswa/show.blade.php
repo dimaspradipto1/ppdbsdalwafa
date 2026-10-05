@@ -139,7 +139,7 @@
               <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
                 <h4 class="fw-bold mb-0 text-dark">{{ $calonSiswa->nama_lengkap }}</h4>
                 <span class="badge bg-primary-subtle text-primary border border-primary-subtle font-monospace px-2 py-1 fs-6">
-                  {{ $calonSiswa->no_pendaftaran ?? 'REG-' . str_pad($calonSiswa->id_calon_siswa, 5, '0', STR_PAD_LEFT) }}
+                  {{ $calonSiswa->no_pendaftaran ?? str_pad($calonSiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}
                 </span>
                 @php
                   $badges = [
@@ -497,7 +497,7 @@
             <h4 class="fw-bold text-uppercase mb-1">Formulir Pendaftaran Peserta Didik Baru</h4>
             <h5 class="fw-bold text-primary mb-1">SD ISLAM DAARUL AITAM BATAM (AL-WAFA)</h5>
             <p class="text-muted small mb-0">
-              No. Registrasi: <strong>{{ $calonSiswa->no_pendaftaran ?? 'REG-' . str_pad($calonSiswa->id_calon_siswa, 5, '0', STR_PAD_LEFT) }}</strong> | 
+              No. Registrasi: <strong>{{ $calonSiswa->no_pendaftaran ?? str_pad($calonSiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}</strong> | 
               Jalur: <strong>{{ $calonSiswa->jalur->nama_jalur ?? 'Reguler' }}</strong> | 
               Gelombang: <strong>{{ $calonSiswa->gelombang->nama_gelombang ?? '-' }}</strong> | 
               Tahun Ajaran: <strong>{{ $calonSiswa->tahunAjaran->tahun_ajaran ?? '-' }}</strong>

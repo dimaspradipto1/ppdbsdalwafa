@@ -95,31 +95,146 @@
 
               <!-- TAB 2: Brosur & Biaya -->
               <div class="tab-pane fade" id="tab-brosur" role="tabpanel">
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Judul Kartu Brosur</label>
-                    <input type="text" name="brosur_judul" class="form-control" value="{{ $settings['brosur_judul'] ?? 'Brosur Dan Informasi Biaya' }}">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Upload File Brosur PDF</label>
-                    @if(!empty($settings['brosur_file']))
-                      <div class="mb-2">
-                        <a href="{{ asset($settings['brosur_file']) }}" target="_blank" class="btn btn-sm btn-outline-danger">
-                          <i class="bi bi-file-pdf me-1"></i> Unduh File Brosur Saat Ini
-                        </a>
+                <div class="row g-4">
+
+                  <!-- Alert Panduan Pengaturan Brosur -->
+                  <div class="col-12">
+                    <div class="card border-0" style="background: #f0fdf4; border: 1.5px solid #86efac !important; border-radius: 12px;">
+                      <div class="card-body p-3">
+                        <div class="d-flex align-items-center gap-3">
+                          <div class="bg-success text-white rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 44px; flex-shrink: 0;">
+                            <i class="bi bi-file-earmark-pdf fs-4"></i>
+                          </div>
+                          <div>
+                            <h6 class="fw-bold text-success mb-1">Pengaturan Brosur Resmi PPDB Al-Wafa</h6>
+                            <p class="small text-muted mb-0">
+                              Anda dapat menyediakan brosur sekolah melalui <strong>Upload Berkas Langsung (PDF/Gambar)</strong> ke server, ATAU mencantumkan <strong>Tautan / Link Online (Google Drive / Canva)</strong>. Tombol "Unduh Brosur" di website akan otomatis disinkronkan.
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    @endif
-                    <input type="file" name="brosur_file" class="form-control" accept=".pdf,.jpg,.png">
-                    <div class="form-text">Format: PDF, JPG, PNG (Max 5MB).</div>
+                    </div>
                   </div>
+
+                  <!-- Judul & Deskripsi Brosur -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold text-dark">Judul Brosur</label>
+                    <input type="text" name="brosur_judul" id="input_brosur_judul" class="form-control" value="{{ $settings['brosur_judul'] ?? 'Brosur Resmi PPDB Al-Wafa' }}" placeholder="Contoh: Brosur Resmi PPDB Al-Wafa">
+                    <div class="form-text">Judul yang tertera pada kartu brosur di halaman website.</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold text-dark">Catatan Kebijakan Pembayaran / Angsuran</label>
+                    <input type="text" name="biaya_catatan" class="form-control" value="{{ $settings['biaya_catatan'] ?? 'Pembayaran biaya masuk dapat diangsur secara fleksibel sesuai kesepakatan saat wawancara keuangan.' }}" placeholder="Kebijakan cicilan / angsuran uang masuk">
+                    <div class="form-text">Ditampilkan pada kotak informasi kebijakan di bawah tabel rincian biaya.</div>
+                  </div>
+
                   <div class="col-12">
-                    <label class="form-label fw-semibold">Deskripsi Brosur</label>
-                    <textarea name="brosur_deskripsi" rows="2" class="form-control">{{ $settings['brosur_deskripsi'] ?? 'Brosur dan rincian biaya selama bersekolah di SD Islam Plus Al-Wafa Batam' }}</textarea>
+                    <label class="form-label fw-bold text-dark">Deskripsi Ringkas Brosur</label>
+                    <textarea name="brosur_deskripsi" id="input_brosur_desc" rows="2" class="form-control" placeholder="Tuliskan gambaran ringkas isi brosur...">{{ $settings['brosur_deskripsi'] ?? 'Unduh dokumen brosur cetak berisi profil sekolah, keunggulan program tahfidz Qur’an, fasilitas belajar smart class, dan rincian lengkap biaya pendidikan.' }}</textarea>
                   </div>
-                  <div class="col-12">
-                    <label class="form-label fw-semibold">Catatan Kebijakan Pembayaran / Angsuran</label>
-                    <input type="text" name="biaya_catatan" class="form-control" value="{{ $settings['biaya_catatan'] ?? 'Pembayaran biaya masuk dapat diangsur secara fleksibel sesuai kesepakatan saat wawancara keuangan.' }}">
+
+                  <!-- Kolom Kiri: OPSI 1 (Upload File) -->
+                  <div class="col-md-6">
+                    <div class="card h-100 border" style="border-radius: 12px;">
+                      <div class="card-header bg-white py-3 border-bottom">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="badge bg-primary rounded-pill px-2 py-1">Opsi 1</span>
+                          <strong class="text-dark">Upload Berkas Brosur (PDF / Gambar)</strong>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        @if(!empty($settings['brosur_file']))
+                          <div class="p-3 mb-3 bg-light rounded border">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                              <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-file-earmark-pdf-fill text-danger fs-3"></i>
+                                <div>
+                                  <div class="small fw-bold text-dark">Berkas Brosur Aktif Saat Ini:</div>
+                                  <div class="small text-muted text-break" style="font-size: 0.8rem;">{{ basename($settings['brosur_file']) }}</div>
+                                </div>
+                              </div>
+                              <a href="{{ asset($settings['brosur_file']) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Buka File
+                              </a>
+                            </div>
+                            <div class="form-check mt-3 pt-2 border-top">
+                              <input class="form-check-input" type="checkbox" name="hapus_brosur_file" value="1" id="hapus_brosur">
+                              <label class="form-check-label small text-danger fw-semibold" for="hapus_brosur">
+                                <i class="bi bi-trash me-1"></i> Hapus berkas brosur ini (jika hanya ingin menggunakan link online)
+                              </label>
+                            </div>
+                          </div>
+                        @else
+                          <div class="p-3 mb-3 bg-light rounded border text-muted small text-center">
+                            <i class="bi bi-cloud-slash fs-4 d-block mb-1 text-secondary"></i>
+                            Belum ada berkas brosur yang diunggah ke server.
+                          </div>
+                        @endif
+
+                        <label class="form-label fw-semibold text-dark">Unggah / Ganti Berkas Brosur</label>
+                        <input type="file" name="brosur_file" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                        <div class="form-text">Format yang didukung: <strong>PDF, JPG, PNG</strong> (Ukuran maksimal: 10 MB).</div>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Kolom Kanan: OPSI 2 (Link / URL Online) -->
+                  <div class="col-md-6">
+                    <div class="card h-100 border" style="border-radius: 12px;">
+                      <div class="card-header bg-white py-3 border-bottom">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="badge bg-success rounded-pill px-2 py-1">Opsi 2</span>
+                          <strong class="text-dark">Tautan / Link Brosur Online (Google Drive, Canva, dll)</strong>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <p class="small text-muted mb-3">
+                          Sangat berguna jika berkas brosur disimpan di <strong>Google Drive</strong>, Canva, Dropbox, atau Cloud Storage sekolah agar calon wali murid bisa langsung membaca atau mengunduh dari tautan tersebut.
+                        </p>
+
+                        <label class="form-label fw-semibold text-dark">Link / URL Brosur Online</label>
+                        <div class="input-group mb-2">
+                          <span class="input-group-text bg-white"><i class="bi bi-link-45deg text-success"></i></span>
+                          <input type="url" name="brosur_link" id="input_brosur_link" class="form-control" value="{{ $settings['brosur_link'] ?? '' }}" placeholder="https://drive.google.com/file/d/.../view?usp=sharing">
+                        </div>
+                        <div class="form-text mb-3">
+                          Pastikan hak akses tautan Google Drive disetel ke <strong>"Siapa saja yang memiliki link dapat melihat"</strong>.
+                        </div>
+
+                        @if(!empty($settings['brosur_link']))
+                          <a href="{{ $settings['brosur_link'] }}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill px-3">
+                            <i class="bi bi-box-arrow-up-right me-1"></i> Uji Buka Tautan Brosur Saat Ini
+                          </a>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Preview Visual Kartu Brosur -->
+                  <div class="col-12 mt-3">
+                    <label class="form-label fw-bold text-dark d-block">
+                      <i class="bi bi-eye me-1"></i> Simulasi Tampilan Kartu Brosur di Halaman Depan &amp; Biaya
+                    </label>
+                    <div class="p-4 rounded-4" style="background: linear-gradient(145deg, #05824e 0%, #035e38 100%); color: #fff; max-width: 550px;">
+                      <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="bg-white text-success rounded-3 p-3 fs-3 d-inline-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
+                          <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                          <h6 class="fw-bold text-white mb-0">{{ $settings['brosur_judul'] ?? 'Brosur Resmi PPDB Al-Wafa' }}</h6>
+                          <small class="text-white-50">Tahun Pelajaran Aktif</small>
+                        </div>
+                      </div>
+                      <p class="small text-white-50 mb-3" style="font-size: 0.85rem; line-height: 1.5;">
+                        {{ $settings['brosur_deskripsi'] ?? 'Unduh dokumen brosur cetak berisi profil sekolah, keunggulan program tahfidz Qur’an, fasilitas belajar smart class, dan rincian lengkap biaya pendidikan.' }}
+                      </p>
+                      <button type="button" class="btn btn-warning w-100 py-2 fw-bold rounded-pill text-dark d-flex align-items-center justify-content-center gap-2" style="font-size: 0.9rem;" disabled>
+                        <i class="bi bi-download"></i> Unduh Brosur Sekolah
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
@@ -186,8 +301,73 @@
                 </div>
               </div>
 
-              <!-- TAB 5: Kontak & Bantuan -->
+              <!-- TAB 5: Kontak & Bantuan / Pengaturan WA Admin -->
               <div class="tab-pane fade" id="tab-kontak" role="tabpanel">
+                
+                <!-- Highlight Box Pengaturan WhatsApp Admin -->
+                <div class="card border-0 mb-4" style="background: #f0fdf4; border: 1.5px solid #bbf7d0 !important; border-radius: 14px;">
+                  <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="bg-success text-white rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                          <i class="bi bi-whatsapp fs-5"></i>
+                        </div>
+                        <div>
+                          <h6 class="fw-bold text-success mb-0">Integrasi WhatsApp Layanan PPDB & Bantuan</h6>
+                          <small class="text-muted">Nomor ini langsung disinkronkan ke Floating Button, Tombol Bantuan Banner Hijau, dan Footer Website</small>
+                        </div>
+                      </div>
+                      <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-semibold">
+                        <i class="bi bi-arrow-repeat me-1"></i> Sync Aktif ke Homepage
+                      </span>
+                    </div>
+
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label fw-bold text-dark">
+                          Nomor WhatsApp Admin Utama <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-white"><i class="bi bi-whatsapp text-success"></i></span>
+                          <input type="text" name="kontak_whatsapp" id="input_wa_utama" class="form-control" value="{{ $settings['kontak_whatsapp'] ?? '081266812015' }}" placeholder="Contoh: 081266812015 atau 6281266812015" required>
+                        </div>
+                        <div class="form-text">Bisa menggunakan awalan 08... atau 628... (sistem otomatis menstandarkan ke tautan internasional 62...).</div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label fw-bold text-dark">Nomor WhatsApp Cadangan (Opsional)</label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-white"><i class="bi bi-telephone-plus text-success"></i></span>
+                          <input type="text" name="kontak_whatsapp_2" class="form-control" value="{{ $settings['kontak_whatsapp_2'] ?? '082323222606' }}" placeholder="Contoh: 082323222606">
+                        </div>
+                        <div class="form-text">Nomor kontak alternatif panitia untuk konsultasi pendaftaran.</div>
+                      </div>
+
+                      <div class="col-12">
+                        <label class="form-label fw-bold text-dark">Teks Pesan Awal Chat WhatsApp (Default Greetings)</label>
+                        <textarea name="cta_wa_text" class="form-control" rows="2" placeholder="Teks template salam awal ketika calon wali murid mengklik tombol WhatsApp di website">{{ $settings['cta_wa_text'] ?? 'Assalamu’alaikum Panitia PPDB SD Islam Plus Al-Wafa Batam, saya ingin bertanya seputar pendaftaran siswa baru' }}</textarea>
+                        <div class="form-text">Pesan otomatis yang akan langsung terisi di ruang chat WhatsApp saat orang tua mengklik tombol.</div>
+                      </div>
+
+                      @php
+                        $rawTestWa = $settings['kontak_whatsapp'] ?? '081266812015';
+                        $cleanTestWa = preg_replace('/[^0-9]/', '', $rawTestWa);
+                        if (str_starts_with($cleanTestWa, '0')) {
+                            $cleanTestWa = '62' . substr($cleanTestWa, 1);
+                        }
+                      @endphp
+                      <div class="col-12 mt-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="small text-muted fw-semibold">Uji Coba Tautan:</span>
+                          <a href="https://wa.me/{{ $cleanTestWa }}?text={{ urlencode($settings['cta_wa_text'] ?? 'Assalamu’alaikum Panitia PPDB SD Islam Plus Al-Wafa Batam, saya ingin bertanya') }}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill px-3">
+                            <i class="bi bi-box-arrow-up-right me-1"></i> Buka Chat WA Sekarang ({{ $settings['kontak_whatsapp'] ?? '081266812015' }})
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">Judul Banner Bantuan (CTA)</label>
@@ -198,11 +378,7 @@
                     <input type="text" name="cta_subjudul" class="form-control" value="{{ $settings['cta_subjudul'] ?? 'Apabila kamu memiliki kendala atau pertanyaan, silakan hubungi kami atau dapat juga membaca petunjuk pendaftaran terlebih dahulu.' }}">
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label fw-semibold">Nomor WhatsApp Utama</label>
-                    <input type="text" name="kontak_whatsapp" class="form-control" value="{{ $settings['kontak_whatsapp'] ?? '081266812015' }}">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Nomor Telepon Kantor</label>
+                    <label class="form-label fw-semibold">Nomor Telepon Kantor (Fix Line)</label>
                     <input type="text" name="kontak_telepon" class="form-control" value="{{ $settings['kontak_telepon'] ?? '0778 7495940' }}">
                   </div>
                   <div class="col-md-6">
@@ -248,4 +424,23 @@
     </div>
   </div>
 </section>
+
+@push('scripts')
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Otomatis aktifkan tab berdasarkan hash URL (misal #tab-brosur, #tab-kontak, dll)
+    var hash = window.location.hash;
+    if (hash) {
+      if (!hash.startsWith('#tab-')) {
+        hash = '#tab-' + hash.replace('#', '');
+      }
+      var targetBtn = document.querySelector('button[data-bs-target="' + hash + '"]');
+      if (targetBtn) {
+        var tab = new bootstrap.Tab(targetBtn);
+        tab.show();
+      }
+    }
+  });
+</script>
+@endpush
 @endsection

@@ -27,6 +27,27 @@
     font-weight: 600;
     font-size: 0.85rem;
   }
+  /* Catatan Prestasi & Beasiswa Font Color Black */
+  #table-prestasi, #table-prestasi th, #table-prestasi td,
+  #table-prestasi input, #table-prestasi select,
+  #table-beasiswa, #table-beasiswa th, #table-beasiswa td,
+  #table-beasiswa input, #table-beasiswa select {
+    color: #000000 !important;
+  }
+  #table-prestasi input, #table-prestasi select,
+  #table-beasiswa input, #table-beasiswa select {
+    color: #000000 !important;
+    font-weight: 500 !important;
+  }
+  #table-prestasi select option,
+  #table-beasiswa select option {
+    color: #000000 !important;
+  }
+  #table-prestasi input::placeholder,
+  #table-beasiswa input::placeholder {
+    color: #6c757d !important;
+    font-weight: 400 !important;
+  }
 </style>
 @endpush
 
@@ -102,44 +123,98 @@
               <!-- 1. IDENTITAS PESERTA DIDIK                                    -->
               <!-- ============================================================= -->
               <div class="tab-pane fade show active" id="tab-identitas" role="tabpanel">
-                <div class="card bg-primary-subtle border border-primary-subtle mb-4 p-3 rounded-3 shadow-none">
-                  <div class="fw-bold text-primary mb-2"><i class="bi bi-info-circle me-1"></i> Program & Jalur Pendaftaran PPDB</div>
-                  <div class="row g-3">
-                    <div class="col-md-4">
-                      <label for="id_tahun_ajaran" class="form-label fw-semibold text-dark">Tahun Ajaran</label>
-                      <select name="id_tahun_ajaran" id="id_tahun_ajaran" class="form-select bg-white">
-                        <option value="">-- Pilih Tahun Ajaran --</option>
-                        @foreach($daftarTahunAjaran as $ta)
-                          <option value="{{ $ta->id_tahun_ajaran }}" {{ (old('id_tahun_ajaran') == $ta->id_tahun_ajaran || (empty(old('id_tahun_ajaran')) && $ta->is_active)) ? 'selected' : '' }}>
-                            {{ $ta->tahun_ajaran }} {{ $ta->is_active ? '(Aktif)' : '' }}
-                          </option>
-                        @endforeach
-                      </select>
+                @php
+                  $isPendaftar = Auth::check() && in_array(Auth::user()->role, ['pendaftar', 'user']);
+                  $activeTa = $daftarTahunAjaran->firstWhere('is_active', true) ?? $daftarTahunAjaran->first();
+                  $activeGel = $daftarGelombang->firstWhere('is_active', true) ?? $daftarGelombang->first();
+                  $activeJalur = $daftarJalur->firstWhere('is_active', true) ?? $daftarJalur->first();
+
+                  $selectedTaId = old('id_tahun_ajaran', $selectedTahun ?? ($activeTa->id_tahun_ajaran ?? ''));
+                  $selectedGelId = old('id_gelombang', $selectedGelombang ?? ($activeGel->id_gelombang ?? ''));
+                  $selectedJalurId = old('id_jalur', $selectedJalur ?? ($activeJalur->id_jalur ?? ''));
+
+                  $selectedTaObj = $daftarTahunAjaran->firstWhere('id_tahun_ajaran', $selectedTaId) ?? $activeTa;
+                  $selectedGelObj = $daftarGelombang->firstWhere('id_gelombang', $selectedGelId) ?? $activeGel;
+                  $selectedJalurObj = $daftarJalur->firstWhere('id_jalur', $selectedJalurId) ?? $activeJalur;
+                @endphp
+
+                @if($isPendaftar)
+                  <!-- Mode Calon Siswa / Wali: Read-only Terkunci Sesuai Pilihan Awal -->
+                  <div class="card bg-light border mb-4 p-3 rounded-3 shadow-none">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div class="fw-bold text-dark"><i class="bi bi-shield-check text-success me-1"></i> Program &amp; Jalur Pendaftaran PPDB</div>
+                      <span class="badge bg-secondary-subtle text-secondary border px-2 py-1 small">
+                        <i class="bi bi-lock-fill me-1"></i> Terkunci (Sesuai Pilihan Awal)
+                      </span>
                     </div>
-                    <div class="col-md-4">
-                      <label for="id_gelombang" class="form-label fw-semibold text-dark">Gelombang Pendaftaran</label>
-                      <select name="id_gelombang" id="id_gelombang" class="form-select bg-white">
-                        <option value="">-- Pilih Gelombang --</option>
-                        @foreach($daftarGelombang as $gel)
-                          <option value="{{ $gel->id_gelombang }}" {{ (old('id_gelombang') == $gel->id_gelombang || (empty(old('id_gelombang')) && $gel->is_active)) ? 'selected' : '' }}>
-                            {{ $gel->nama_gelombang }}
-                          </option>
-                        @endforeach
-                      </select>
+                    <div class="row g-3">
+                      <div class="col-md-4">
+                        <label class="form-label fw-semibold text-secondary small mb-1">Tahun Ajaran</label>
+                        <div class="p-2 px-3 bg-white border rounded text-dark fw-bold">
+                          {{ $selectedTaObj->tahun_ajaran ?? '2026/2027' }} {{ (isset($selectedTaObj) && $selectedTaObj->is_active) ? '(Aktif)' : '' }}
+                        </div>
+                        <input type="hidden" name="id_tahun_ajaran" value="{{ $selectedTaObj->id_tahun_ajaran ?? '' }}">
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label fw-semibold text-secondary small mb-1">Gelombang Pendaftaran</label>
+                        <div class="p-2 px-3 bg-white border rounded text-dark fw-bold">
+                          {{ $selectedGelObj->nama_gelombang ?? 'Gelombang 1' }}
+                        </div>
+                        <input type="hidden" name="id_gelombang" value="{{ $selectedGelObj->id_gelombang ?? '' }}">
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label fw-semibold text-secondary small mb-1">Jalur Pendaftaran</label>
+                        <div class="p-2 px-3 bg-white border rounded text-dark fw-bold">
+                          {{ $selectedJalurObj->nama_jalur ?? 'Jalur Reguler' }}
+                        </div>
+                        <input type="hidden" name="id_jalur" value="{{ $selectedJalurObj->id_jalur ?? '' }}">
+                      </div>
                     </div>
-                    <div class="col-md-4">
-                      <label for="id_jalur" class="form-label fw-semibold text-dark">Jalur Pendaftaran</label>
-                      <select name="id_jalur" id="id_jalur" class="form-select bg-white">
-                        <option value="">-- Pilih Jalur --</option>
-                        @foreach($daftarJalur as $j)
-                          <option value="{{ $j->id_jalur }}" {{ (old('id_jalur') == $j->id_jalur || (empty(old('id_jalur')) && $j->is_active)) ? 'selected' : '' }}>
-                            {{ $j->nama_jalur }} (Kuota: {{ $j->kuota ?? 'Tak Terbatas' }})
-                          </option>
-                        @endforeach
-                      </select>
+                    <div class="mt-2 text-muted" style="font-size: 0.78rem;">
+                      <i class="bi bi-info-circle me-1"></i> Tahun ajaran, gelombang, dan jalur pendaftaran telah ditetapkan saat pendaftaran awal dan tidak dapat diubah oleh calon siswa/wali.
                     </div>
                   </div>
-                </div>
+                @else
+                  <!-- Mode Admin: Dapat Mengatur Pilihan -->
+                  <div class="card bg-primary-subtle border border-primary-subtle mb-4 p-3 rounded-3 shadow-none">
+                    <div class="fw-bold text-primary mb-2"><i class="bi bi-info-circle me-1"></i> Program & Jalur Pendaftaran PPDB</div>
+                    <div class="row g-3">
+                      <div class="col-md-4">
+                        <label for="id_tahun_ajaran" class="form-label fw-semibold text-dark">Tahun Ajaran</label>
+                        <select name="id_tahun_ajaran" id="id_tahun_ajaran" class="form-select bg-white">
+                          <option value="">-- Pilih Tahun Ajaran --</option>
+                          @foreach($daftarTahunAjaran as $ta)
+                            <option value="{{ $ta->id_tahun_ajaran }}" {{ $selectedTaId == $ta->id_tahun_ajaran ? 'selected' : '' }}>
+                              {{ $ta->tahun_ajaran }} {{ $ta->is_active ? '(Aktif)' : '' }}
+                            </option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="id_gelombang" class="form-label fw-semibold text-dark">Gelombang Pendaftaran</label>
+                        <select name="id_gelombang" id="id_gelombang" class="form-select bg-white">
+                          <option value="">-- Pilih Gelombang --</option>
+                          @foreach($daftarGelombang as $gel)
+                            <option value="{{ $gel->id_gelombang }}" {{ $selectedGelId == $gel->id_gelombang ? 'selected' : '' }}>
+                              {{ $gel->nama_gelombang }}
+                            </option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="id_jalur" class="form-label fw-semibold text-dark">Jalur Pendaftaran</label>
+                        <select name="id_jalur" id="id_jalur" class="form-select bg-white">
+                          <option value="">-- Pilih Jalur --</option>
+                          @foreach($daftarJalur as $j)
+                            <option value="{{ $j->id_jalur }}" {{ $selectedJalurId == $j->id_jalur ? 'selected' : '' }}>
+                              {{ $j->nama_jalur }} (Kuota: {{ $j->kuota ?? 'Tak Terbatas' }})
+                            </option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                @endif
 
                 <div class="section-card-title"><i class="bi bi-person-badge text-primary me-2"></i>1. Identitas Peserta Didik</div>
                 
@@ -221,16 +296,30 @@
                     <input type="text" name="asal_sekolah" id="asal_sekolah" class="form-control" value="{{ old('asal_sekolah') }}" placeholder="Contoh: TK Islam Terpadu Al-Wafa">
                   </div>
 
-                  <div class="col-md-6">
-                    <label for="status" class="form-label fw-semibold">Status Pendaftaran</label>
-                    <select name="status" id="status" class="form-select">
-                      <option value="menunggu_verifikasi" {{ old('status') == 'menunggu_verifikasi' ? 'selected' : '' }}>Menunggu Verifikasi</option>
-                      <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                      <option value="diverifikasi" {{ old('status') == 'diverifikasi' ? 'selected' : '' }}>Diverifikasi</option>
-                      <option value="diterima" {{ old('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                      <option value="ditolak" {{ old('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                    </select>
-                  </div>
+                  @if($isPendaftar)
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Status Pendaftaran</label>
+                      <div class="p-2 border rounded bg-light d-flex align-items-center justify-content-between">
+                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 fs-6">
+                          <i class="bi bi-hourglass-split me-1"></i> Menunggu Verifikasi
+                        </span>
+                        <span class="badge bg-white text-muted border small"><i class="bi bi-lock-fill me-1"></i> Read Only (Calon Siswa / Wali)</span>
+                      </div>
+                      <input type="hidden" name="status" value="menunggu_verifikasi">
+                      <div class="form-text text-muted">Status verifikasi hanya dapat ditentukan oleh panitia verifikator PPDB.</div>
+                    </div>
+                  @else
+                    <div class="col-md-6">
+                      <label for="status" class="form-label fw-semibold">Status Pendaftaran</label>
+                      <select name="status" id="status" class="form-select">
+                        <option value="menunggu_verifikasi" {{ old('status', 'menunggu_verifikasi') == 'menunggu_verifikasi' ? 'selected' : '' }}>Menunggu Verifikasi</option>
+                        <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                        <option value="diverifikasi" {{ old('status') == 'diverifikasi' ? 'selected' : '' }}>Diverifikasi</option>
+                        <option value="diterima" {{ old('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                        <option value="ditolak" {{ old('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                      </select>
+                    </div>
+                  @endif
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">
@@ -790,35 +879,64 @@
     let prestasiIdx = {{ count(old('prestasi', [1])) }};
     let beasiswaIdx = {{ count(old('beasiswa', [1])) }};
 
+    // Hapus baris dinamis (Prestasi & Beasiswa)
+    $(document).on('click', '.btn-remove-row', function () {
+      const tbody = $(this).closest('tbody');
+      const tableId = $(this).closest('table').attr('id');
+      $(this).closest('tr').remove();
+
+      // Jika baris habis, tampilkan baris kosong informatif
+      if (tbody.find('tr').length === 0) {
+        if (tableId === 'table-prestasi') {
+          tbody.html(`
+            <tr class="empty-row-prestasi">
+              <td colspan="6" class="text-center py-3 text-muted">
+                <i class="bi bi-info-circle me-1"></i> Tidak ada catatan prestasi. Klik tombol <strong>Tambah Baris Prestasi</strong> jika ingin menambahkan.
+              </td>
+            </tr>
+          `);
+        } else if (tableId === 'table-beasiswa') {
+          tbody.html(`
+            <tr class="empty-row-beasiswa">
+              <td colspan="5" class="text-center py-3 text-muted">
+                <i class="bi bi-info-circle me-1"></i> Tidak ada riwayat beasiswa. Klik tombol <strong>Tambah Baris Beasiswa</strong> jika ingin menambahkan.
+              </td>
+            </tr>
+          `);
+        }
+      }
+    });
+
     // Tambah baris Prestasi
     $('#btn-tambah-prestasi').on('click', function () {
+      $('#table-prestasi tbody .empty-row-prestasi').remove();
       const row = `
         <tr>
           <td>
-            <select name="prestasi[${prestasiIdx}][jenis_prestasi]" class="form-select form-select-sm">
+            <select name="prestasi[${prestasiIdx}][jenis_prestasi]" class="form-select form-select-sm text-dark fw-medium">
               @foreach($pilihanJenisPrestasi as $key => $val)
                 <option value="{{ $key }}">{{ $val }}</option>
               @endforeach
             </select>
           </td>
           <td>
-            <select name="prestasi[${prestasiIdx}][tingkat]" class="form-select form-select-sm">
+            <select name="prestasi[${prestasiIdx}][tingkat]" class="form-select form-select-sm text-dark fw-medium">
               @foreach($pilihanTingkat as $key => $val)
                 <option value="{{ $key }}">{{ $val }}</option>
               @endforeach
             </select>
           </td>
           <td>
-            <input type="text" name="prestasi[${prestasiIdx}][nama_prestasi]" class="form-control form-select-sm" placeholder="Nama perlombaan / kejuaraan">
+            <input type="text" name="prestasi[${prestasiIdx}][nama_prestasi]" class="form-control form-select-sm text-dark fw-medium" placeholder="Nama perlombaan / kejuaraan">
           </td>
           <td>
-            <input type="text" name="prestasi[${prestasiIdx}][tahun]" maxlength="4" class="form-control form-select-sm font-monospace text-center" value="{{ date('Y') }}">
+            <input type="text" name="prestasi[${prestasiIdx}][tahun]" maxlength="4" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" value="{{ date('Y') }}">
           </td>
           <td>
-            <input type="text" name="prestasi[${prestasiIdx}][penyelenggara]" class="form-control form-select-sm" placeholder="Instansi penyelenggara">
+            <input type="text" name="prestasi[${prestasiIdx}][penyelenggara]" class="form-control form-select-sm text-dark fw-medium" placeholder="Instansi penyelenggara">
           </td>
           <td class="text-center">
-            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row"><i class="bi bi-x-lg"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row" title="Hapus Baris Prestasi"><i class="bi bi-x-lg"></i></button>
           </td>
         </tr>
       `;
@@ -828,38 +946,28 @@
 
     // Tambah baris Beasiswa
     $('#btn-tambah-beasiswa').on('click', function () {
+      $('#table-beasiswa tbody .empty-row-beasiswa').remove();
       const row = `
         <tr>
           <td>
-            <input type="text" name="beasiswa[${beasiswaIdx}][jenis_beasiswa]" class="form-control form-select-sm" placeholder="Contoh: Beasiswa Prestasi, PIP, dll">
+            <input type="text" name="beasiswa[${beasiswaIdx}][jenis_beasiswa]" class="form-control form-select-sm text-dark fw-medium" placeholder="Contoh: Beasiswa Prestasi, PIP, dll">
           </td>
           <td>
-            <input type="text" name="beasiswa[${beasiswaIdx}][penyelenggara]" class="form-control form-select-sm" placeholder="Penyelenggara beasiswa">
+            <input type="text" name="beasiswa[${beasiswaIdx}][penyelenggara]" class="form-control form-select-sm text-dark fw-medium" placeholder="Penyelenggara beasiswa">
           </td>
           <td>
-            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_mulai]" maxlength="4" class="form-control form-select-sm font-monospace text-center" value="{{ date('Y') }}">
+            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_mulai]" maxlength="4" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" value="{{ date('Y') }}">
           </td>
           <td>
-            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_selesai]" maxlength="4" class="form-control form-select-sm font-monospace text-center" placeholder="Tahun / Kosongkan bila aktif">
+            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_selesai]" maxlength="4" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" placeholder="Tahun / Kosongkan bila aktif">
           </td>
           <td class="text-center">
-            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row"><i class="bi bi-x-lg"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row" title="Hapus Baris Beasiswa"><i class="bi bi-x-lg"></i></button>
           </td>
         </tr>
       `;
       $('#table-beasiswa tbody').append(row);
       beasiswaIdx++;
-    });
-
-    // Hapus baris dinamis
-    $(document).on('click', '.btn-remove-row', function () {
-      const tbody = $(this).closest('tbody');
-      if (tbody.find('tr').length > 1) {
-        $(this).closest('tr').remove();
-      } else {
-        // Jika tinggal 1 baris, bersihkan inputnya saja
-        $(this).closest('tr').find('input').val('');
-      }
     });
   });
 </script>

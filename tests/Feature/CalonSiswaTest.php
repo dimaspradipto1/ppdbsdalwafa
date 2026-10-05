@@ -78,7 +78,7 @@ class CalonSiswaTest extends TestCase
 
         $siswa = CalonSiswa::where('nama_lengkap', 'Ahmad Fathi Mubarak')->first();
         $this->assertNotNull($siswa->no_pendaftaran);
-        $this->assertStringStartsWith('REG-', $siswa->no_pendaftaran);
+        $this->assertMatchesRegularExpression('/^\d+$/', $siswa->no_pendaftaran);
     }
 
     public function test_can_update_status_calon_siswa(): void

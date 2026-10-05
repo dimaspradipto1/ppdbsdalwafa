@@ -243,6 +243,103 @@
     color: #ffffff;
   }
 
+  /* ---------- JALUR PENDAFTARAN CARDS (ACUAN IBNU SINA) ---------- */
+  .uis-accordion-card {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+  }
+  .uis-accordion-card .card-header {
+    transition: background-color 0.2s ease;
+  }
+  .uis-accordion-card .card-header:hover {
+    background-color: #f8fafc !important;
+  }
+  .transition-chevron {
+    transition: transform 0.25s ease;
+  }
+  .collapsed .transition-chevron {
+    transform: rotate(0deg);
+  }
+  [aria-expanded="true"] .transition-chevron {
+    transform: rotate(180deg);
+  }
+  .jalur-item-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    margin-bottom: 18px;
+    padding: 22px 26px;
+    transition: all 0.25s ease;
+  }
+  .jalur-item-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    border-color: #cbd5e1;
+  }
+  .jalur-status-pill {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 3px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+  }
+  .pill-buka {
+    background-color: #198754;
+    color: #ffffff;
+  }
+  .pill-tutup {
+    background-color: #dc3545;
+    color: #ffffff;
+  }
+  .jalur-card-title {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: #1e293b;
+    letter-spacing: -0.2px;
+  }
+  .badge-sub-jalur {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    display: inline-block;
+  }
+  .jalur-card-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+  .btn-lihat-detail-jalur {
+    background-color: #f37021;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(243, 112, 33, 0.25);
+    transition: all 0.2s ease;
+    display: inline-block;
+    width: 100%;
+    max-width: 220px;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn-lihat-detail-jalur:hover {
+    background-color: #e05e0f;
+    box-shadow: 0 6px 16px rgba(243, 112, 33, 0.38);
+    color: #ffffff !important;
+    transform: translateY(-1px);
+  }
+
   /* ---------- SECTION CONTENT STYLING ---------- */
   .uis-card {
     background: #ffffff;
@@ -416,11 +513,11 @@
 
   /* ---------- CALL TO ACTION (KAMI SIAP MEMBANTU ANDA) ---------- */
   .cta-uis-banner {
-    background: linear-gradient(135deg, #eab308 0%, #d97706 100%);
+    background: linear-gradient(135deg, #05824e 0%, #035e38 100%);
     border-radius: 18px;
     padding: 38px 44px;
     color: #ffffff;
-    box-shadow: 0 12px 30px rgba(217, 119, 6, 0.2);
+    box-shadow: 0 12px 30px rgba(5, 130, 78, 0.25);
     position: relative;
     overflow: hidden;
     margin: 50px 0;
@@ -467,23 +564,34 @@
   }
   .btn-cta-white:hover {
     background: #ffffff;
-    color: #d97706 !important;
+    color: #035e38 !important;
     border-color: #ffffff;
   }
 
   /* ---------- FOOTER ---------- */
   .footer-uis {
-    background: #ffffff;
-    border-top: 1px solid var(--uis-border);
-    padding: 50px 0 25px;
-    font-size: 0.85rem;
-    color: #475569;
+    background: #0b1329 !important;
+    color: #cbd5e1 !important;
+    padding: 55px 0 25px;
+    font-size: 0.88rem;
+    border-top: none;
   }
   .footer-uis-heading {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #ffffff !important;
     margin-bottom: 16px;
+    letter-spacing: -0.2px;
+  }
+  .footer-uis p,
+  .footer-uis .text-muted,
+  .footer-uis small,
+  .footer-uis .small {
+    color: #cbd5e1 !important;
+  }
+  .footer-uis strong,
+  .footer-uis .text-dark {
+    color: #ffffff !important;
   }
   .footer-uis-list {
     list-style: none;
@@ -491,22 +599,24 @@
     margin-bottom: 0;
   }
   .footer-uis-list li {
-    margin-bottom: 8px;
+    margin-bottom: 9px;
   }
   .footer-uis-list a {
-    color: #64748b;
+    color: #cbd5e1 !important;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: all 0.2s ease;
+    display: inline-block;
   }
   .footer-uis-list a:hover {
-    color: var(--uis-primary);
+    color: #38bdf8 !important;
+    transform: translateX(4px);
   }
   .footer-social-btn {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: #f1f5f9;
-    color: #475569;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -517,6 +627,7 @@
   .footer-social-btn:hover {
     background: var(--uis-primary);
     color: #ffffff;
+    transform: translateY(-2px);
   }
 
   /* Floating WhatsApp Button */
@@ -565,24 +676,26 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navMenu">
-      <!-- 4 Menu Utama Sesuai Referensi -->
+      <!-- Menu Navigasi Utama -->
       <ul class="navbar-nav mx-auto mt-3 mt-lg-0">
         <li class="nav-item"><a class="nav-link active" href="#home">Beranda</a></li>
         <li class="nav-item"><a class="nav-link" href="#jalur">Jalur Pendaftaran</a></li>
-        <li class="nav-item"><a class="nav-link" href="#program">Program Studi</a></li>
-        <li class="nav-item"><a class="nav-link" href="#informasi">Informasi</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('biaya.publik') }}">Brosur &amp; Biaya</a></li>
+        <li class="nav-item"><a class="nav-link" href="#informasi">Informasi &amp; Pengumuman</a></li>
       </ul>
 
-      <!-- Sisi Kanan: ID Language + Tombol Masuk -->
-      <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 flex-shrink-0">
-        <span class="small text-muted fw-semibold d-none d-sm-inline">ID <i class="bi bi-globe2 ms-1"></i></span>
+      <!-- Sisi Kanan: Tombol Masuk & Daftar -->
+      <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0 flex-shrink-0">
         @auth
-          <a href="{{ route('dashboard') }}" class="btn-uis-outline">
-            <i class="bi bi-grid-fill"></i> Dashboard
+          <a href="{{ route('dashboard') }}" class="btn-uis-primary">
+            <i class="bi bi-grid-fill me-1"></i> Dashboard
           </a>
         @else
           <a href="{{ route('login') }}" class="btn-uis-outline">
-            Masuk
+            <i class="bi bi-box-arrow-in-right me-1"></i> Masuk
+          </a>
+          <a href="{{ route('register') }}" class="btn-uis-primary">
+            <i class="bi bi-person-plus me-1"></i> Daftar
           </a>
         @endauth
       </div>
@@ -621,43 +734,55 @@
 <div class="container">
   <div class="floating-filter-card">
     <div class="filter-card-title">Cari Jalur Pendaftaran</div>
-    <div class="filter-card-subtitle">Temukan jalur pendaftaran sesuai dengan pilihan tingkat kelas yang diminati.</div>
+    <div class="filter-card-subtitle">Temukan jalur pendaftaran sesuai dengan pilihan tahun ajaran, gelombang, dan jalur yang diminati.</div>
 
-    <form id="filterForm" onsubmit="handleCariJalur(event)">
+    <form id="filterForm" onsubmit="handleCariJalur(event, true)">
       <div class="row g-3 align-items-center">
-        <!-- 1. Pilih Jenjang / Tingkat -->
+        <!-- 1. Pilih Tahun Ajaran -->
         <div class="col-md-3">
-          <select class="form-select form-select-uis" id="selectTingkat">
-            <option value="all">-- Pilih Jenjang / Tingkat --</option>
-            <option value="Kelas I">Kelas I (Siswa Baru)</option>
-            <option value="Kelas II">Kelas II</option>
-            <option value="Kelas III">Kelas III</option>
-            <option value="Kelas IV">Kelas IV</option>
-            <option value="Kelas V">Kelas V</option>
-            <option value="Kelas VI">Kelas VI</option>
+          <select class="form-select form-select-uis" id="selectTahunAjaran" onchange="handleCariJalur(event, false)">
+            <option value="all">-- Semua Tahun Ajaran --</option>
+            @if(isset($tahunAjaranList) && $tahunAjaranList->count() > 0)
+              @foreach($tahunAjaranList as $ta)
+                <option value="{{ $ta->tahun_ajaran }}" {{ $ta->is_active ? 'selected' : '' }}>
+                  {{ $ta->nama_tahun_ajaran ?: 'Tahun Ajaran ' . $ta->tahun_ajaran }} {{ $ta->is_active ? '(Aktif)' : '' }}
+                </option>
+              @endforeach
+            @else
+              <option value="2026/2027" selected>Tahun Ajaran 2026/2027 (Aktif)</option>
+              <option value="2025/2026">Tahun Ajaran 2025/2026</option>
+              <option value="2024/2025">Tahun Ajaran 2024/2025</option>
+            @endif
           </select>
         </div>
 
-        <!-- 2. Pilih Program / Kelas -->
+        <!-- 2. Pilih Gelombang -->
         <div class="col-md-3">
-          <select class="form-select form-select-uis" id="selectKelas">
-            <option value="all">-- Pilih Program / Kelas --</option>
-            @foreach($daftarKelas as $k)
-              <option value="{{ $k['rombel'] }}">{{ $k['rombel'] }} - {{ $k['nama'] }}</option>
-            @endforeach
+          <select class="form-select form-select-uis" id="selectGelombang" onchange="handleCariJalur(event, false)">
+            <option value="all">-- Semua Gelombang --</option>
+            @if(isset($gelombangList) && $gelombangList->count() > 0)
+              @foreach($gelombangList as $g)
+                <option value="{{ $g->nama_gelombang }}" {{ $g->is_active ? 'selected' : '' }}>
+                  {{ $g->nama_gelombang }} {{ $g->is_active ? '(Dibuka)' : '' }}
+                </option>
+              @endforeach
+            @else
+              <option value="Gelombang 1 (Indent / Early Bird)" selected>Gelombang 1 (Indent / Early Bird) (Dibuka)</option>
+              <option value="Gelombang 2 (Reguler)">Gelombang 2 (Reguler)</option>
+            @endif
           </select>
         </div>
 
         <!-- 3. Pilih Jalur Pendaftaran -->
         <div class="col-md-3">
-          <select class="form-select form-select-uis" id="selectJalur">
-            <option value="all">-- Pilih Jalur Pendaftaran --</option>
+          <select class="form-select form-select-uis" id="selectJalur" onchange="handleCariJalur(event, false)">
+            <option value="all">-- Semua Jalur Pendaftaran --</option>
             @forelse($jalurList as $j)
               <option value="{{ $j->nama_jalur }}">{{ $j->nama_jalur }}</option>
             @empty
-              <option value="Reguler">Jalur Reguler</option>
-              <option value="Prestasi">Jalur Prestasi / Tahfidz</option>
-              <option value="Afirmasi">Jalur Afirmasi / Beasiswa</option>
+              <option value="Jalur Reguler">Jalur Reguler</option>
+              <option value="Jalur Siswa Pindahan">Jalur Siswa Pindahan</option>
+              <option value="Jalur Prestasi & Tahfidz">Jalur Prestasi &amp; Tahfidz</option>
             @endforelse
           </select>
         </div>
@@ -665,12 +790,158 @@
         <!-- 4. Tombol Submit -->
         <div class="col-md-3">
           <button type="submit" class="btn-search-uis">
-            <i class="bi bi-search"></i> Cari Jalur Pendaftaran
+            <i class="bi bi-search me-1"></i> Cari Jalur Pendaftaran
           </button>
         </div>
       </div>
     </form>
   </div>
+</div>
+
+<!-- ============================================
+     3.5 DAFTAR JALUR PENDAFTARAN & TATA CARA (ACUAN IBNU SINA)
+============================================ -->
+<div class="container mt-4 mb-3" id="jalur">
+
+  <!-- Accordion Tata Cara Pendaftaran Calon Siswa Baru -->
+  <div class="card mb-4 border-0 shadow-sm uis-accordion-card">
+    <div class="card-header bg-white py-3 px-4 border-0 d-flex justify-content-between align-items-center" 
+         data-bs-toggle="collapse" 
+         data-bs-target="#collapseTataCara" 
+         style="cursor: pointer;">
+      <h6 class="mb-0 fw-bold text-dark">
+        <i class="bi bi-info-circle text-success me-2"></i> Tata Cara Pendaftaran Calon Siswa Baru
+      </h6>
+      <i class="bi bi-chevron-down text-muted transition-chevron"></i>
+    </div>
+    <div id="collapseTataCara" class="collapse">
+      <div class="card-body px-4 pt-1 pb-4 text-muted small border-top">
+        <div class="row g-3 mt-1">
+          <div class="col-md-3">
+            <div class="p-3 bg-light rounded-3 text-center h-100 border">
+              <span class="badge bg-success rounded-pill mb-2">Langkah 1</span>
+              <div class="fw-bold text-dark mb-1">Pilih Jalur &amp; Gelombang</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Pilih jalur pendaftaran aktif (Reguler, Prestasi, atau Siswa Pindahan).</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 bg-light rounded-3 text-center h-100 border">
+              <span class="badge bg-success rounded-pill mb-2">Langkah 2</span>
+              <div class="fw-bold text-dark mb-1">Registrasi Akun</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Buat akun wali murid dengan melengkapi nama, email, dan nomor WhatsApp aktif.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 bg-light rounded-3 text-center h-100 border">
+              <span class="badge bg-success rounded-pill mb-2">Langkah 3</span>
+              <div class="fw-bold text-dark mb-1">Bayar Formulir &amp; Berkas</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Selesaikan pembayaran formulir, lalu isi formulir biodata &amp; unggah berkas (KK/Akta).</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 bg-light rounded-3 text-center h-100 border">
+              <span class="badge bg-success rounded-pill mb-2">Langkah 4</span>
+              <div class="fw-bold text-dark mb-1">Observasi &amp; Kelulusan</div>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem;">Ikuti observasi kematangan dan tes baca Al-Qur'an, lalu cek surat pengumuman kelulusan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container List Card Jalur Pendaftaran -->
+  <!-- Container List Card Jalur Pendaftaran (Acuan Ibnu Sina) -->
+  <div id="daftarJalurCardContainer">
+    @if(isset($paketPendaftaran) && count($paketPendaftaran) > 0)
+      @foreach($paketPendaftaran as $paket)
+        <div class="jalur-item-card" 
+             data-tahun="{{ $paket['tahun_ajaran'] }}" 
+             data-gelombang="{{ $paket['nama_gelombang'] }}" 
+             data-jalur="{{ $paket['nama_jalur'] }}"
+             data-status="{{ $paket['is_active'] ? 'buka' : 'tutup' }}">
+
+          <div class="row align-items-center g-3">
+            <!-- Kolom Kiri: Badge Tutup/Buka, Judul, Sub-Badge, Deskripsi -->
+            <div class="col-lg-8">
+              <!-- Status Pill (Acuan: Tutup merah / Buka hijau) -->
+              <div>
+                <span class="jalur-status-pill {{ $paket['is_active'] ? 'pill-buka' : 'pill-tutup' }}">
+                  {{ $paket['is_active'] ? 'Buka' : 'Tutup' }}
+                </span>
+              </div>
+
+              <!-- Judul Uppercase Bold -->
+              <div class="jalur-card-title text-uppercase mb-2">
+                {{ $paket['nama_jalur'] }} - {{ $paket['nama_gelombang'] }}
+              </div>
+              
+              <!-- Sub Badges -->
+              <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
+                <span class="badge-sub-jalur">{{ $paket['nama_jalur'] }}</span>
+                <span class="badge bg-light text-secondary border">T.A. {{ $paket['tahun_ajaran'] }}</span>
+                <span class="badge bg-light text-secondary border"><i class="bi bi-people me-1"></i> Kuota: {{ $paket['kuota'] }} Siswa</span>
+              </div>
+
+              <!-- Deskripsi Jalur -->
+              <p class="jalur-card-desc mb-0">
+                {{ $paket['deskripsi'] }}
+              </p>
+            </div>
+
+            <!-- Kolom Kanan: Tanggal, Biaya Daftar Orange, Tombol Orange Lihat Detail -->
+            <div class="col-lg-4 text-lg-end">
+              <div class="mb-2 text-muted small d-flex align-items-center justify-content-lg-end">
+                <i class="bi bi-calendar3 me-2 text-muted"></i>
+                <span>{{ $paket['periode_str'] }}</span>
+              </div>
+              <div class="mb-3 small d-flex align-items-center justify-content-lg-end">
+                <i class="bi bi-credit-card-2-front me-2 text-muted"></i>
+                <span class="text-secondary">Biaya Daftar&nbsp;</span>
+                <span class="fw-bold fs-6" style="color: #f37021;">{{ $paket['biaya_daftar'] }}</span>
+              </div>
+              <div>
+                <button type="button" 
+                        class="btn-lihat-detail-jalur" 
+                        onclick="showModalDetailJalur('{{ addslashes($paket['nama_jalur']) }}', '{{ addslashes($paket['nama_gelombang']) }}', '{{ $paket['tahun_ajaran'] }}', '{{ $paket['is_active'] ? 'Buka' : 'Tutup' }}', '{{ $paket['periode_str'] }}', '{{ $paket['biaya_daftar'] }}', '{{ $paket['kuota'] }}', '{{ addslashes($paket['deskripsi']) }}', '{{ addslashes($paket['persyaratan']) }}', {{ $paket['is_active'] ? 'true' : 'false' }})">
+                  Lihat Detail
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      @endforeach
+    @else
+      <div class="jalur-item-card" data-tahun="2026/2027" data-gelombang="Gelombang 1 (Indent / Early Bird)" data-jalur="Jalur Reguler" data-status="buka">
+        <div class="row align-items-center g-3">
+          <div class="col-lg-8">
+            <div><span class="jalur-status-pill pill-buka">Buka</span></div>
+            <div class="jalur-card-title text-uppercase mb-2">JALUR REGULER - GELOMBANG 1 (INDENT / EARLY BIRD)</div>
+            <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
+              <span class="badge-sub-jalur">Jalur Reguler</span>
+              <span class="badge bg-light text-secondary border">T.A. 2026/2027</span>
+              <span class="badge bg-light text-secondary border"><i class="bi bi-people me-1"></i> Kuota: 60 Siswa</span>
+            </div>
+            <p class="jalur-card-desc mb-0">Penerimaan peserta didik baru umum/reguler dengan observasi kematangan dan tes baca Al-Qur'an.</p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <div class="mb-2 text-muted small d-flex align-items-center justify-content-lg-end"><i class="bi bi-calendar3 me-2"></i> 01 Okt 2026 - 31 Des 2026</div>
+            <div class="mb-3 small d-flex align-items-center justify-content-lg-end"><i class="bi bi-credit-card-2-front me-2"></i> <span class="text-secondary">Biaya Daftar&nbsp;</span><span class="fw-bold fs-6" style="color: #f37021;">Rp. 250.000</span></div>
+            <button type="button" class="btn-lihat-detail-jalur" onclick="showModalDetailJalur('Jalur Reguler', 'Gelombang 1 (Indent / Early Bird)', '2026/2027', 'Buka', '01 Okt 2026 - 31 Des 2026', 'Rp. 250.000', '60', 'Penerimaan peserta didik baru umum/reguler dengan observasi kematangan.', 'Akta Kelahiran, KK, KTP Orang Tua, Pas Foto.', true)">Lihat Detail</button>
+          </div>
+        </div>
+      </div>
+    @endif
+
+    <!-- Alert Not Found saat filter tidak cocok -->
+    <div id="noJalurFoundAlert" class="alert alert-warning text-center py-4 rounded-3 border-0 shadow-sm" style="display: none;">
+      <i class="bi bi-search fs-2 d-block mb-2 text-warning"></i>
+      <h6 class="fw-bold mb-1">Jalur Pendaftaran Tidak Ditemukan</h6>
+      <p class="text-muted small mb-0">Tidak ada jalur pendaftaran yang sesuai dengan kombinasi tahun ajaran, gelombang, atau jalur yang Anda pilih.</p>
+    </div>
+  </div>
+
 </div>
 
 <!-- ============================================
@@ -683,7 +954,7 @@
       <!-- ================= KOLOM KIRI (PROGRAM STUDI & KELAS) ================= -->
       <div class="col-lg-7">
         <div class="uis-card">
-          <div class="uis-card-header-title">Informasi Program Studi &amp; Kelas</div>
+          <div class="uis-card-header-title">Informasi Program &amp; Kelas Tematik Sahabat Nabi</div>
 
           <!-- Filter Pill Tabs -->
           <div class="d-flex flex-wrap mb-3">
@@ -747,24 +1018,32 @@
       </div>
 
       <!-- ================= KOLOM KANAN (BROSUR & TATA CARA) ================= -->
-      <div class="col-lg-5" id="jalur">
+      <div class="col-lg-5" id="brosur-section">
         <!-- Card 1: Brosur Dan Informasi Biaya -->
         <div class="uis-card">
           <div class="uis-card-header-title">{{ $settings['brosur_judul'] ?? 'Brosur Dan Informasi Biaya' }}</div>
           <p class="text-muted small mb-3">
             {{ $settings['brosur_deskripsi'] ?? 'Brosur dan rincian biaya selama bersekolah di SD Islam Plus Al-Wafa Batam' }}
           </p>
-          <div class="d-flex gap-2">
-            <button type="button" class="btn-uis-outline" data-bs-toggle="modal" data-bs-target="#modalBiaya">
-              <i class="bi bi-cash-coin me-1"></i> Lihat Detail Biaya
-            </button>
-            @if(!empty($settings['brosur_file']))
-              <a href="{{ asset($settings['brosur_file']) }}" target="_blank" class="btn-uis-primary">
-                <i class="bi bi-file-earmark-pdf me-1"></i> Unduh Brosur
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{{ route('biaya.publik') }}" class="btn-uis-primary">
+              <i class="bi bi-cash-coin me-1"></i> Rincian Biaya &amp; Brosur
+            </a>
+            @php
+              $defaultBrosur = 'assets/uploads/brosur/brosur-ppdb-alwafa.pdf';
+              $fileBrosurTarget = !empty($settings['brosur_file']) ? asset($settings['brosur_file']) : (file_exists(public_path($defaultBrosur)) ? asset($defaultBrosur) : null);
+              $driveBrosurTarget = !empty($settings['brosur_link']) ? $settings['brosur_link'] : null;
+            @endphp
+            @if($fileBrosurTarget)
+              <a href="{{ $fileBrosurTarget }}" target="_blank" class="btn-uis-outline" title="Lihat Brosur">
+                <i class="bi bi-eye me-1"></i> View
               </a>
-            @else
-              <a href="#modalBiaya" data-bs-toggle="modal" class="btn-uis-primary">
-                <i class="bi bi-file-earmark-text me-1"></i> Rincian Tarif
+              <a href="{{ $fileBrosurTarget }}" download class="btn-uis-outline" title="Download PDF Brosur">
+                <i class="bi bi-download me-1"></i> Download PDF
+              </a>
+            @elseif($driveBrosurTarget)
+              <a href="{{ $driveBrosurTarget }}" target="_blank" class="btn-uis-outline" title="Buka di Google Drive">
+                <i class="bi bi-google me-1"></i> Google Drive
               </a>
             @endif
           </div>
@@ -817,7 +1096,7 @@
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h3 class="fw-bold text-dark mb-0">Informasi &amp; Pengumuman</h3>
-      <a href="{{ route('login') }}" class="text-decoration-none fw-semibold small" style="color: var(--uis-primary);">
+      <a href="{{ route('informasi.index') }}" class="text-decoration-none fw-semibold small" style="color: var(--uis-primary);">
         Lihat Semua Informasi <i class="bi bi-chevron-right"></i>
       </a>
     </div>
@@ -825,74 +1104,97 @@
     <div class="row g-4">
       @if(isset($pengumumanList) && $pengumumanList->count() > 0)
         @foreach($pengumumanList as $idx => $p)
+          @php
+            $isInfo = str_contains(strtolower($p->judul), 'rincian') || str_contains(strtolower($p->judul), 'biaya');
+          @endphp
           <div class="col-lg-3 col-md-6">
-            <div class="announcement-card" onclick="showModalPengumuman('{{ addslashes($p->judul) }}', '{{ $p->tanggal_buka ? $p->tanggal_buka->translatedFormat('d F Y') : date('d F Y') }}', '{{ addslashes($p->isi_pengumuman) }}')">
-              <div class="announcement-icon-wrap">
-                <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+            <a href="{{ route('informasi.detail', $p->id_pengumuman) }}" class="text-decoration-none text-reset d-block h-100">
+              <div class="announcement-card h-100">
+                <div class="announcement-icon-wrap">
+                  <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+                </div>
+                <div class="announcement-date">
+                  <i class="bi bi-calendar3 me-1"></i>
+                  {{ $p->tanggal_buka ? $p->tanggal_buka->translatedFormat('d F Y') : date('d F Y') }}
+                </div>
+                <div class="announcement-title">
+                  {{ Str::limit($p->judul, 70) }}
+                </div>
+                <span class="{{ $isInfo ? 'announcement-badge-info' : 'announcement-badge-pengumuman' }}">
+                  {{ $isInfo ? 'Informasi' : 'Pengumuman' }}
+                </span>
               </div>
-              <div class="announcement-date">
-                {{ $p->tanggal_buka ? $p->tanggal_buka->translatedFormat('d F Y') : date('d F Y') }}
-              </div>
-              <div class="announcement-title">
-                {{ Str::limit($p->judul, 70) }}
-              </div>
-              <span class="{{ $idx === 3 ? 'announcement-badge-info' : 'announcement-badge-pengumuman' }}">
-                {{ $idx === 3 ? 'Informasi' : 'Pengumuman' }}
-              </span>
-            </div>
+            </a>
           </div>
         @endforeach
       @else
         <!-- Fallback 4 Kartu Pengumuman Realistis Sesuai Referensi -->
         <div class="col-lg-3 col-md-6">
-          <div class="announcement-card" onclick="showModalPengumuman('PENGUMUMAN PELAKSANAAN OBSERVASI KEMATANGAN & TES BACA TAHFIDZ AL-QUR\'AN TP 2026/2027', '30 Juli 2026', 'Diberitahukan kepada seluruh calon wali murid bahwa observasi kematangan anak dan tes kemampuan membaca Al-Qur\'an akan dilaksanakan bertahap di kampus SD Islam Plus Al-Wafa Batam.')">
-            <div class="announcement-icon-wrap">
-              <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+          <a href="{{ route('informasi.index') }}" class="text-decoration-none text-reset d-block h-100">
+            <div class="announcement-card h-100">
+              <div class="announcement-icon-wrap">
+                <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+              </div>
+              <div class="announcement-date"><i class="bi bi-calendar3 me-1"></i>30 Juli 2026</div>
+              <div class="announcement-title">PENGUMUMAN PELAKSANAAN OBSERVASI KEMATANGAN &amp; TAHFIDZ...</div>
+              <span class="announcement-badge-pengumuman">Pengumuman</span>
             </div>
-            <div class="announcement-date">30 Juli 2026</div>
-            <div class="announcement-title">PENGUMUMAN PELAKSANAAN OBSERVASI KEMATANGAN &amp; TAHFIDZ...</div>
-            <span class="announcement-badge-pengumuman">Pengumuman</span>
-          </div>
+          </a>
         </div>
 
         <div class="col-lg-3 col-md-6">
-          <div class="announcement-card" onclick="showModalPengumuman('JADWAL PENDAFTARAN GELOMBANG 1 PPDB SD ISLAM PLUS AL-WAFA BATAM', '21 Juli 2026', 'Pendaftaran PPDB Gelombang 1 telah resmi dibuka. Dapatkan potongan biaya pendaftaran serta jaminan alokasi rombel kelas tematik Sahabat Nabi.')">
-            <div class="announcement-icon-wrap">
-              <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+          <a href="{{ route('informasi.index') }}" class="text-decoration-none text-reset d-block h-100">
+            <div class="announcement-card h-100">
+              <div class="announcement-icon-wrap">
+                <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+              </div>
+              <div class="announcement-date"><i class="bi bi-calendar3 me-1"></i>21 Juli 2026</div>
+              <div class="announcement-title">PENGUMUMAN JADWAL GELOMBANG 1 PPDB SD ISLAM PLUS AL-WAFA...</div>
+              <span class="announcement-badge-pengumuman">Pengumuman</span>
             </div>
-            <div class="announcement-date">21 Juli 2026</div>
-            <div class="announcement-title">PENGUMUMAN JADWAL GELOMBANG 1 PPDB SD ISLAM PLUS AL-WAFA...</div>
-            <span class="announcement-badge-pengumuman">Pengumuman</span>
-          </div>
+          </a>
         </div>
 
         <div class="col-lg-3 col-md-6">
-          <div class="announcement-card" onclick="showModalPengumuman('PENGUMUMAN HASIL KELULUSAN OBSERVASI & WAWANCARA ORANG TUA', '25 April 2026', 'Hasil verifikasi administrasi dan keputusan kelulusan calon siswa baru dapat dicek langsung melalui akun dashboard orang tua masing-masing.')">
-            <div class="announcement-icon-wrap">
-              <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+          <a href="{{ route('informasi.index') }}" class="text-decoration-none text-reset d-block h-100">
+            <div class="announcement-card h-100">
+              <div class="announcement-icon-wrap">
+                <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+              </div>
+              <div class="announcement-date"><i class="bi bi-calendar3 me-1"></i>25 April 2026</div>
+              <div class="announcement-title">PENGUMUMAN HASIL OBSERVASI UNTUK CALON SISWA BARU...</div>
+              <span class="announcement-badge-pengumuman">Pengumuman</span>
             </div>
-            <div class="announcement-date">25 April 2026</div>
-            <div class="announcement-title">PENGUMUMAN HASIL OBSERVASI UNTUK CALON SISWA BARU...</div>
-            <span class="announcement-badge-pengumuman">Pengumuman</span>
-          </div>
+          </a>
         </div>
 
         <div class="col-lg-3 col-md-6">
-          <div class="announcement-card" onclick="showModalPengumuman('RINCIAN BIAYA PENDIDIKAN DAN UANG MASUK TP 2026/2027', '4 Februari 2026', 'Informasi resmi terkait rincian tarif SPP, biaya formulir, seragam, dan buku paket TP 2026/2027 telah dirilis dan dapat diangsur secara fleksibel.')">
-            <div class="announcement-icon-wrap">
-              <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+          <a href="{{ route('informasi.index') }}" class="text-decoration-none text-reset d-block h-100">
+            <div class="announcement-card h-100">
+              <div class="announcement-icon-wrap">
+                <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+              </div>
+              <div class="announcement-date"><i class="bi bi-calendar3 me-1"></i>4 Februari 2026</div>
+              <div class="announcement-title">RINCIAN BIAYA PENDIDIKAN &amp; PERLENGKAPAN TAHUN 2026/2027...</div>
+              <span class="announcement-badge-info">Informasi</span>
             </div>
-            <div class="announcement-date">4 Februari 2026</div>
-            <div class="announcement-title">RINCIAN BIAYA PENDIDIKAN &amp; PERLENGKAPAN TAHUN 2026/2027...</div>
-            <span class="announcement-badge-info">Informasi</span>
-          </div>
+          </a>
         </div>
       @endif
     </div>
 
     <!-- ============================================
-         6. CALL TO ACTION BANNER (KAMI SIAP MEMBANTU ANDA)
+         6. CALL TO ACTION BANNER (KAMI SIAP MEMBANTU ANDA) - HIJAU
     ============================================ -->
+    @php
+      $rawWaHome = $settings['kontak_whatsapp'] ?? '081266812015';
+      $cleanWaHome = preg_replace('/[^0-9]/', '', $rawWaHome);
+      if (str_starts_with($cleanWaHome, '0')) {
+          $cleanWaHome = '62' . substr($cleanWaHome, 1);
+      }
+      $waUrlHome = 'https://wa.me/' . $cleanWaHome;
+    @endphp
+
     <div class="cta-uis-banner mt-5">
       <div class="row align-items-center">
         <div class="col-lg-8 mb-3 mb-lg-0">
@@ -903,9 +1205,11 @@
         </div>
         <div class="col-lg-4 text-lg-end">
           <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-            <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $settings['kontak_whatsapp'] ?? '081266812015')) }}?text=Assalamu’alaikum%20Panitia%20PPDB%20SD%20Islam%20Plus%20Al-Wafa,%20saya%20ingin%20bertanya" target="_blank" class="btn-cta-white">
-              <i class="bi bi-whatsapp"></i> WhatsApp
-            </a>
+            @if(($settings['cta_wa_active'] ?? '1') == '1')
+              <a href="{{ $waUrlHome }}?text={{ urlencode($settings['cta_wa_text'] ?? 'Assalamu’alaikum Panitia PPDB SD Islam Plus Al-Wafa, saya ingin bertanya') }}" target="_blank" class="btn-cta-white">
+                <i class="bi bi-whatsapp"></i> WhatsApp
+              </a>
+            @endif
             <button type="button" class="btn-cta-white" data-bs-toggle="modal" data-bs-target="#modalPetunjuk">
               <i class="bi bi-book"></i> Petunjuk Pendaftaran
             </button>
@@ -928,11 +1232,11 @@
         <div class="d-flex align-items-center gap-2 mb-3">
           <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo" style="height: 44px;" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
           <div>
-            <div class="small text-muted fw-semibold">Seleksi Penerimaan Siswa Baru</div>
-            <strong class="text-dark">SD Islam Plus Al-Wafa Batam</strong>
+            <strong class="text-white d-block" style="font-size: 1rem; letter-spacing: -0.2px;">SD ISLAM PLUS AL-WAFA</strong>
+            <div class="small" style="color: #94a3b8;">{{ $settings['yayasan'] ?? 'Yayasan Daarul Aitam Batam' }}</div>
           </div>
         </div>
-        <p class="small text-muted mb-3" style="max-width: 320px;">
+        <p class="small mb-3" style="color: #cbd5e1; max-width: 320px; line-height: 1.6;">
           Membentuk generasi Qur'ani yang beriman, berakhlak mulia, cakap digital, dan berwawasan global.
         </p>
         <div class="d-flex">
@@ -946,15 +1250,15 @@
       <!-- Kolom 2: Kontak Kami -->
       <div class="col-lg-3 col-md-6">
         <div class="footer-uis-heading">Kontak Kami</div>
-        <div class="small text-muted mb-2">
+        <div class="small mb-2" style="color: #cbd5e1; line-height: 1.6;">
           <i class="bi bi-geo-alt me-1 text-success"></i>
           {{ $settings['kontak_alamat'] ?? 'Bida Asri II Blok G2 No. 11 - 15 Kel. Belian, Kec. Batam Kota, Kota Batam' }}
         </div>
-        <div class="small text-muted mb-2">
+        <div class="small mb-2" style="color: #cbd5e1;">
           <i class="bi bi-telephone me-1 text-success"></i>
           Telp: {{ $settings['kontak_telepon'] ?? '0778 7495940' }} / WA: {{ $settings['kontak_whatsapp'] ?? '081266812015' }}
         </div>
-        <div class="small text-muted">
+        <div class="small" style="color: #cbd5e1;">
           <i class="bi bi-envelope me-1 text-success"></i>
           {{ $settings['kontak_email'] ?? 'sdipalwafa@gmail.com' }}
         </div>
@@ -964,10 +1268,10 @@
       <div class="col-6 col-lg-2 col-md-6">
         <div class="footer-uis-heading">Menu</div>
         <ul class="footer-uis-list">
-          <li><a href="#home">Beranda</a></li>
-          <li><a href="#program">Program Studi</a></li>
-          <li><a href="#informasi">Informasi dan Pengumuman</a></li>
-          <li><a href="#jalur">Jalur Pendaftaran</a></li>
+          <li><a href="#home"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Beranda</a></li>
+          <li><a href="#jalur"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Jalur Pendaftaran</a></li>
+          <li><a href="{{ route('biaya.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Brosur &amp; Biaya</a></li>
+          <li><a href="#informasi"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Informasi &amp; Pengumuman</a></li>
         </ul>
       </div>
 
@@ -975,17 +1279,17 @@
       <div class="col-6 col-lg-3 col-md-6">
         <div class="footer-uis-heading">Tautan</div>
         <ul class="footer-uis-list">
-          <li><a href="#">Yayasan Daarul Aitam Batam</a></li>
-          <li><a href="{{ route('login') }}">Portal PPDB Online</a></li>
-          <li><a href="#modalBiaya" data-bs-toggle="modal">Rincian Tarif Biaya</a></li>
-          <li><a href="#">NPSN: {{ $settings['npsn'] ?? '69888848' }} (Akreditasi B)</a></li>
-          <li><a href="#modalPetunjuk" data-bs-toggle="modal">Petunjuk Pendaftaran</a></li>
+          <li><a href="#"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Yayasan Daarul Aitam</a></li>
+          <li><a href="{{ route('login') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Portal PPDB Online</a></li>
+          <li><a href="{{ route('biaya.publik') }}"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Rincian Tarif &amp; Brosur</a></li>
+          <li><a href="#"><i class="bi bi-chevron-right small me-1 opacity-50"></i> NPSN: {{ $settings['npsn'] ?? '69888848' }}</a></li>
+          <li><a href="#modalPetunjuk" data-bs-toggle="modal"><i class="bi bi-chevron-right small me-1 opacity-50"></i> Petunjuk Pendaftaran</a></li>
         </ul>
       </div>
     </div>
 
     <!-- Copyright -->
-    <div class="pt-3 border-top text-center text-muted small">
+    <div class="pt-3 border-top text-center small" style="color: #94a3b8; border-color: rgba(255, 255, 255, 0.15) !important;">
       Copyright &copy; {{ date('Y') }} <strong>SD Islam Plus Al-Wafa Batam</strong> &bull; Yayasan Daarul Aitam
     </div>
   </div>
@@ -994,10 +1298,12 @@
 <!-- ============================================
      8. FLOATING WHATSAPP BUTTON (POJOK KANAN BAWAH)
 ============================================ -->
-<a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $settings['kontak_whatsapp'] ?? '081266812015')) }}?text=Assalamu’alaikum%20Admin%20PPDB%20SD%20Islam%20Plus%20Al-Wafa,%20saya%20butuh%20bantuan" target="_blank" class="floating-wa-btn">
+@if(($settings['floating_wa_active'] ?? '1') == '1')
+<a href="{{ $waUrlHome }}?text={{ urlencode($settings['cta_wa_text'] ?? 'Assalamu’alaikum Admin PPDB SD Islam Plus Al-Wafa, saya butuh bantuan') }}" target="_blank" class="floating-wa-btn" title="Hubungi Kami via WhatsApp">
   <i class="bi bi-whatsapp fs-5"></i>
   <span>Butuh Bantuan? Hubungi Kami!</span>
 </a>
+@endif
 
 <!-- ============================================
      9. MODALS DETAIL
@@ -1039,6 +1345,66 @@
       <div class="modal-footer border-0 pt-0">
         <a href="{{ route('register') }}" class="btn-uis-primary w-100 py-2">
           Daftar di Kelas Ini Sekarang
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detail Jalur Pendaftaran (Pop-up saat klik tombol Lihat Detail pada card) -->
+<div class="modal fade" id="modalDetailJalurPendaftaran" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header text-white" style="background: linear-gradient(135deg, #05824e, #035e38);">
+        <h5 class="modal-title fw-bold" id="modalJalurTitle">Detail Jalur Pendaftaran</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom flex-wrap gap-2">
+          <div>
+            <span class="badge px-3 py-2 fs-6" id="modalJalurStatusBadge">Pendaftaran Dibuka</span>
+            <span class="badge bg-light text-dark border px-3 py-2 fs-6 ms-1" id="modalJalurTahun">T.A 2026/2027</span>
+          </div>
+          <div class="text-end">
+            <div class="text-muted small">Biaya Formulir Pendaftaran:</div>
+            <div class="fs-5 fw-bold text-danger" id="modalJalurBiaya">Rp. 250.000</div>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="p-3 bg-light rounded-3 h-100 border">
+              <div class="text-muted small mb-1"><i class="bi bi-calendar3 me-1 text-success"></i> Periode Pendaftaran:</div>
+              <div class="fw-bold text-dark" id="modalJalurPeriode">-</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 bg-light rounded-3 h-100 border">
+              <div class="text-muted small mb-1"><i class="bi bi-people me-1 text-success"></i> Kuota Penerimaan:</div>
+              <div class="fw-bold text-dark" id="modalJalurKuota">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <h6 class="fw-bold text-dark mb-1"><i class="bi bi-file-text me-1 text-success"></i> Deskripsi Jalur</h6>
+          <p class="text-muted small mb-0" id="modalJalurDeskripsi">-</p>
+        </div>
+
+        <div class="mb-3">
+          <h6 class="fw-bold text-dark mb-1"><i class="bi bi-card-checklist me-1 text-success"></i> Persyaratan Khusus &amp; Dokumen</h6>
+          <div class="p-3 bg-light rounded-3 text-secondary small border" id="modalJalurPersyaratan">-</div>
+        </div>
+
+        <div class="alert alert-info border-0 rounded-3 small d-flex align-items-center mb-0 mt-3">
+          <i class="bi bi-info-circle-fill me-2 fs-5 text-info"></i>
+          <div>Silakan klik <strong>Daftar Sekarang</strong> di bawah untuk membuat akun dan memulai pengisian formulir pendaftaran.</div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-0 py-3 px-4 d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Tutup</button>
+        <a href="{{ route('register') }}" class="btn btn-success fw-bold px-4 py-2 rounded-pill" id="modalJalurBtnDaftar" style="background-color: #05824e; border-color: #05824e;">
+          <i class="bi bi-pencil-square me-1"></i> Daftar Sekarang
         </a>
       </div>
     </div>
@@ -1096,7 +1462,7 @@
       </div>
       <div class="modal-footer border-0 pt-0">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
-        <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $settings['kontak_whatsapp'] ?? '081266812015')) }}?text=Halo%20Panitia,%20saya%20ingin%20tanya%20rincian%20biaya%20PPDB" target="_blank" class="btn btn-success btn-sm">
+        <a href="{{ $waUrlHome }}?text={{ urlencode($settings['cta_wa_text'] ?? 'Halo Panitia PPDB SD Islam Plus Al-Wafa, saya ingin bertanya rincian biaya pendaftaran') }}" target="_blank" class="btn btn-success btn-sm">
           <i class="bi bi-whatsapp me-1"></i> Konsultasi Biaya via WhatsApp
         </a>
       </div>
@@ -1173,41 +1539,89 @@
   }
 
   // Handle Form Pencarian Jalur Pendaftaran
-  function handleCariJalur(event) {
-    event.preventDefault();
-    var tingkat = document.getElementById('selectTingkat').value;
-    var kelas = document.getElementById('selectKelas').value;
+  function handleCariJalur(event, shouldScroll) {
+    if (event) event.preventDefault();
+    if (typeof shouldScroll === 'undefined') shouldScroll = true;
 
-    // Reset pills
-    document.querySelectorAll('.pill-filter-btn').forEach(function(b) {
-      b.classList.remove('active');
-    });
+    var tahun = document.getElementById('selectTahunAjaran') ? document.getElementById('selectTahunAjaran').value : 'all';
+    var gelombang = document.getElementById('selectGelombang') ? document.getElementById('selectGelombang').value : 'all';
+    var jalur = document.getElementById('selectJalur') ? document.getElementById('selectJalur').value : 'all';
 
-    var items = document.querySelectorAll('#programListContainer .program-item-card');
-    items.forEach(function(item) {
-      var itemTingkat = item.getAttribute('data-tingkat');
-      var itemRombel = item.getAttribute('data-rombel');
+    var cards = document.querySelectorAll('#daftarJalurCardContainer .jalur-item-card');
+    var visibleCount = 0;
+
+    cards.forEach(function(card) {
+      var cardTahun = card.getAttribute('data-tahun');
+      var cardGelombang = card.getAttribute('data-gelombang');
+      var cardJalur = card.getAttribute('data-jalur');
 
       var match = true;
-      if (tingkat !== 'all' && itemTingkat !== tingkat) {
+      if (tahun !== 'all' && cardTahun !== tahun) {
         match = false;
       }
-      if (kelas !== 'all' && itemRombel !== kelas) {
+      if (gelombang !== 'all' && cardGelombang !== gelombang) {
+        match = false;
+      }
+      if (jalur !== 'all' && cardJalur !== jalur) {
         match = false;
       }
 
       if (match) {
-        item.style.display = 'flex';
+        card.style.display = 'block';
+        visibleCount++;
       } else {
-        item.style.display = 'none';
+        card.style.display = 'none';
       }
     });
 
-    // Scroll mulus ke bagian program studi
-    var programSection = document.getElementById('program');
-    if (programSection) {
-      programSection.scrollIntoView({ behavior: 'smooth' });
+    var alertEmpty = document.getElementById('noJalurFoundAlert');
+    if (alertEmpty) {
+      alertEmpty.style.display = (visibleCount === 0) ? 'block' : 'none';
     }
+
+    // Scroll mulus ke daftar jalur pendaftaran jika dipicu pencarian
+    if (shouldScroll) {
+      var targetSection = document.getElementById('jalur');
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  // Jalankan filter saat halaman selesai dimuat agar card aktif langsung muncul
+  document.addEventListener('DOMContentLoaded', function() {
+    handleCariJalur(null, false);
+  });
+
+  // Modal Detail Jalur Pendaftaran (Pop-up tombol Lihat Detail)
+  function showModalDetailJalur(namaJalur, namaGelombang, tahun, status, periode, biaya, kuota, deskripsi, persyaratan, isActive) {
+    document.getElementById('modalJalurTitle').innerText = namaJalur + ' - ' + namaGelombang;
+    document.getElementById('modalJalurTahun').innerText = 'T.A. ' + tahun;
+    document.getElementById('modalJalurPeriode').innerText = periode;
+    document.getElementById('modalJalurBiaya').innerText = biaya;
+    document.getElementById('modalJalurKuota').innerText = kuota + ' Siswa';
+    document.getElementById('modalJalurDeskripsi').innerText = deskripsi;
+    document.getElementById('modalJalurPersyaratan').innerText = persyaratan;
+
+    var statusBadge = document.getElementById('modalJalurStatusBadge');
+    var btnDaftar = document.getElementById('modalJalurBtnDaftar');
+
+    if (isActive) {
+      statusBadge.className = 'badge bg-success px-3 py-2 fs-6';
+      statusBadge.innerText = 'Pendaftaran Dibuka';
+      btnDaftar.classList.remove('disabled');
+      btnDaftar.removeAttribute('disabled');
+      btnDaftar.innerHTML = '<i class="bi bi-pencil-square me-1"></i> Daftar Sekarang';
+    } else {
+      statusBadge.className = 'badge bg-danger px-3 py-2 fs-6';
+      statusBadge.innerText = 'Pendaftaran Ditutup';
+      btnDaftar.classList.add('disabled');
+      btnDaftar.setAttribute('disabled', 'disabled');
+      btnDaftar.innerHTML = '<i class="bi bi-x-circle me-1"></i> Pendaftaran Ditutup';
+    }
+
+    var modal = new bootstrap.Modal(document.getElementById('modalDetailJalurPendaftaran'));
+    modal.show();
   }
 
   // Modal Detail Kelas
@@ -1252,6 +1666,45 @@
     if (firstTab) {
       filterProgramTab('Kelas I', firstTab);
     }
+
+    // Dynamic ScrollSpy & Nav-Link active indicator
+    var navLinks = document.querySelectorAll('#navMenu .nav-link');
+    var sections = [];
+
+    navLinks.forEach(function (link) {
+      var href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        var el = document.querySelector(href);
+        if (el) {
+          sections.push({ el: el, link: link });
+        }
+      }
+    });
+
+    function updateActiveNav() {
+      var scrollPos = window.scrollY + 140;
+      var current = null;
+
+      for (var i = 0; i < sections.length; i++) {
+        var sec = sections[i];
+        if (sec.el.offsetTop <= scrollPos) {
+          current = sec.link;
+        }
+      }
+
+      navLinks.forEach(function (l) {
+        l.classList.remove('active');
+      });
+
+      if (current) {
+        current.classList.add('active');
+      } else if (navLinks.length > 0) {
+        navLinks[0].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
   });
 </script>
 

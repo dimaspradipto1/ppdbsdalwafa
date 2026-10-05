@@ -22,7 +22,7 @@ class HomepageSettingController extends Controller
      */
     public function update(Request $request)
     {
-        $input = $request->except(['_token', 'sambutan_foto']);
+        $input = $request->except(['_token', 'sambutan_foto', 'brosur_file', 'hapus_brosur_file', 'hapus_sambutan_foto']);
 
         foreach ($input as $key => $val) {
             $group = 'general';
@@ -43,16 +43,13 @@ class HomepageSettingController extends Controller
             HomepageSetting::set($key, $val, $group);
         }
 
-        // Upload foto kepala sekolah jika ada
-        if ($request->hasFile('sambutan_foto')) {
-            $file = $request->file('sambutan_foto');
-            $filename = 'kepsek_' . time() . '.' . $file->getClientOriginalExtension();
-            $destination = public_path('assets/uploads/kepsek');
-            if (!File::isDirectory($destination)) {
-                File::makeDirectory($destination, 0755, true, true);
+        // Hapus file brosur jika dicentang
+        if ($request->boolean('hapus_brosur_file')) {
+            $oldBrosur = HomepageSetting::get('brosur_file');
+            if ($oldBrosur && File::exists(public_path($oldBrosur))) {
+                File::delete(public_path($oldBrosur));
             }
-            $file->move($destination, $filename);
-            HomepageSetting::set('sambutan_foto', 'assets/uploads/kepsek/' . $filename, 'sambutan', 'Foto Kepala Sekolah');
+            HomepageSetting::set('brosur_file', '', 'brosur', 'File Brosur PPDB');
         }
 
         // Upload file brosur PPDB jika ada
@@ -67,6 +64,18 @@ class HomepageSettingController extends Controller
             HomepageSetting::set('brosur_file', 'assets/uploads/brosur/' . $filename, 'brosur', 'File Brosur PPDB');
         }
 
-        return redirect()->route('homepage-setting.index')->with('success', 'Pengaturan konten homepage berhasil disimpan!');
+        // Upload foto kepala sekolah jika ada
+        if ($request->hasFile('sambutan_foto')) {
+            $file = $request->file('sambutan_foto');
+            $filename = 'kepsek_' . time() . '.' . $file->getClientOriginalExtension();
+            $destination = public_path('assets/uploads/kepsek');
+            if (!File::isDirectory($destination)) {
+                File::makeDirectory($destination, 0755, true, true);
+            }
+            $file->move($destination, $filename);
+            HomepageSetting::set('sambutan_foto', 'assets/uploads/kepsek/' . $filename, 'sambutan', 'Foto Kepala Sekolah');
+        }
+
+        return redirect()->route('homepage-setting.index')->with('success', 'Pengaturan konten homepage & brosur berhasil disimpan!');
     }
 }

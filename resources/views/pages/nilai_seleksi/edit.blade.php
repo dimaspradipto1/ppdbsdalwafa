@@ -24,7 +24,7 @@
             <div>
               <h5 class="fw-bold mb-1 text-dark">{{ $calonSiswa->nama_lengkap }}</h5>
               <div class="text-muted small">
-                No. Registrasi: <strong class="font-monospace text-primary">{{ $calonSiswa->no_pendaftaran ?: 'REG-' . $calonSiswa->id_calon_siswa }}</strong> | 
+                No. Registrasi: <strong class="font-monospace text-primary">{{ $calonSiswa->no_pendaftaran ?: str_pad($calonSiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}</strong> | 
                 Jalur: <strong>{{ $calonSiswa->jalur->nama_jalur ?? 'Reguler' }}</strong> | 
                 Gelombang: <strong>{{ $calonSiswa->gelombang->nama_gelombang ?? '-' }}</strong>
               </div>

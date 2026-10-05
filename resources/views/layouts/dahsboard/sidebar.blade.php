@@ -20,10 +20,10 @@
         {{-- Menu Homepage (Khusus Admin: super_admin & admin_ppdb) --}}
         @if($user->hasRole('super_admin', 'admin_ppdb'))
           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('homepage-banner.*', 'homepage-setting.*') ? '' : 'collapsed' }}" data-bs-target="#homepage-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ request()->routeIs('homepage-banner.*', 'homepage-setting.*', 'wa-admin.*') ? '' : 'collapsed' }}" data-bs-target="#homepage-nav" data-bs-toggle="collapse" href="#">
               <i class="bi bi-window-desktop"></i><span>Homepage PPDB</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="homepage-nav" class="nav-content collapse {{ request()->routeIs('homepage-banner.*', 'homepage-setting.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="homepage-nav" class="nav-content collapse {{ request()->routeIs('homepage-banner.*', 'homepage-setting.*', 'wa-admin.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
               <li>
                 <a href="{{ route('homepage-banner.index') }}" class="{{ request()->routeIs('homepage-banner.*') ? 'active' : '' }}">
                   <i class="bi bi-images"></i><span>Banner Homepage</span>
@@ -32,6 +32,16 @@
               <li>
                 <a href="{{ route('pengumuman.index') }}" class="{{ request()->routeIs('pengumuman.*') ? 'active' : '' }}">
                   <i class="bi bi-megaphone"></i><span>Pengumuman & Info</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('wa-admin.index') }}" class="{{ request()->routeIs('wa-admin.*') ? 'active' : '' }}">
+                  <i class="bi bi-whatsapp text-success"></i><span>Pengaturan WA Admin</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('brosur-setting.index') }}" class="{{ request()->routeIs('brosur-setting.*') ? 'active' : '' }}">
+                  <i class="bi bi-file-earmark-pdf text-danger"></i><span>Kelola Brosur PPDB</span>
                 </a>
               </li>
               <li>

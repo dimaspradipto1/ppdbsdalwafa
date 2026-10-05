@@ -27,7 +27,7 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Master Data Tahun Ajaran</h1>
+  <h1>Tahun Ajaran</h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
@@ -60,7 +60,7 @@
       <div class="card">
         <div class="card-body pt-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="card-title p-0 m-0">Daftar Tahun Ajaran</h5>
+            <h5 class="card-title p-0 m-0">Master Data Tahun Ajaran</h5>
             <a href="{{ route('tahun-ajaran.create') }}" class="btn btn-primary btn-sm">
               <i class="bi bi-plus-lg me-1"></i> Tambah Tahun Ajaran
             </a>

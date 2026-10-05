@@ -35,7 +35,7 @@ class NilaiSeleksiController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('siswa', function ($row) {
-                    $no = e($row->no_pendaftaran ?? 'REG-' . $row->id_calon_siswa);
+                    $no = e($row->no_pendaftaran ?? str_pad($row->id_calon_siswa, 8, '0', STR_PAD_LEFT));
                     return '<div class="fw-bold text-dark">' . e($row->nama_lengkap) . '</div>'
                          . '<div class="text-muted small font-monospace">' . $no . ' &bull; ' . e($row->asal_sekolah ?: '-') . '</div>';
                 })

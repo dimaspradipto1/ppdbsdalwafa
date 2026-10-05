@@ -78,7 +78,7 @@
                 @forelse($daftarSiswa as $idx => $siswa)
                   <tr>
                     <td class="text-center">{{ $idx + 1 }}</td>
-                    <td class="font-monospace fw-bold">{{ $siswa->no_pendaftaran ?: 'REG-' . $siswa->id_calon_siswa }}</td>
+                    <td class="font-monospace fw-bold">{{ $siswa->no_pendaftaran ?: str_pad($siswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}</td>
                     <td>
                       <div class="fw-bold text-dark">{{ $siswa->nama_lengkap }}</div>
                       <div class="text-muted small">{{ $siswa->asal_sekolah ?: '-' }}</div>

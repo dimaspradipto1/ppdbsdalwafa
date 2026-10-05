@@ -85,7 +85,7 @@ class CalonSiswaController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('no_pendaftaran', function ($row) {
-                    $no = e($row->no_pendaftaran ?? 'REG-' . $row->id_calon_siswa);
+                    $no = e($row->no_pendaftaran ?? str_pad($row->id_calon_siswa, 8, '0', STR_PAD_LEFT));
                     $tgl = $row->tanggal_daftar 
                         ? $row->tanggal_daftar->translatedFormat('d M Y H:i') 
                         : ($row->created_at ? $row->created_at->translatedFormat('d M Y') : '-');
@@ -193,11 +193,14 @@ class CalonSiswaController extends Controller
     /**
      * Form tambah calon siswa baru
      */
-    public function create()
+    public function create(Request $request)
     {
         $dataMaster = $this->getMasterData();
+        $selectedTahun = $request->get('id_tahun_ajaran');
+        $selectedGelombang = $request->get('id_gelombang');
+        $selectedJalur = $request->get('id_jalur');
 
-        return view('pages.calon_siswa.create', $dataMaster);
+        return view('pages.calon_siswa.create', array_merge($dataMaster, compact('selectedTahun', 'selectedGelombang', 'selectedJalur')));
     }
 
     /**
@@ -210,9 +213,13 @@ class CalonSiswaController extends Controller
         $calonSiswa = DB::transaction(function () use ($validated, $request) {
             $siswaData = collect($validated)->except(['prestasi', 'beasiswa'])->toArray();
 
-            // Set user_id jika login sebagai pendaftar
-            if (Auth::check() && (Auth::user()->role === 'pendaftar' || Auth::user()->role === 'user') && empty($siswaData['user_id'])) {
-                $siswaData['user_id'] = Auth::id();
+            // Set user_id dan status jika login sebagai pendaftar/calon siswa
+            if (Auth::check() && (Auth::user()->role === 'pendaftar' || Auth::user()->role === 'user')) {
+                if (empty($siswaData['user_id'])) {
+                    $siswaData['user_id'] = Auth::id();
+                }
+                // Status verifikasi selalu otomatis menunggu_verifikasi untuk calon siswa/wali
+                $siswaData['status'] = 'menunggu_verifikasi';
             }
 
             // Simpan Calon Siswa (no_pendaftaran auto-generated in Model booted)
@@ -331,8 +338,16 @@ class CalonSiswaController extends Controller
 
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated, $request, $calonSiswa) {
+        DB::transaction(function () use ($validated, $request, $calonSiswa, $user) {
             $siswaData = collect($validated)->except(['prestasi', 'beasiswa'])->toArray();
+
+            // Calon siswa / pendaftar tidak diizinkan mengubah status verifikasi dan pilihan jalur awal
+            if ($user && ($user->role === 'pendaftar' || $user->role === 'user')) {
+                unset($siswaData['status']);
+                unset($siswaData['id_tahun_ajaran']);
+                unset($siswaData['id_gelombang']);
+                unset($siswaData['id_jalur']);
+            }
 
             $calonSiswa->update($siswaData);
 

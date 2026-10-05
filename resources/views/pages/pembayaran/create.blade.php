@@ -41,7 +41,7 @@
                 <option value="">-- Cari / Pilih Siswa --</option>
                 @foreach($daftarSiswa as $siswa)
                   <option value="{{ $siswa->id_calon_siswa }}" {{ (old('id_calon_siswa', $selectedSiswaId) == $siswa->id_calon_siswa) ? 'selected' : '' }}>
-                    {{ $siswa->nama_lengkap }} ({{ $siswa->no_pendaftaran ?: 'REG-' . $siswa->id_calon_siswa }})
+                    {{ $siswa->nama_lengkap }} ({{ $siswa->no_pendaftaran ?: str_pad($siswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }})
                   </option>
                 @endforeach
               </select>

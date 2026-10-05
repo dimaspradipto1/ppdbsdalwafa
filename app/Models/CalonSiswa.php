@@ -91,37 +91,74 @@ class CalonSiswa extends Model
     {
         static::creating(function ($model) {
             if (empty($model->no_pendaftaran)) {
-                $model->no_pendaftaran = static::generateNoPendaftaran($model->id_tahun_ajaran);
+                $model->no_pendaftaran = static::generateNoPendaftaran($model->id_tahun_ajaran, $model->id_gelombang);
             }
             if (empty($model->tanggal_daftar)) {
                 $model->tanggal_daftar = now();
             }
         });
+
+        static::saving(function ($model) {
+            if (empty($model->no_pendaftaran)) {
+                $model->no_pendaftaran = static::generateNoPendaftaran($model->id_tahun_ajaran, $model->id_gelombang);
+            }
+        });
     }
 
-    public static function generateNoPendaftaran(?int $idTahunAjaran = null): string
+    /**
+     * Generate Nomor Registrasi Pendaftaran Siswa (Nomor Murni, Tanpa REG & Tanpa Tanda Hubung)
+     * Format Standar Numerik Sekolah: [TAHUN][NOMOR_URUT_4_DIGIT]
+     * Contoh: 20260001, 20260002, 20260003
+     */
+    public static function generateNoPendaftaran(?int $idTahunAjaran = null, ?int $idGelombang = null): string
     {
+        // 1. Tentukan Tahun Ajaran (misal 2026 dari '2026/2027')
         $tahun = date('Y');
         if ($idTahunAjaran) {
             $ta = TahunAjaran::find($idTahunAjaran);
             if ($ta && preg_match('/^(\d{4})/', $ta->tahun_ajaran, $matches)) {
                 $tahun = $matches[1];
             }
-        }
-
-        $last = static::where('no_pendaftaran', 'LIKE', "REG-{$tahun}-%")
-            ->orderByDesc('id_calon_siswa')
-            ->first();
-
-        $nextNum = 1;
-        if ($last && $last->no_pendaftaran && preg_match('/REG-\d{4}-(\d+)/', $last->no_pendaftaran, $matches)) {
-            $nextNum = (int)$matches[1] + 1;
         } else {
-            $count = static::whereYear('created_at', $tahun)->count();
-            $nextNum = $count + 1;
+            $taAktif = TahunAjaran::where('is_active', true)->first();
+            if ($taAktif && preg_match('/^(\d{4})/', $taAktif->tahun_ajaran, $matches)) {
+                $tahun = $matches[1];
+            }
         }
 
-        return sprintf('REG-%s-%04d', $tahun, $nextNum);
+        $prefix = (string)$tahun;
+
+        // 2. Cari nomor urut numerik tertinggi yang sudah terdaftar untuk tahun ini
+        $allRegistrations = static::where('no_pendaftaran', 'LIKE', "{$prefix}%")
+            ->pluck('no_pendaftaran');
+
+        $maxNumber = 0;
+        foreach ($allRegistrations as $reg) {
+            if (preg_match('/^' . $tahun . '(\d{4})$/', $reg, $m)) {
+                $val = (int)$m[1];
+                if ($val > $maxNumber) {
+                    $maxNumber = $val;
+                }
+            } elseif (preg_match('/REG-?\d{4}-?(\d+)/i', $reg, $m)) {
+                $val = (int)$m[1];
+                if ($val > $maxNumber) {
+                    $maxNumber = $val;
+                }
+            }
+        }
+
+        $nextNum = $maxNumber + 1;
+
+        // 3. Verifikasi Keunikan Secara Mutlak (Loop Anti-Collision)
+        do {
+            $generatedNo = sprintf('%s%04d', $prefix, $nextNum);
+            $exists = static::where('no_pendaftaran', $generatedNo)->exists();
+            if ($exists) {
+                $nextNum++;
+            }
+        } while ($exists);
+
+        return $generatedNo;
     }
 
     // ==========================================
