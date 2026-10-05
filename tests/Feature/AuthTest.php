@@ -22,6 +22,8 @@ class AuthTest extends TestCase
 
     public function test_user_can_register(): void
     {
+        User::where('email', 'siswabaru@gmail.com')->delete();
+
         $response = $this->post('/register', [
             'name' => 'Siswa Baru',
             'email' => 'siswabaru@gmail.com',

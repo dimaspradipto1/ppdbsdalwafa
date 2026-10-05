@@ -34,7 +34,7 @@
             <a href="{{ route('nilai-seleksi.index') }}" class="btn btn-outline-light btn-sm fw-semibold px-3 shadow-sm">
               <i class="bi bi-clipboard-check me-1"></i> Nilai Seleksi
             </a>
-            @if($role === 'super_admin')
+            @if(in_array($role, ['super_admin', 'admin_ppdb', 'admin']))
               <a href="{{ route('users.index') }}" class="btn btn-outline-warning btn-sm fw-semibold px-3 shadow-sm">
                 <i class="bi bi-people me-1"></i> Kelola User
               </a>
@@ -163,13 +163,13 @@
   </div>
 </div>
 
-@if($role === 'super_admin' && isset($usersByRole))
-  <!-- Khusus Super Admin: Widget Ringkasan Akun Pengguna -->
+@if(in_array($role, ['super_admin', 'admin_ppdb', 'admin']) && isset($usersByRole))
+  <!-- Widget Ringkasan Akun Pengguna -->
   <div class="row mb-3">
     <div class="col-12">
       <div class="card shadow-sm border-0">
         <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
-          <h6 class="m-0 fw-bold text-dark"><i class="bi bi-people me-2 text-primary"></i>Statistik Pengguna Sistem (Khusus Super Admin)</h6>
+          <h6 class="m-0 fw-bold text-dark"><i class="bi bi-people me-2 text-primary"></i>Statistik Pengguna Sistem</h6>
           <a href="{{ route('users.index') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
             <i class="bi bi-gear me-1"></i> Manajemen User
           </a>

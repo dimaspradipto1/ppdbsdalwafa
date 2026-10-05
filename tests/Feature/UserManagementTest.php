@@ -45,7 +45,38 @@ class UserManagementTest extends TestCase
         ]);
     }
 
-    public function test_non_super_admin_cannot_access_users_index(): void
+    public function test_admin_ppdb_can_access_users_index_equally(): void
+    {
+        $adminPpdb = User::firstOrCreate(
+            ['email' => 'admin_ppdb_test@gmail.com'],
+            [
+                'name'     => 'Admin PPDB Test',
+                'password' => Hash::make('password'),
+                'role'     => 'admin_ppdb',
+            ]
+        );
+
+        $response = $this->actingAs($adminPpdb)->get(route('users.index'));
+        $response->assertStatus(200);
+        $response->assertSee('Manajemen Pengguna (Users)');
+    }
+
+    public function test_admin_alias_can_access_users_index_equally(): void
+    {
+        $adminAlias = User::firstOrCreate(
+            ['email' => 'admin_alias_test@gmail.com'],
+            [
+                'name'     => 'Admin Alias Test',
+                'password' => Hash::make('password'),
+                'role'     => 'admin',
+            ]
+        );
+
+        $response = $this->actingAs($adminAlias)->get(route('users.index'));
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_cannot_access_users_index(): void
     {
         $guru = User::firstOrCreate(
             ['email' => 'guru@gmail.com'],

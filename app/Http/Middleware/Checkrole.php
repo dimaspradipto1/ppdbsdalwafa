@@ -20,7 +20,7 @@ class Checkrole
         }
 
         // Jika middleware dipanggil dengan wildcard '*' (misal checkrole:*), semua user yang telah login diperbolehkan.
-        if (! empty($roles) && ! in_array('*', $roles) && ! in_array($request->user()->role, $roles)) {
+        if (! empty($roles) && ! in_array('*', $roles) && ! $request->user()->hasRole(...$roles)) {
             abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengakses halaman ini.');
         }
 

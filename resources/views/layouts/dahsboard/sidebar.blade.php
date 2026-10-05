@@ -75,8 +75,8 @@
             </a>
             <ul id="master-nav" class="nav-content collapse {{ request()->routeIs('users.*', 'sekolah.*', 'agama.*', 'pendidikan.*', 'pekerjaan.*', 'penghasilan.*', 'kebutuhan-khusus.*', 'tahun-ajaran.*', 'gelombang.*', 'persyaratan-dokumen.*', 'jalur.*', 'biaya.*', 'komponen-seleksi.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
-              {{-- 1. Users (Khusus Super Admin) --}}
-              @if($user->hasRole('super_admin'))
+              {{-- 1. Users (Super Admin & Admin PPDB) --}}
+              @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
                   <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
                     <i class="bi bi-people"></i><span>Users</span>

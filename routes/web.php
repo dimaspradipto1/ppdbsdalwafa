@@ -77,8 +77,8 @@ Route::middleware(['checkrole:*'])->group(function () {
         Route::post('tatacara-setting', [TatacaraAdminController::class, 'update'])->name('tatacara-setting.update');
     });
 
-    // Pengaturan & Master: Users (Super Admin)
-    Route::middleware(['checkrole:super_admin'])->group(function () {
+    // Pengaturan & Master: Users (Super Admin & Admin PPDB)
+    Route::middleware(['checkrole:super_admin,admin_ppdb'])->group(function () {
         Route::resource('users', UserController::class);
     });
 

@@ -130,8 +130,8 @@ class DashboardController extends Controller
             $data['jalurList'] = Jalur::withCount('calonSiswa')->get();
             $data['pendaftarTerbaru'] = CalonSiswa::with(['gelombang', 'jalur'])->latest()->take(5)->get();
 
-            // Khusus Super Admin: Statistik Pengguna & Akun
-            if ($role === 'super_admin') {
+            // Statistik Pengguna & Akun (Super Admin & Admin PPDB)
+            if (in_array($role, ['super_admin', 'admin_ppdb', 'admin'])) {
                 $data['totalUsers'] = User::count();
                 $data['usersByRole'] = User::selectRaw('role, count(*) as count')
                     ->groupBy('role')

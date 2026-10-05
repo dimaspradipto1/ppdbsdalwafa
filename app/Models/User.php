@@ -68,10 +68,23 @@ class User extends Authenticatable
         }
 
         $myRole = $this->role;
+        if ($myRole === 'user') {
+            $myRole = 'pendaftar';
+        }
+
+        $adminRoles = ['super_admin', 'admin_ppdb', 'admin'];
+
+        // Role Admin dan Super Admin adalah sama (memiliki hak akses setara)
+        if (in_array($myRole, $adminRoles)) {
+            foreach ($roles as $role) {
+                if (in_array($role, $adminRoles)) {
+                    return true;
+                }
+            }
+        }
+
         if ($myRole === 'admin') {
             $myRole = 'admin_ppdb';
-        } elseif ($myRole === 'user') {
-            $myRole = 'pendaftar';
         }
 
         return in_array($myRole, $roles) || in_array($this->role, $roles);
