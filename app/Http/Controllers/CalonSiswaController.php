@@ -99,7 +99,7 @@ class CalonSiswaController extends Controller
                         : '<span class="badge bg-danger-subtle text-danger border border-danger-subtle px-1 py-0 ms-1" style="font-size: 0.7rem;"><i class="bi bi-gender-female"></i> P</span>';
 
                     $kebutuhanBadge = '';
-                    if ($row->kebutuhanKhusus && $row->kebutuhanKhusus->kode !== '01') {
+                    if ($row->kebutuhanKhusus && $row->kebutuhanKhusus->kode !== 'A' && $row->kebutuhanKhusus->nama !== 'Tidak Ada') {
                         $kebutuhanBadge = '<span class="badge bg-warning-subtle text-warning border border-warning-subtle ms-1" style="font-size: 0.68rem;"><i class="bi bi-heart-pulse me-1"></i>' . e($row->kebutuhanKhusus->nama) . '</span>';
                     }
 
@@ -233,7 +233,7 @@ class CalonSiswaController extends Controller
                             'jenis_prestasi' => $item['jenis_prestasi'] ?? '04. Lain-lain',
                             'tingkat'        => $item['tingkat'] ?? 'Sekolah',
                             'nama_prestasi'  => $item['nama_prestasi'],
-                            'tahun'          => $item['tahun'] ?? date('Y'),
+                            'tahun'          => !empty($item['tahun']) ? $item['tahun'] : date('Y'),
                             'penyelenggara'  => $item['penyelenggara'] ?? '-',
                         ]);
                     }
@@ -247,8 +247,8 @@ class CalonSiswaController extends Controller
                         $newSiswa->beasiswa()->create([
                             'jenis_beasiswa' => $item['jenis_beasiswa'],
                             'penyelenggara'  => $item['penyelenggara'] ?? '-',
-                            'tahun_mulai'    => $item['tahun_mulai'] ?? date('Y'),
-                            'tahun_selesai'  => $item['tahun_selesai'] ?? null,
+                            'tahun_mulai'    => !empty($item['tahun_mulai']) ? $item['tahun_mulai'] : date('Y'),
+                            'tahun_selesai'  => !empty($item['tahun_selesai']) ? $item['tahun_selesai'] : null,
                         ]);
                     }
                 }
@@ -360,7 +360,7 @@ class CalonSiswaController extends Controller
                             'jenis_prestasi' => $item['jenis_prestasi'] ?? '04. Lain-lain',
                             'tingkat'        => $item['tingkat'] ?? 'Sekolah',
                             'nama_prestasi'  => $item['nama_prestasi'],
-                            'tahun'          => $item['tahun'] ?? date('Y'),
+                            'tahun'          => !empty($item['tahun']) ? $item['tahun'] : date('Y'),
                             'penyelenggara'  => $item['penyelenggara'] ?? '-',
                         ]);
                     }
@@ -375,8 +375,8 @@ class CalonSiswaController extends Controller
                         $calonSiswa->beasiswa()->create([
                             'jenis_beasiswa' => $item['jenis_beasiswa'],
                             'penyelenggara'  => $item['penyelenggara'] ?? '-',
-                            'tahun_mulai'    => $item['tahun_mulai'] ?? date('Y'),
-                            'tahun_selesai'  => $item['tahun_selesai'] ?? null,
+                            'tahun_mulai'    => !empty($item['tahun_mulai']) ? $item['tahun_mulai'] : date('Y'),
+                            'tahun_selesai'  => !empty($item['tahun_selesai']) ? $item['tahun_selesai'] : null,
                         ]);
                     }
                 }

@@ -21,8 +21,11 @@ class StoreDokumenSiswaRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = $this->user();
+        $isPendaftar = $user && ($user->role === 'pendaftar' || $user->role === 'user');
+
         return [
-            'id_calon_siswa'     => 'required|exists:calon_siswa,id_calon_siswa',
+            'id_calon_siswa'     => $isPendaftar ? 'nullable|exists:calon_siswa,id_calon_siswa' : 'required|exists:calon_siswa,id_calon_siswa',
             'id_jenis_dokumen'   => 'required|exists:ref_jenis_dokumen,id_jenis_dokumen',
             'berkas'             => 'required|file|mimes:pdf,jpg,jpeg,png|max:3072', // Maksimal 3MB
             'status_verifikasi'  => 'nullable|in:menunggu,valid,ditolak',

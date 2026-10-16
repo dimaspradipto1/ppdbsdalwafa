@@ -138,16 +138,24 @@
             <div class="col">
               <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
                 <h4 class="fw-bold mb-0 text-dark">{{ $calonSiswa->nama_lengkap }}</h4>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle font-monospace px-2 py-1 fs-6">
-                  {{ $calonSiswa->no_pendaftaran ?? str_pad($calonSiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle font-monospace px-2 py-1 fs-6" title="Nomor Pendaftaran PPDB">
+                  <i class="bi bi-upc-scan me-1"></i>No. Pendaftaran: {{ $calonSiswa->no_pendaftaran ?? str_pad($calonSiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}
                 </span>
                 @php
+                  $status = $calonSiswa->status ?: 'menunggu_verifikasi';
                   $badges = [
                     'draft'               => 'bg-secondary-subtle text-secondary border-secondary-subtle',
                     'menunggu_verifikasi' => 'bg-warning-subtle text-warning-emphasis border-warning-subtle',
                     'diverifikasi'        => 'bg-info-subtle text-info-emphasis border-info-subtle',
                     'diterima'            => 'bg-success-subtle text-success border-success-subtle',
                     'ditolak'             => 'bg-danger-subtle text-danger border-danger-subtle',
+                  ];
+                  $icons = [
+                    'draft'               => 'bi-file-earmark-text',
+                    'menunggu_verifikasi' => 'bi-hourglass-split',
+                    'diverifikasi'        => 'bi-patch-check',
+                    'diterima'            => 'bi-check-circle-fill',
+                    'ditolak'             => 'bi-x-circle-fill',
                   ];
                   $labels = [
                     'draft'               => 'Draft',
@@ -156,11 +164,12 @@
                     'diterima'            => 'Diterima',
                     'ditolak'             => 'Ditolak',
                   ];
-                  $cls = $badges[$calonSiswa->status] ?? 'bg-light text-dark';
-                  $lbl = $labels[$calonSiswa->status] ?? ucfirst($calonSiswa->status);
+                  $cls = $badges[$status] ?? 'bg-secondary-subtle text-secondary border-secondary-subtle';
+                  $lbl = $labels[$status] ?? ucfirst(str_replace('_', ' ', $status));
+                  $icn = $icons[$status] ?? 'bi-patch-check';
                 @endphp
-                <span class="badge {{ $cls }} border px-3 py-1 fs-6">
-                  <i class="bi bi-patch-check me-1"></i>{{ $lbl }}
+                <span class="badge {{ $cls }} border px-3 py-1 fs-6" title="Status Pendaftaran">
+                  <i class="bi {{ $icn }} me-1"></i>Status: {{ $lbl }}
                 </span>
               </div>
 
@@ -168,7 +177,7 @@
                 <span><i class="bi bi-signpost-2 me-1 text-primary"></i>Jalur: <strong>{{ $calonSiswa->jalur->nama_jalur ?? 'Reguler' }}</strong></span>
                 <span><i class="bi bi-layers me-1 text-primary"></i>Gelombang: <strong>{{ $calonSiswa->gelombang->nama_gelombang ?? '-' }}</strong></span>
                 <span><i class="bi bi-calendar-event me-1 text-primary"></i>Tahun: <strong>{{ $calonSiswa->tahunAjaran->tahun_ajaran ?? '-' }}</strong></span>
-                <span><i class="bi bi-clock-history me-1 text-primary"></i>Daftar: <strong>{{ $calonSiswa->tanggal_daftar ? $calonSiswa->tanggal_daftar->translatedFormat('d M Y H:i') : $calonSiswa->created_at->translatedFormat('d M Y') }}</strong></span>
+                <span><i class="bi bi-clock-history me-1 text-primary"></i>Daftar: <strong>{{ ($calonSiswa->tanggal_daftar ?? $calonSiswa->created_at)->timezone(config('app.timezone', 'Asia/Jakarta'))->translatedFormat('d M Y H:i') }} WIB</strong></span>
               </div>
 
               @if($calonSiswa->catatan_verifikasi)
@@ -236,7 +245,7 @@
                     <td>{{ $calonSiswa->asal_sekolah ?? '-' }}</td>
                     <th>Berkebutuhan Khusus</th>
                     <td>
-                      @if($calonSiswa->kebutuhanKhusus && $calonSiswa->kebutuhanKhusus->kode !== '01')
+                      @if($calonSiswa->kebutuhanKhusus && $calonSiswa->kebutuhanKhusus->kode !== 'A' && $calonSiswa->kebutuhanKhusus->nama !== 'Tidak Ada')
                         <span class="badge bg-warning text-dark">{{ $calonSiswa->kebutuhanKhusus->nama }}</span>
                       @else
                         <span class="badge bg-success-subtle text-success">Tidak Ada (Normal)</span>
@@ -535,7 +544,7 @@
               <tr>
                 <th>Berkebutuhan Khusus</th>
                 <td colspan="3">
-                  @if($calonSiswa->kebutuhanKhusus && $calonSiswa->kebutuhanKhusus->kode !== '01')
+                  @if($calonSiswa->kebutuhanKhusus && $calonSiswa->kebutuhanKhusus->kode !== 'A' && $calonSiswa->kebutuhanKhusus->nama !== 'Tidak Ada')
                     {{ $calonSiswa->kebutuhanKhusus->kode }} - {{ $calonSiswa->kebutuhanKhusus->nama }}
                   @else
                     Tidak Ada (Normal)

@@ -113,6 +113,7 @@
           { data: 'created_at', name: 'created_at' },
           { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-center text-nowrap' },
         ],
+        order: [[1, 'asc']],
         language: {
           search: "Cari:",
           lengthMenu: "Tampilkan _MENU_ data per halaman",

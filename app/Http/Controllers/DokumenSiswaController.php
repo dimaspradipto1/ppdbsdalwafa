@@ -138,12 +138,23 @@ class DokumenSiswaController extends Controller
     /**
      * Form unggah dokumen baru
      */
+    /**
+     * Form unggah dokumen baru
+     */
     public function create()
     {
-        $calonSiswa = CalonSiswa::orderBy('nama_lengkap')->get();
+        $user = Auth::user();
+        $isPendaftar = $user && ($user->role === 'pendaftar' || $user->role === 'user');
+
+        if ($isPendaftar) {
+            $calonSiswa = CalonSiswa::where('user_id', $user->id)->orderBy('nama_lengkap')->get();
+        } else {
+            $calonSiswa = CalonSiswa::orderBy('nama_lengkap')->get();
+        }
+
         $jenisDokumen = JenisDokumen::where('is_active', true)->orderBy('kategori')->orderBy('id_jenis_dokumen')->get();
 
-        return view('pages.dokumen.create', compact('calonSiswa', 'jenisDokumen'));
+        return view('pages.dokumen.create', compact('calonSiswa', 'jenisDokumen', 'isPendaftar'));
     }
 
     /**
@@ -151,6 +162,38 @@ class DokumenSiswaController extends Controller
      */
     public function store(StoreDokumenSiswaRequest $request)
     {
+        $user = Auth::user();
+        $isPendaftar = $user && ($user->role === 'pendaftar' || $user->role === 'user');
+
+        if ($isPendaftar) {
+            // Otomatis tentukan calon siswa milik akun pendaftar
+            $idCalonSiswa = $request->id_calon_siswa;
+            $siswaValid = CalonSiswa::where('user_id', $user->id)
+                ->where('id_calon_siswa', $idCalonSiswa)
+                ->exists();
+
+            if (!$siswaValid) {
+                $siswaPertama = CalonSiswa::where('user_id', $user->id)->first();
+                if ($siswaPertama) {
+                    $idCalonSiswa = $siswaPertama->id_calon_siswa;
+                } else {
+                    return back()->withErrors(['id_calon_siswa' => 'Akun Anda belum memiliki data calon siswa yang terdaftar.'])->withInput();
+                }
+            }
+
+            // Calon siswa tidak bisa menentukan status & catatan verifikasi
+            $statusVerifikasi  = 'menunggu';
+            $catatanVerifikasi = null;
+            $verifiedBy        = null;
+            $verifiedAt        = null;
+        } else {
+            $idCalonSiswa      = $request->id_calon_siswa;
+            $statusVerifikasi  = $request->status_verifikasi ?? 'menunggu';
+            $catatanVerifikasi = $request->catatan_verifikasi;
+            $verifiedBy        = $statusVerifikasi !== 'menunggu' ? Auth::id() : null;
+            $verifiedAt        = $statusVerifikasi !== 'menunggu' ? now() : null;
+        }
+
         $file = $request->file('berkas');
         $namaFileAsli = $file->getClientOriginalName();
         $tipeFile = $file->getClientOriginalExtension();
@@ -159,16 +202,16 @@ class DokumenSiswaController extends Controller
         $path = $file->store('dokumen', 'public');
 
         DokumenSiswa::create([
-            'id_calon_siswa'     => $request->id_calon_siswa,
+            'id_calon_siswa'     => $idCalonSiswa,
             'id_jenis_dokumen'   => $request->id_jenis_dokumen,
             'nama_file'          => $namaFileAsli,
             'file_path'          => $path,
             'tipe_file'          => $tipeFile,
             'ukuran_file'        => $ukuranKb,
-            'status_verifikasi'  => $request->status_verifikasi ?? 'menunggu',
-            'catatan_verifikasi' => $request->catatan_verifikasi,
-            'verified_by'        => $request->status_verifikasi && $request->status_verifikasi !== 'menunggu' ? Auth::id() : null,
-            'verified_at'        => $request->status_verifikasi && $request->status_verifikasi !== 'menunggu' ? now() : null,
+            'status_verifikasi'  => $statusVerifikasi,
+            'catatan_verifikasi' => $catatanVerifikasi,
+            'verified_by'        => $verifiedBy,
+            'verified_at'        => $verifiedAt,
         ]);
 
         return redirect()->route('dokumen.index')->with('success', 'Dokumen berhasil diunggah!');
@@ -179,11 +222,24 @@ class DokumenSiswaController extends Controller
      */
     public function edit(DokumenSiswa $dokumen)
     {
+        $user = Auth::user();
+        $isPendaftar = $user && ($user->role === 'pendaftar' || $user->role === 'user');
+
+        if ($isPendaftar && $dokumen->calonSiswa && $dokumen->calonSiswa->user_id !== $user->id) {
+            abort(403, 'Anda tidak memiliki hak akses untuk mengubah dokumen ini.');
+        }
+
         $dokumen->load(['calonSiswa', 'jenisDokumen']);
-        $calonSiswa = CalonSiswa::orderBy('nama_lengkap')->get();
+
+        if ($isPendaftar) {
+            $calonSiswa = CalonSiswa::where('user_id', $user->id)->orderBy('nama_lengkap')->get();
+        } else {
+            $calonSiswa = CalonSiswa::orderBy('nama_lengkap')->get();
+        }
+
         $jenisDokumen = JenisDokumen::where('is_active', true)->orderBy('kategori')->orderBy('id_jenis_dokumen')->get();
 
-        return view('pages.dokumen.edit', compact('dokumen', 'calonSiswa', 'jenisDokumen'));
+        return view('pages.dokumen.edit', compact('dokumen', 'calonSiswa', 'jenisDokumen', 'isPendaftar'));
     }
 
     /**
@@ -191,25 +247,42 @@ class DokumenSiswaController extends Controller
      */
     public function update(UpdateDokumenSiswaRequest $request, DokumenSiswa $dokumen)
     {
+        $user = Auth::user();
+        $isPendaftar = $user && ($user->role === 'pendaftar' || $user->role === 'user');
+
+        if ($isPendaftar && $dokumen->calonSiswa && $dokumen->calonSiswa->user_id !== $user->id) {
+            abort(403, 'Anda tidak memiliki hak akses untuk mengubah dokumen ini.');
+        }
+
         $data = [
-            'id_calon_siswa'     => $request->id_calon_siswa,
-            'id_jenis_dokumen'   => $request->id_jenis_dokumen,
-            'status_verifikasi'  => $request->status_verifikasi,
-            'catatan_verifikasi' => $request->catatan_verifikasi,
+            'id_jenis_dokumen' => $request->id_jenis_dokumen,
         ];
 
-        // Jika mengubah status dari menunggu ke valid/ditolak
-        if ($request->status_verifikasi !== 'menunggu') {
-            $data['verified_by'] = Auth::id();
-            $data['verified_at'] = now();
+        // Jika bukan pendaftar (admin/petugas verifikator)
+        if (!$isPendaftar) {
+            $data['id_calon_siswa']     = $request->id_calon_siswa;
+            $data['status_verifikasi']  = $request->status_verifikasi;
+            $data['catatan_verifikasi'] = $request->catatan_verifikasi;
+
+            if ($request->status_verifikasi !== 'menunggu') {
+                $data['verified_by'] = Auth::id();
+                $data['verified_at'] = now();
+            } else {
+                $data['verified_by'] = null;
+                $data['verified_at'] = null;
+            }
         } else {
-            $data['verified_by'] = null;
-            $data['verified_at'] = null;
+            // Pendaftar mengunggah berkas perbaikan: reset status ke menunggu
+            if ($request->hasFile('berkas')) {
+                $data['status_verifikasi']  = 'menunggu';
+                $data['catatan_verifikasi'] = null;
+                $data['verified_by']        = null;
+                $data['verified_at']        = null;
+            }
         }
 
         // Jika mengunggah berkas pengganti
         if ($request->hasFile('berkas')) {
-            // Hapus file lama dari storage
             if (Storage::disk('public')->exists($dokumen->file_path)) {
                 Storage::disk('public')->delete($dokumen->file_path);
             }

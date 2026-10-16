@@ -96,6 +96,9 @@ class CalonSiswa extends Model
             if (empty($model->tanggal_daftar)) {
                 $model->tanggal_daftar = now();
             }
+            if (empty($model->status)) {
+                $model->status = 'menunggu_verifikasi';
+            }
         });
 
         static::saving(function ($model) {

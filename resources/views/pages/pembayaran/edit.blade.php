@@ -43,13 +43,21 @@
 
             <div class="mb-3">
               <label for="id_calon_siswa" class="form-label fw-semibold">Calon Siswa <span class="text-danger">*</span></label>
-              <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required>
-                @foreach($daftarSiswa as $siswa)
-                  <option value="{{ $siswa->id_calon_siswa }}" {{ old('id_calon_siswa', $pembayaran->id_calon_siswa) == $siswa->id_calon_siswa ? 'selected' : '' }}>
-                    {{ $siswa->nama_lengkap }} ({{ $siswa->no_pendaftaran ?: str_pad($siswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }})
-                  </option>
-                @endforeach
-              </select>
+              @if($isPendaftar)
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-person-fill text-primary"></i></span>
+                  <input type="text" class="form-control bg-light" value="{{ optional($pembayaran->calonSiswa)->nama_lengkap }} ({{ optional($pembayaran->calonSiswa)->no_pendaftaran ?: str_pad($pembayaran->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}) - {{ optional($pembayaran->calonSiswa)->jenis_kelamin ?? '' }}" readonly>
+                  <input type="hidden" name="id_calon_siswa" value="{{ $pembayaran->id_calon_siswa }}">
+                </div>
+              @else
+                <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required>
+                  @foreach($daftarSiswa as $siswa)
+                    <option value="{{ $siswa->id_calon_siswa }}" {{ old('id_calon_siswa', $pembayaran->id_calon_siswa) == $siswa->id_calon_siswa ? 'selected' : '' }}>
+                      {{ $siswa->nama_lengkap }} ({{ $siswa->no_pendaftaran ?: str_pad($siswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }})
+                    </option>
+                  @endforeach
+                </select>
+              @endif
               @error('id_calon_siswa')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
 
@@ -102,36 +110,64 @@
             </div>
 
             <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <label for="bukti_transfer" class="form-label fw-semibold">Ganti Bukti Transfer</label>
+              <div class="{{ $isPendaftar ? 'col-md-12' : 'col-md-6' }}">
+                <label for="bukti_transfer" class="form-label fw-semibold">Ganti Bukti Transfer <span class="text-muted fw-normal">(Opsional)</span></label>
                 <input type="file" name="bukti_transfer" id="bukti_transfer" class="form-control @error('bukti_transfer') is-invalid @enderror" accept=".jpg,.jpeg,.png,.pdf">
                 @if($pembayaran->bukti_transfer)
                   <div class="mt-2">
-                    <a href="{{ asset('storage/' . $pembayaran->bukti_transfer) }}" target="_blank" class="small text-primary">
+                    <a href="{{ asset('storage/' . $pembayaran->bukti_transfer) }}" target="_blank" class="btn btn-sm btn-outline-info">
                       <i class="bi bi-paperclip me-1"></i>Lihat Bukti Transfer Saat Ini
                     </a>
                   </div>
                 @endif
               </div>
 
-              <div class="col-md-6">
-                <label for="status_pembayaran" class="form-label fw-semibold">Status Pembayaran <span class="text-danger">*</span></label>
-                <select name="status_pembayaran" id="status_pembayaran" class="form-select @error('status_pembayaran') is-invalid @enderror" required>
-                  <option value="menunggu_konfirmasi" {{ old('status_pembayaran', $pembayaran->status_pembayaran) == 'menunggu_konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-                  <option value="lunas" {{ old('status_pembayaran', $pembayaran->status_pembayaran) == 'lunas' ? 'selected' : '' }}>Lunas (Terkonfirmasi)</option>
-                  <option value="ditolak" {{ old('status_pembayaran', $pembayaran->status_pembayaran) == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                </select>
-              </div>
+              @if(!$isPendaftar)
+                <div class="col-md-6">
+                  <label for="status_pembayaran" class="form-label fw-semibold">Status Pembayaran <span class="text-danger">*</span></label>
+                  <select name="status_pembayaran" id="status_pembayaran" class="form-select @error('status_pembayaran') is-invalid @enderror" required>
+                    <option value="menunggu_konfirmasi" {{ old('status_pembayaran', $pembayaran->status_pembayaran) == 'menunggu_konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                    <option value="lunas" {{ old('status_pembayaran', $pembayaran->status_pembayaran) == 'lunas' ? 'selected' : '' }}>Lunas (Terkonfirmasi)</option>
+                    <option value="ditolak" {{ old('status_pembayaran', $pembayaran->status_pembayaran) == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                  </select>
+                </div>
+              @endif
             </div>
 
-            <div class="mb-4">
-              <label for="catatan" class="form-label fw-semibold">Catatan</label>
-              <textarea name="catatan" id="catatan" rows="2" class="form-control">{{ old('catatan', $pembayaran->catatan) }}</textarea>
-            </div>
+            @if($isPendaftar)
+              <!-- Informasi Status Pembayaran Terkunci untuk Calon Siswa -->
+              <div class="card bg-light border p-3 mb-3">
+                <div class="row g-3 align-items-center">
+                  <div class="col-md-6">
+                    <span class="text-muted small d-block mb-1">Status Verifikasi Transaksi:</span>
+                    @if($pembayaran->status_pembayaran === 'lunas')
+                      <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i> Lunas (Terkonfirmasi)</span>
+                    @elseif($pembayaran->status_pembayaran === 'ditolak')
+                      <span class="badge bg-danger fs-6"><i class="bi bi-x-circle me-1"></i> Pembayaran Ditolak</span>
+                    @else
+                      <span class="badge bg-warning text-dark fs-6"><i class="bi bi-clock me-1"></i> Menunggu Konfirmasi Bendahara</span>
+                    @endif
+                  </div>
+                  <div class="col-md-6">
+                    <span class="text-muted small d-block mb-1">Catatan dari Bendahara:</span>
+                    <div class="fw-semibold text-dark">
+                      {{ $pembayaran->catatan ?: 'Belum ada catatan dari bendahara.' }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            @else
+              <div class="mb-4">
+                <label for="catatan" class="form-label fw-semibold">Catatan Transaksi / Bendahara</label>
+                <textarea name="catatan" id="catatan" rows="2" class="form-control" placeholder="Contoh: Pembayaran telah diterima via rekening BSI">{{ old('catatan', $pembayaran->catatan) }}</textarea>
+              </div>
+            @endif
 
             <div class="d-flex justify-content-end gap-2">
               <a href="{{ route('pembayaran.index') }}" class="btn btn-secondary">Batal</a>
-              <button type="submit" class="btn btn-primary px-4"><i class="bi bi-save me-1"></i> Perbarui Transaksi</button>
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-save me-1"></i> {{ $isPendaftar ? 'Simpan Pembaruan Bukti' : 'Perbarui Transaksi' }}
+              </button>
             </div>
 
           </form>

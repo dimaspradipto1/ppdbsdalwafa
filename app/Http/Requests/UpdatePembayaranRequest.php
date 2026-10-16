@@ -13,15 +13,18 @@ class UpdatePembayaranRequest extends FormRequest
 
     public function rules(): array
     {
+        $user = $this->user();
+        $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
+
         return [
-            'id_calon_siswa'         => 'required|exists:calon_siswa,id_calon_siswa',
+            'id_calon_siswa'         => $isPendaftar ? 'nullable|exists:calon_siswa,id_calon_siswa' : 'required|exists:calon_siswa,id_calon_siswa',
             'id_biaya'               => 'nullable|exists:biaya_ppdb,id_biaya',
             'nominal'                => 'required|numeric|min:1',
             'metode_pembayaran'      => 'required|string|max:50',
             'nama_bank_pengirim'     => 'nullable|string|max:100',
             'nomor_rekening_pengirim'=> 'nullable|string|max:50',
             'atas_nama_pengirim'     => 'nullable|string|max:150',
-            'status_pembayaran'      => 'required|in:menunggu_konfirmasi,lunas,ditolak',
+            'status_pembayaran'      => $isPendaftar ? 'nullable|in:menunggu_konfirmasi,lunas,ditolak' : 'required|in:menunggu_konfirmasi,lunas,ditolak',
             'bukti_transfer'         => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:3072',
             'catatan'                => 'nullable|string|max:500',
             'tanggal_bayar'          => 'nullable|date',

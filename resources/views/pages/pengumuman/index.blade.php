@@ -54,73 +54,149 @@
         </div>
       @endif
 
-      <!-- Summary Statistics Row -->
-      <div class="row g-3 mb-4">
-        <div class="col-md-3">
-          <div class="card stat-card shadow-sm p-3 bg-white">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <span class="text-muted small fw-semibold">Total Calon Siswa</span>
-                <h3 class="fw-bold mb-0 text-dark">{{ $totalPendaftar }}</h3>
+      @if(!$isPendaftar)
+        <!-- Summary Statistics Row (Khusus Admin / Petugas) -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <div class="card stat-card shadow-sm p-3 bg-white">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="text-muted small fw-semibold">Total Calon Siswa</span>
+                  <h3 class="fw-bold mb-0 text-dark">{{ $totalPendaftar }}</h3>
+                </div>
+                <div class="bg-primary-subtle text-primary rounded-circle p-3">
+                  <i class="bi bi-people fs-4"></i>
+                </div>
               </div>
-              <div class="bg-primary-subtle text-primary rounded-circle p-3">
-                <i class="bi bi-people fs-4"></i>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stat-card shadow-sm p-3 bg-white">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="text-muted small fw-semibold">Siswa Diterima</span>
+                  <h3 class="fw-bold mb-0 text-success">{{ $totalDiterima }}</h3>
+                </div>
+                <div class="bg-success-subtle text-success rounded-circle p-3">
+                  <i class="bi bi-check-circle fs-4"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stat-card shadow-sm p-3 bg-white">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="text-muted small fw-semibold">Diverifikasi / Proses</span>
+                  <h3 class="fw-bold mb-0 text-info">{{ $totalDiverifikasi }}</h3>
+                </div>
+                <div class="bg-info-subtle text-info rounded-circle p-3">
+                  <i class="bi bi-hourglass-split fs-4"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stat-card shadow-sm p-3 bg-white">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="text-muted small fw-semibold">Tidak Diterima</span>
+                  <h3 class="fw-bold mb-0 text-danger">{{ $totalDitolak }}</h3>
+                </div>
+                <div class="bg-danger-subtle text-danger rounded-circle p-3">
+                  <i class="bi bi-x-circle fs-4"></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="card stat-card shadow-sm p-3 bg-white">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <span class="text-muted small fw-semibold">Siswa Diterima</span>
-                <h3 class="fw-bold mb-0 text-success">{{ $totalDiterima }}</h3>
-              </div>
-              <div class="bg-success-subtle text-success rounded-circle p-3">
-                <i class="bi bi-check-circle fs-4"></i>
+      @else
+        @if($mySiswa)
+          <!-- Card Hasil Seleksi Akun Calon Siswa Masing-Masing -->
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+              <h6 class="m-0 fw-bold text-dark"><i class="bi bi-person-badge text-primary me-2"></i>Hasil Seleksi Penerimaan Calon Siswa</h6>
+              <span class="badge {{ $mySiswa->status === 'diterima' ? 'bg-success' : ($mySiswa->status === 'ditolak' ? 'bg-danger' : 'bg-info') }} px-3 py-2 fs-6">
+                @if($mySiswa->status === 'diterima')
+                  <i class="bi bi-check-circle-fill me-1"></i> LULUS / DITERIMA
+                @elseif($mySiswa->status === 'ditolak')
+                  <i class="bi bi-x-circle-fill me-1"></i> TIDAK LULUS
+                @elseif($mySiswa->status === 'diverifikasi')
+                  <i class="bi bi-hourglass-split me-1"></i> PROSES OBSERVASI / SELEKSI
+                @else
+                  <i class="bi bi-clock me-1"></i> MENUNGGU VERIFIKASI
+                @endif
+              </span>
+            </div>
+            <div class="card-body p-4">
+              <div class="row g-3 align-items-center">
+                <div class="col-md-8">
+                  <h5 class="fw-bold text-dark mb-1">{{ $mySiswa->nama_lengkap }}</h5>
+                  <div class="text-muted small mb-2">
+                    No. Registrasi: <strong class="font-monospace text-dark">{{ $mySiswa->no_pendaftaran ?: str_pad($mySiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}</strong> &bull; 
+                    NIK: {{ $mySiswa->nik ?? '-' }} &bull; 
+                    Jalur: <strong>{{ $mySiswa->jalur->nama_jalur ?? 'Reguler' }}</strong> &bull; 
+                    Gelombang: <strong>{{ $mySiswa->gelombang->nama_gelombang ?? '-' }}</strong> ({{ $mySiswa->tahunAjaran->tahun_ajaran ?? '-' }})
+                  </div>
+
+                  @if($mySiswa->status === 'diterima')
+                    <div class="alert alert-success d-flex align-items-center mb-0 py-2 px-3">
+                      <i class="bi bi-patch-check-fill fs-3 text-success me-3"></i>
+                      <div>
+                        <strong>Selamat!</strong> Calon siswa dinyatakan <strong>DITERIMA</strong> di SD Islam Plus Al Wafa. Silakan cetak Surat Keterangan Lulus (SKL) resmi di samping.
+                      </div>
+                    </div>
+                  @elseif($mySiswa->status === 'ditolak')
+                    <div class="alert alert-danger d-flex align-items-center mb-0 py-2 px-3">
+                      <i class="bi bi-x-circle-fill fs-3 text-danger me-3"></i>
+                      <div>
+                        Mohon maaf, pendaftaran calon siswa pada periode ini belum dapat diterima. Terima kasih atas partisipasi Anda.
+                      </div>
+                    </div>
+                  @else
+                    <div class="alert alert-info d-flex align-items-center mb-0 py-2 px-3">
+                      <i class="bi bi-info-circle-fill fs-3 text-info me-3"></i>
+                      <div>
+                        Proses seleksi penerimaan sedang berjalan. Pengumuman resmi akan diperbarui sesuai jadwal gelombang.
+                      </div>
+                    </div>
+                  @endif
+                </div>
+
+                <div class="col-md-4 text-md-end text-center">
+                  @if($mySiswa->status === 'diterima')
+                    <a href="{{ route('pengumuman.surat-kelulusan', $mySiswa->id_calon_siswa) }}" target="_blank" class="btn btn-success px-3 py-2 fw-semibold shadow-sm">
+                      <i class="bi bi-printer me-1"></i> Cetak Surat Kelulusan (SKL)
+                    </a>
+                  @else
+                    <button class="btn btn-secondary px-3 py-2" disabled>
+                      <i class="bi bi-file-earmark-lock me-1"></i> Surat Belum Tersedia
+                    </button>
+                  @endif
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card stat-card shadow-sm p-3 bg-white">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <span class="text-muted small fw-semibold">Diverifikasi / Proses</span>
-                <h3 class="fw-bold mb-0 text-info">{{ $totalDiverifikasi }}</h3>
-              </div>
-              <div class="bg-info-subtle text-info rounded-circle p-3">
-                <i class="bi bi-hourglass-split fs-4"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card stat-card shadow-sm p-3 bg-white">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <span class="text-muted small fw-semibold">Tidak Diterima</span>
-                <h3 class="fw-bold mb-0 text-danger">{{ $totalDitolak }}</h3>
-              </div>
-              <div class="bg-danger-subtle text-danger rounded-circle p-3">
-                <i class="bi bi-x-circle fs-4"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        @endif
+      @endif
 
       <!-- Main DataTables Card -->
       <div class="card shadow-sm border-0">
         <div class="card-body pt-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-              <h5 class="card-title p-0 m-0">Daftar Pengumuman Hasil Seleksi Penerimaan</h5>
-              <p class="text-muted small mb-0">Publikasikan SK kelulusan dan rilis hasil penetapan penerimaan peserta didik baru.</p>
+              <h5 class="card-title p-0 m-0">
+                {{ $isPendaftar ? 'Daftar Surat Keputusan & Pengumuman Resmi' : 'Daftar Pengumuman Hasil Seleksi Penerimaan' }}
+              </h5>
+              <p class="text-muted small mb-0">
+                {{ $isPendaftar ? 'Lihat rilis surat keputusan dan lampiran kelulusan penerimaan peserta didik baru.' : 'Publikasikan SK kelulusan dan rilis hasil penetapan penerimaan peserta didik baru.' }}
+              </p>
             </div>
-            <a href="{{ route('pengumuman.create') }}" class="btn btn-primary btn-sm">
-              <i class="bi bi-plus-lg me-1"></i> Buat Pengumuman Baru
-            </a>
+            @if(!$isPendaftar)
+              <a href="{{ route('pengumuman.create') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Buat Pengumuman Baru
+              </a>
+            @endif
           </div>
 
           <!-- Table with Yajra DataTables -->

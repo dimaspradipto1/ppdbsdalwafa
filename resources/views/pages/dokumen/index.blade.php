@@ -74,10 +74,10 @@
               <div class="p-3 bg-white rounded border border-success-subtle h-100">
                 <span class="badge bg-success mb-2"><i class="bi bi-person-plus me-1"></i>Bagi Siswa Baru</span>
                 <ul class="mb-0 ps-3 small text-dark">
-                  <li><strong>Fotocopy Akta Lahir & Kartu Keluarga (KK)</strong>: 3 lembar</li>
-                  <li><strong>Fotocopy KTP Orang Tua</strong>: 1 lembar masing-masing</li>
-                  <li><strong>Pas Foto berwarna 3 x 4</strong>: 3 lembar (Seragam Putih SD latar belakang merah)</li>
-                  <li><strong>Membawa Siswa</strong> ke sekolah pada saat verifikasi fisik</li>
+                  <li><strong>Akta Kelahiran & Kartu Keluarga (KK)</strong>: Unggah berkas scan / foto dokumen yang jelas</li>
+                  <li><strong>KTP Orang Tua</strong>: Unggah scan / foto e-KTP Ayah dan Ibu (atau Wali)</li>
+                  <li><strong>Pas Foto Berwarna 3 x 4</strong>: File foto formal berseragam putih latar belakang merah</li>
+                  <li><strong>Kehadiran Siswa</strong>: Menghadirkan calon siswa ke sekolah saat observasi kesiapan belajar</li>
                 </ul>
               </div>
             </div>
@@ -85,8 +85,8 @@
               <div class="p-3 bg-white rounded border border-info-subtle h-100">
                 <span class="badge bg-info text-dark mb-2"><i class="bi bi-arrow-left-right me-1"></i>Bagi Siswa Pindahan</span>
                 <ul class="mb-0 ps-3 small text-dark">
-                  <li><strong>Surat Pindah</strong> dari sekolah asal (Asli & Fotocopy Legalisir)</li>
-                  <li><strong>Buku Rapor</strong> lengkap dari sekolah asal</li>
+                  <li><strong>Surat Pindah</strong> dari sekolah asal (File scan surat resmi bermaterai / legalisir)</li>
+                  <li><strong>Buku Rapor</strong> lengkap dari sekolah asal (File scan rapor semester terakhir)</li>
                 </ul>
               </div>
             </div>
@@ -112,28 +112,50 @@
 
           <!-- Filter Section -->
           <div class="row g-2 mb-3 bg-light p-3 rounded-3 border">
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-muted mb-1">Filter Kategori Siswa</label>
-              <select id="filter-kategori" class="form-select form-select-sm">
-                <option value="">Semua Kategori</option>
-                <option value="siswa_baru">Siswa Baru</option>
-                <option value="siswa_pindahan">Siswa Pindahan</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-muted mb-1">Filter Status Verifikasi</label>
-              <select id="filter-status" class="form-select form-select-sm">
-                <option value="">Semua Status</option>
-                <option value="menunggu">Menunggu Verifikasi</option>
-                <option value="valid">Valid / Diterima</option>
-                <option value="ditolak">Ditolak</option>
-              </select>
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-              <button type="button" class="btn btn-secondary btn-sm w-100" id="btn-reset-filter">
-                <i class="bi bi-arrow-clockwise me-1"></i> Reset Filter
-              </button>
-            </div>
+            @php
+              $isPendaftar = Auth::check() && in_array(Auth::user()->role, ['pendaftar', 'user']);
+            @endphp
+
+            @if(!$isPendaftar)
+              <div class="col-md-4">
+                <label class="form-label small fw-semibold text-muted mb-1">Filter Kategori Siswa</label>
+                <select id="filter-kategori" class="form-select form-select-sm">
+                  <option value="">Semua Kategori</option>
+                  <option value="siswa_baru">Siswa Baru</option>
+                  <option value="siswa_pindahan">Siswa Pindahan</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-semibold text-muted mb-1">Filter Status Verifikasi</label>
+                <select id="filter-status" class="form-select form-select-sm">
+                  <option value="">Semua Status</option>
+                  <option value="menunggu">Menunggu Verifikasi</option>
+                  <option value="valid">Valid / Diterima</option>
+                  <option value="ditolak">Ditolak</option>
+                </select>
+              </div>
+              <div class="col-md-4 d-flex align-items-end">
+                <button type="button" class="btn btn-secondary btn-sm w-100" id="btn-reset-filter">
+                  <i class="bi bi-arrow-clockwise me-1"></i> Reset Filter
+                </button>
+              </div>
+            @else
+              <input type="hidden" id="filter-kategori" value="">
+              <div class="col-md-8">
+                <label class="form-label small fw-semibold text-muted mb-1">Filter Status Verifikasi</label>
+                <select id="filter-status" class="form-select form-select-sm">
+                  <option value="">Semua Status</option>
+                  <option value="menunggu">Menunggu Verifikasi</option>
+                  <option value="valid">Valid / Diterima</option>
+                  <option value="ditolak">Ditolak</option>
+                </select>
+              </div>
+              <div class="col-md-4 d-flex align-items-end">
+                <button type="button" class="btn btn-secondary btn-sm w-100" id="btn-reset-filter">
+                  <i class="bi bi-arrow-clockwise me-1"></i> Reset Filter
+                </button>
+              </div>
+            @endif
           </div>
 
           <!-- Table with Yajra DataTables -->

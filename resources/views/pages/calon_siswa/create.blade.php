@@ -682,61 +682,38 @@
                         @foreach($oldPrestasi as $index => $item)
                           <tr>
                             <td>
-                              <select name="prestasi[{{ $index }}][jenis_prestasi]" class="form-select form-select-sm">
+                              <select name="prestasi[{{ $index }}][jenis_prestasi]" class="form-select form-select-sm text-dark fw-medium">
                                 @foreach($pilihanJenisPrestasi as $key => $val)
                                   <option value="{{ $key }}" {{ ($item['jenis_prestasi'] ?? '') == $key ? 'selected' : '' }}>{{ $val }}</option>
                                 @endforeach
                               </select>
                             </td>
                             <td>
-                              <select name="prestasi[{{ $index }}][tingkat]" class="form-select form-select-sm">
+                              <select name="prestasi[{{ $index }}][tingkat]" class="form-select form-select-sm text-dark fw-medium">
                                 @foreach($pilihanTingkat as $key => $val)
                                   <option value="{{ $key }}" {{ ($item['tingkat'] ?? '') == $key ? 'selected' : '' }}>{{ $val }}</option>
                                 @endforeach
                               </select>
                             </td>
                             <td>
-                              <input type="text" name="prestasi[{{ $index }}][nama_prestasi]" class="form-control form-select-sm" value="{{ $item['nama_prestasi'] ?? '' }}" placeholder="Nama perlombaan / kejuaraan">
+                              <input type="text" name="prestasi[{{ $index }}][nama_prestasi]" class="form-control form-select-sm text-dark fw-medium" value="{{ $item['nama_prestasi'] ?? '' }}" placeholder="Nama perlombaan / kejuaraan">
                             </td>
                             <td>
-                              <input type="text" name="prestasi[{{ $index }}][tahun]" maxlength="4" class="form-control form-select-sm font-monospace text-center" value="{{ $item['tahun'] ?? date('Y') }}">
+                              <input type="text" name="prestasi[{{ $index }}][tahun]" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" value="{{ $item['tahun'] ?? '' }}" placeholder="YYYY">
                             </td>
                             <td>
-                              <input type="text" name="prestasi[{{ $index }}][penyelenggara]" class="form-control form-select-sm" value="{{ $item['penyelenggara'] ?? '' }}" placeholder="Instansi penyelenggara">
+                              <input type="text" name="prestasi[{{ $index }}][penyelenggara]" class="form-control form-select-sm text-dark fw-medium" value="{{ $item['penyelenggara'] ?? '' }}" placeholder="Instansi penyelenggara">
                             </td>
                             <td class="text-center">
-                              <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row"><i class="bi bi-x-lg"></i></button>
+                              <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row" title="Hapus Baris Prestasi"><i class="bi bi-x-lg"></i></button>
                             </td>
                           </tr>
                         @endforeach
                       @else
-                        <!-- 1 Baris Default Kosong -->
-                        <tr>
-                          <td>
-                            <select name="prestasi[0][jenis_prestasi]" class="form-select form-select-sm">
-                              @foreach($pilihanJenisPrestasi as $key => $val)
-                                <option value="{{ $key }}">{{ $val }}</option>
-                              @endforeach
-                            </select>
-                          </td>
-                          <td>
-                            <select name="prestasi[0][tingkat]" class="form-select form-select-sm">
-                              @foreach($pilihanTingkat as $key => $val)
-                                <option value="{{ $key }}">{{ $val }}</option>
-                              @endforeach
-                            </select>
-                          </td>
-                          <td>
-                            <input type="text" name="prestasi[0][nama_prestasi]" class="form-control form-select-sm" placeholder="Nama perlombaan / kejuaraan">
-                          </td>
-                          <td>
-                            <input type="text" name="prestasi[0][tahun]" maxlength="4" class="form-control form-select-sm font-monospace text-center" value="{{ date('Y') }}">
-                          </td>
-                          <td>
-                            <input type="text" name="prestasi[0][penyelenggara]" class="form-control form-select-sm" placeholder="Instansi penyelenggara">
-                          </td>
-                          <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row"><i class="bi bi-x-lg"></i></button>
+                        <!-- Tampilan Awal: Tabel Bersih Kosong -->
+                        <tr class="empty-row-prestasi">
+                          <td colspan="6" class="text-center py-3 text-muted">
+                            <i class="bi bi-info-circle me-1"></i> Tidak ada catatan prestasi. Klik tombol <strong>Tambah Baris Prestasi</strong> jika ingin menambahkan.
                           </td>
                         </tr>
                       @endif
@@ -790,39 +767,27 @@
                         @foreach($oldBeasiswa as $index => $item)
                           <tr>
                             <td>
-                              <input type="text" name="beasiswa[{{ $index }}][jenis_beasiswa]" class="form-control form-select-sm" value="{{ $item['jenis_beasiswa'] ?? '' }}" placeholder="Contoh: Beasiswa Prestasi, PIP, dll">
+                              <input type="text" name="beasiswa[{{ $index }}][jenis_beasiswa]" class="form-control form-select-sm text-dark fw-medium" value="{{ $item['jenis_beasiswa'] ?? '' }}" placeholder="Contoh: Beasiswa Prestasi, PIP, dll">
                             </td>
                             <td>
-                              <input type="text" name="beasiswa[{{ $index }}][penyelenggara]" class="form-control form-select-sm" value="{{ $item['penyelenggara'] ?? '' }}" placeholder="Penyelenggara beasiswa">
+                              <input type="text" name="beasiswa[{{ $index }}][penyelenggara]" class="form-control form-select-sm text-dark fw-medium" value="{{ $item['penyelenggara'] ?? '' }}" placeholder="Penyelenggara beasiswa">
                             </td>
                             <td>
-                              <input type="text" name="beasiswa[{{ $index }}][tahun_mulai]" maxlength="4" class="form-control form-select-sm font-monospace text-center" value="{{ $item['tahun_mulai'] ?? date('Y') }}">
+                              <input type="text" name="beasiswa[{{ $index }}][tahun_mulai]" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" value="{{ $item['tahun_mulai'] ?? '' }}" placeholder="YYYY">
                             </td>
                             <td>
-                              <input type="text" name="beasiswa[{{ $index }}][tahun_selesai]" maxlength="4" class="form-control form-select-sm font-monospace text-center" value="{{ $item['tahun_selesai'] ?? '' }}" placeholder="Tahun / Kosongkan bila aktif">
+                              <input type="text" name="beasiswa[{{ $index }}][tahun_selesai]" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" value="{{ $item['tahun_selesai'] ?? '' }}" placeholder="YYYY (opsional)">
                             </td>
                             <td class="text-center">
-                              <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row"><i class="bi bi-x-lg"></i></button>
+                              <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row" title="Hapus Baris Beasiswa"><i class="bi bi-x-lg"></i></button>
                             </td>
                           </tr>
                         @endforeach
                       @else
-                        <!-- 1 Baris Default Kosong -->
-                        <tr>
-                          <td>
-                            <input type="text" name="beasiswa[0][jenis_beasiswa]" class="form-control form-select-sm" placeholder="Contoh: Beasiswa Prestasi, PIP, dll">
-                          </td>
-                          <td>
-                            <input type="text" name="beasiswa[0][penyelenggara]" class="form-control form-select-sm" placeholder="Penyelenggara beasiswa">
-                          </td>
-                          <td>
-                            <input type="text" name="beasiswa[0][tahun_mulai]" maxlength="4" class="form-control form-select-sm font-monospace text-center" value="{{ date('Y') }}">
-                          </td>
-                          <td>
-                            <input type="text" name="beasiswa[0][tahun_selesai]" maxlength="4" class="form-control form-select-sm font-monospace text-center" placeholder="Tahun / Kosongkan bila aktif">
-                          </td>
-                          <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row"><i class="bi bi-x-lg"></i></button>
+                        <!-- Tampilan Awal: Tabel Bersih Kosong -->
+                        <tr class="empty-row-beasiswa">
+                          <td colspan="5" class="text-center py-3 text-muted">
+                            <i class="bi bi-info-circle me-1"></i> Tidak ada riwayat beasiswa. Klik tombol <strong>Tambah Baris Beasiswa</strong> jika ingin menambahkan.
                           </td>
                         </tr>
                       @endif
@@ -876,8 +841,8 @@
     });
 
     // Indeks row prestasi & beasiswa
-    let prestasiIdx = {{ count(old('prestasi', [1])) }};
-    let beasiswaIdx = {{ count(old('beasiswa', [1])) }};
+    let prestasiIdx = {{ count(old('prestasi', [])) }};
+    let beasiswaIdx = {{ count(old('beasiswa', [])) }};
 
     // Hapus baris dinamis (Prestasi & Beasiswa)
     $(document).on('click', '.btn-remove-row', function () {
@@ -930,7 +895,7 @@
             <input type="text" name="prestasi[${prestasiIdx}][nama_prestasi]" class="form-control form-select-sm text-dark fw-medium" placeholder="Nama perlombaan / kejuaraan">
           </td>
           <td>
-            <input type="text" name="prestasi[${prestasiIdx}][tahun]" maxlength="4" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" value="{{ date('Y') }}">
+            <input type="text" name="prestasi[${prestasiIdx}][tahun]" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" placeholder="YYYY" value="">
           </td>
           <td>
             <input type="text" name="prestasi[${prestasiIdx}][penyelenggara]" class="form-control form-select-sm text-dark fw-medium" placeholder="Instansi penyelenggara">
@@ -956,10 +921,10 @@
             <input type="text" name="beasiswa[${beasiswaIdx}][penyelenggara]" class="form-control form-select-sm text-dark fw-medium" placeholder="Penyelenggara beasiswa">
           </td>
           <td>
-            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_mulai]" maxlength="4" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" value="{{ date('Y') }}">
+            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_mulai]" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" placeholder="YYYY" value="">
           </td>
           <td>
-            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_selesai]" maxlength="4" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" placeholder="Tahun / Kosongkan bila aktif">
+            <input type="text" name="beasiswa[${beasiswaIdx}][tahun_selesai]" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" class="form-control form-select-sm font-monospace text-center text-dark fw-medium" placeholder="YYYY (opsional)">
           </td>
           <td class="text-center">
             <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row" title="Hapus Baris Beasiswa"><i class="bi bi-x-lg"></i></button>

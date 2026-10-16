@@ -40,17 +40,27 @@
             <!-- 1. Pilih Calon Siswa -->
             <div class="mb-3">
               <label for="id_calon_siswa" class="form-label fw-semibold">Pilih Calon Siswa <span class="text-danger">*</span></label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required autofocus>
-                  <option value="">-- Pilih Calon Peserta Didik --</option>
-                  @foreach($calonSiswa as $siswa)
-                    <option value="{{ $siswa->id_calon_siswa }}" {{ old('id_calon_siswa') == $siswa->id_calon_siswa ? 'selected' : '' }}>
-                      {{ $siswa->nama_lengkap }} (NIK: {{ $siswa->nik ?? '-' }}) - {{ $siswa->jenis_kelamin }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
+              @if($isPendaftar && $calonSiswa->count() === 1)
+                @php $singleSiswa = $calonSiswa->first(); @endphp
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-person-fill text-primary"></i></span>
+                  <input type="text" class="form-control bg-light" value="{{ $singleSiswa->nama_lengkap }} (NIK: {{ $singleSiswa->nik ?? '-' }}) - {{ $singleSiswa->jenis_kelamin }}" readonly>
+                  <input type="hidden" name="id_calon_siswa" value="{{ $singleSiswa->id_calon_siswa }}">
+                </div>
+                <div class="form-text text-muted">Akun Anda otomatis terhubung dengan calon siswa ini.</div>
+              @else
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required autofocus>
+                    <option value="">-- Pilih Calon Peserta Didik --</option>
+                    @foreach($calonSiswa as $siswa)
+                      <option value="{{ $siswa->id_calon_siswa }}" {{ (old('id_calon_siswa') == $siswa->id_calon_siswa || ($isPendaftar && $calonSiswa->count() === 1)) ? 'selected' : '' }}>
+                        {{ $siswa->nama_lengkap }} (NIK: {{ $siswa->nik ?? '-' }}) - {{ $siswa->jenis_kelamin }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+              @endif
               @error('id_calon_siswa')
                 <div class="text-danger small mt-1">{{ $message }}</div>
               @enderror
@@ -71,7 +81,7 @@
                               data-lembar="{{ $jd->jumlah_lembar }}"
                               data-keterangan="{{ $jd->keterangan }}"
                               {{ old('id_jenis_dokumen') == $jd->id_jenis_dokumen ? 'selected' : '' }}>
-                        {{ $jd->nama_dokumen }} ({{ $jd->jumlah_lembar }})
+                        {{ $jd->nama_dokumen }}
                       </option>
                     @endforeach
                   </optgroup>
@@ -88,6 +98,7 @@
                     @endforeach
                   </optgroup>
 
+                  @if($jenisDokumen->where('kategori', 'semua')->isNotEmpty())
                   <optgroup label="PERSYARATAN UMUM">
                     @foreach($jenisDokumen->where('kategori', 'semua') as $jd)
                       <option value="{{ $jd->id_jenis_dokumen }}" 
@@ -99,6 +110,7 @@
                       </option>
                     @endforeach
                   </optgroup>
+                  @endif
                 </select>
               </div>
               @error('id_jenis_dokumen')
@@ -126,7 +138,8 @@
               @enderror
             </div>
 
-            <!-- 4. Status Verifikasi (Khusus Petugas / Default Menunggu) -->
+            <!-- 4. Status Verifikasi (Khusus Petugas / Admin) -->
+            @if(!$isPendaftar)
             <div class="row g-3 mb-3">
               <div class="col-md-6">
                 <label for="status_verifikasi" class="form-label fw-semibold">Status Verifikasi</label>
@@ -142,6 +155,7 @@
                 <input type="text" name="catatan_verifikasi" id="catatan_verifikasi" class="form-control" value="{{ old('catatan_verifikasi') }}" placeholder="Contoh: Berkas jelas dan lengkap">
               </div>
             </div>
+            @endif
 
             <hr class="my-4">
 

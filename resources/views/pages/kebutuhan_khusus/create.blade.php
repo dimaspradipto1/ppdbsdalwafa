@@ -42,9 +42,9 @@
               <label for="kode" class="form-label fw-semibold">Kode <span class="text-danger">*</span></label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
-                <input type="text" name="kode" id="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') }}" placeholder="Contoh: A, B, C, TIDAK, dll." required autofocus>
+                <input type="text" name="kode" id="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') }}" placeholder="Contoh: A, B, C, dll." required autofocus>
               </div>
-              <div class="form-text">Kode unik referensi kebutuhan khusus (misal kode Dapodik / Kemdikbud).</div>
+              <div class="form-text">Kode unik referensi kebutuhan khusus (misal A, B, C, dst.).</div>
               @error('kode')
                 <div class="text-danger small mt-1">{{ $message }}</div>
               @enderror
@@ -55,7 +55,7 @@
               <label for="nama" class="form-label fw-semibold">Nama Kebutuhan Khusus <span class="text-danger">*</span></label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-heart-pulse"></i></span>
-                <input type="text" name="nama" id="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" placeholder="Contoh: Tunanetra (A), Tunarungu (B), Autis, Tidak Ada" required>
+                <input type="text" name="nama" id="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" placeholder="Contoh: Netra, Rungu, Autis, Tidak Ada" required>
               </div>
               @error('nama')
                 <div class="text-danger small mt-1">{{ $message }}</div>

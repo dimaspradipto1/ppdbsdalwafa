@@ -78,7 +78,7 @@ class PembayaranController extends Controller
                     }
                     return '<span class="badge bg-light text-muted border">Tanpa Berkas</span>';
                 })
-                ->editColumn('status_pembayaran', function ($row) {
+                ->editColumn('status_pembayaran', function ($row) use ($user) {
                     $badges = [
                         'menunggu_konfirmasi' => 'bg-warning-subtle text-warning-emphasis border-warning-subtle',
                         'lunas'               => 'bg-success-subtle text-success border-success-subtle',
@@ -92,6 +92,12 @@ class PembayaranController extends Controller
                     $cls = $badges[$row->status_pembayaran] ?? 'bg-light text-dark';
                     $lbl = $labels[$row->status_pembayaran] ?? ucfirst($row->status_pembayaran);
 
+                    $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
+
+                    if ($isPendaftar) {
+                        return '<span class="badge ' . $cls . ' border px-2 py-1"><i class="bi bi-info-circle me-1"></i>' . $lbl . '</span>';
+                    }
+
                     return '<button type="button" class="btn btn-sm ' . $cls . ' border px-2 py-1 btn-quick-status-bayar" '
                         . 'data-id="' . $row->id_pembayaran . '" '
                         . 'data-kode="' . e($row->kode_transaksi) . '" '
@@ -100,17 +106,27 @@ class PembayaranController extends Controller
                         . 'title="Ubah Status Pembayaran">'
                         . '<i class="bi bi-patch-check me-1"></i>' . $lbl . '</button>';
                 })
-                ->addColumn('action', function ($row) {
+                ->addColumn('action', function ($row) use ($user) {
                     $kwitansiUrl = route('pembayaran.kwitansi', $row->id_pembayaran);
                     $editUrl = route('pembayaran.edit', $row->id_pembayaran);
                     $deleteUrl = route('pembayaran.destroy', $row->id_pembayaran);
+                    $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
 
                     $buttons = '<div class="d-inline-flex align-items-center justify-content-center gap-1 text-nowrap">';
                     if ($row->status_pembayaran === 'lunas') {
                         $buttons .= '<a href="' . $kwitansiUrl . '" target="_blank" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.78rem;" title="Cetak Kwitansi"><i class="bi bi-printer"></i><span>Kwitansi</span></a>';
                     }
-                    $buttons .= '<a href="' . $editUrl . '" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.78rem;" title="Edit Transaksi"><i class="bi bi-pencil-square"></i></a>';
-                    $buttons .= '<button type="button" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 px-2 py-1 btn-delete" data-id="' . $row->id_pembayaran . '" data-name="' . e($row->kode_transaksi) . '" data-url="' . $deleteUrl . '" style="font-size: 0.78rem;" title="Hapus"><i class="bi bi-trash3"></i></button>';
+
+                    if (!$isPendaftar) {
+                        $buttons .= '<a href="' . $editUrl . '" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.78rem;" title="Edit Transaksi"><i class="bi bi-pencil-square"></i></a>';
+                        $buttons .= '<button type="button" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 px-2 py-1 btn-delete" data-id="' . $row->id_pembayaran . '" data-name="' . e($row->kode_transaksi) . '" data-url="' . $deleteUrl . '" style="font-size: 0.78rem;" title="Hapus"><i class="bi bi-trash3"></i></button>';
+                    } else {
+                        // Jika pendaftar dan masih menunggu konfirmasi atau ditolak, bisa edit/upload ulang bukti
+                        if ($row->status_pembayaran !== 'lunas') {
+                            $buttons .= '<a href="' . $editUrl . '" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.78rem;" title="Edit Pembayaran / Bukti"><i class="bi bi-pencil-square"></i><span>Edit</span></a>';
+                        }
+                    }
+
                     $buttons .= '</div>';
 
                     return $buttons;
@@ -129,11 +145,22 @@ class PembayaranController extends Controller
      */
     public function create(Request $request)
     {
-        $daftarSiswa = CalonSiswa::orderBy('nama_lengkap')->get(['id_calon_siswa', 'nama_lengkap', 'no_pendaftaran']);
-        $daftarBiaya = Biaya::where('is_active', true)->orderBy('nama_biaya')->get();
-        $selectedSiswaId = $request->query('id_calon_siswa');
+        $user = Auth::user();
+        $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
 
-        return view('pages.pembayaran.create', compact('daftarSiswa', 'daftarBiaya', 'selectedSiswaId'));
+        if ($isPendaftar) {
+            $daftarSiswa = CalonSiswa::where('user_id', $user->id)
+                ->orderBy('nama_lengkap')
+                ->get(['id_calon_siswa', 'nama_lengkap', 'no_pendaftaran', 'nik', 'jenis_kelamin']);
+            $selectedSiswaId = $daftarSiswa->first()?->id_calon_siswa ?? $request->query('id_calon_siswa');
+        } else {
+            $daftarSiswa = CalonSiswa::orderBy('nama_lengkap')->get(['id_calon_siswa', 'nama_lengkap', 'no_pendaftaran', 'nik', 'jenis_kelamin']);
+            $selectedSiswaId = $request->query('id_calon_siswa');
+        }
+
+        $daftarBiaya = Biaya::where('is_active', true)->orderBy('nama_biaya')->get();
+
+        return view('pages.pembayaran.create', compact('daftarSiswa', 'daftarBiaya', 'selectedSiswaId', 'isPendaftar'));
     }
 
     /**
@@ -141,13 +168,23 @@ class PembayaranController extends Controller
      */
     public function store(StorePembayaranRequest $request)
     {
+        $user = Auth::user();
+        $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
         $data = $request->validated();
+
+        if ($isPendaftar) {
+            $mySiswa = CalonSiswa::where('user_id', $user->id)->firstOrFail();
+            $data['id_calon_siswa'] = $mySiswa->id_calon_siswa;
+            $data['status_pembayaran'] = 'menunggu_konfirmasi';
+            $data['verified_by'] = null;
+            $data['verified_at'] = null;
+        }
 
         if ($request->hasFile('bukti_transfer')) {
             $data['bukti_transfer'] = $request->file('bukti_transfer')->store('pembayaran', 'public');
         }
 
-        if (($data['status_pembayaran'] ?? '') === 'lunas') {
+        if (!$isPendaftar && ($data['status_pembayaran'] ?? '') === 'lunas') {
             $data['verified_by'] = Auth::id();
             $data['verified_at'] = now();
         }
@@ -162,10 +199,22 @@ class PembayaranController extends Controller
      */
     public function edit(Pembayaran $pembayaran)
     {
-        $daftarSiswa = CalonSiswa::orderBy('nama_lengkap')->get(['id_calon_siswa', 'nama_lengkap', 'no_pendaftaran']);
+        $user = Auth::user();
+        $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
+
+        if ($isPendaftar) {
+            $calonSiswaIds = CalonSiswa::where('user_id', $user->id)->pluck('id_calon_siswa')->toArray();
+            if (!in_array($pembayaran->id_calon_siswa, $calonSiswaIds)) {
+                abort(403, 'Anda tidak berhak mengakses pembayaran ini.');
+            }
+            $daftarSiswa = CalonSiswa::where('user_id', $user->id)->get(['id_calon_siswa', 'nama_lengkap', 'no_pendaftaran', 'nik', 'jenis_kelamin']);
+        } else {
+            $daftarSiswa = CalonSiswa::orderBy('nama_lengkap')->get(['id_calon_siswa', 'nama_lengkap', 'no_pendaftaran', 'nik', 'jenis_kelamin']);
+        }
+
         $daftarBiaya = Biaya::where('is_active', true)->orderBy('nama_biaya')->get();
 
-        return view('pages.pembayaran.edit', compact('pembayaran', 'daftarSiswa', 'daftarBiaya'));
+        return view('pages.pembayaran.edit', compact('pembayaran', 'daftarSiswa', 'daftarBiaya', 'isPendaftar'));
     }
 
     /**
@@ -173,6 +222,16 @@ class PembayaranController extends Controller
      */
     public function update(UpdatePembayaranRequest $request, Pembayaran $pembayaran)
     {
+        $user = Auth::user();
+        $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
+
+        if ($isPendaftar) {
+            $calonSiswaIds = CalonSiswa::where('user_id', $user->id)->pluck('id_calon_siswa')->toArray();
+            if (!in_array($pembayaran->id_calon_siswa, $calonSiswaIds)) {
+                abort(403, 'Anda tidak berhak memperbarui transaksi ini.');
+            }
+        }
+
         $data = $request->validated();
 
         if ($request->hasFile('bukti_transfer')) {
@@ -182,12 +241,22 @@ class PembayaranController extends Controller
             $data['bukti_transfer'] = $request->file('bukti_transfer')->store('pembayaran', 'public');
         }
 
-        if ($data['status_pembayaran'] === 'lunas') {
-            $data['verified_by'] = Auth::id();
-            $data['verified_at'] = now();
+        if ($isPendaftar) {
+            // Calon siswa tidak bisa mengubah status maupun verifikator
+            unset($data['status_pembayaran']);
+            unset($data['id_calon_siswa']);
+            // Jika status sebelumnya ditolak dan pendaftar upload bukti baru, kembalikan ke menunggu_konfirmasi
+            if ($request->hasFile('bukti_transfer') && $pembayaran->status_pembayaran === 'ditolak') {
+                $data['status_pembayaran'] = 'menunggu_konfirmasi';
+            }
         } else {
-            $data['verified_by'] = null;
-            $data['verified_at'] = null;
+            if ($data['status_pembayaran'] === 'lunas') {
+                $data['verified_by'] = Auth::id();
+                $data['verified_at'] = now();
+            } else {
+                $data['verified_by'] = null;
+                $data['verified_at'] = null;
+            }
         }
 
         $pembayaran->update($data);
@@ -200,6 +269,14 @@ class PembayaranController extends Controller
      */
     public function updateStatus(Request $request, Pembayaran $pembayaran)
     {
+        $user = Auth::user();
+        if ($user && in_array($user->role, ['pendaftar', 'user'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki hak untuk mengonfirmasi status pembayaran.',
+            ], 403);
+        }
+
         $request->validate([
             'status_pembayaran' => 'required|in:menunggu_konfirmasi,lunas,ditolak',
             'catatan'           => 'nullable|string|max:500',

@@ -21,7 +21,7 @@ class CalonSiswaSeeder extends Seeder
     public function run(): void
     {
         $agamaIslam = Agama::where('nama_agama', 'Islam')->first();
-        $kebTidakAda = KebutuhanKhusus::where('kode', '01')->first();
+        $kebTidakAda = KebutuhanKhusus::where('kode', 'A')->first() ?? KebutuhanKhusus::where('nama', 'Tidak Ada')->first();
         $kebCerdas = KebutuhanKhusus::where('kode', 'I')->first();
 
         $pekPns = Pekerjaan::where('nama_pekerjaan', 'like', '%PNS%')->first() ?? Pekerjaan::first();

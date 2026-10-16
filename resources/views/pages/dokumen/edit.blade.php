@@ -41,13 +41,21 @@
             <!-- 1. Calon Siswa -->
             <div class="mb-3">
               <label for="id_calon_siswa" class="form-label fw-semibold">Calon Siswa <span class="text-danger">*</span></label>
-              <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required>
-                @foreach($calonSiswa as $siswa)
-                  <option value="{{ $siswa->id_calon_siswa }}" {{ old('id_calon_siswa', $dokumen->id_calon_siswa) == $siswa->id_calon_siswa ? 'selected' : '' }}>
-                    {{ $siswa->nama_lengkap }} (NIK: {{ $siswa->nik ?? '-' }}) - {{ $siswa->jenis_kelamin }}
-                  </option>
-                @endforeach
-              </select>
+              @if($isPendaftar)
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-person-fill text-primary"></i></span>
+                  <input type="text" class="form-control bg-light" value="{{ optional($dokumen->calonSiswa)->nama_lengkap }} (NIK: {{ optional($dokumen->calonSiswa)->nik ?? '-' }}) - {{ optional($dokumen->calonSiswa)->jenis_kelamin }}" readonly>
+                  <input type="hidden" name="id_calon_siswa" value="{{ $dokumen->id_calon_siswa }}">
+                </div>
+              @else
+                <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required>
+                  @foreach($calonSiswa as $siswa)
+                    <option value="{{ $siswa->id_calon_siswa }}" {{ old('id_calon_siswa', $dokumen->id_calon_siswa) == $siswa->id_calon_siswa ? 'selected' : '' }}>
+                      {{ $siswa->nama_lengkap }} (NIK: {{ $siswa->nik ?? '-' }}) - {{ $siswa->jenis_kelamin }}
+                    </option>
+                  @endforeach
+                </select>
+              @endif
               @error('id_calon_siswa')
                 <div class="text-danger small mt-1">{{ $message }}</div>
               @enderror
@@ -64,7 +72,7 @@
                             data-lembar="{{ $jd->jumlah_lembar }}"
                             data-keterangan="{{ $jd->keterangan }}"
                             {{ old('id_jenis_dokumen', $dokumen->id_jenis_dokumen) == $jd->id_jenis_dokumen ? 'selected' : '' }}>
-                      {{ $jd->nama_dokumen }} ({{ $jd->jumlah_lembar }})
+                      {{ $jd->nama_dokumen }}
                     </option>
                   @endforeach
                 </optgroup>
@@ -81,6 +89,7 @@
                   @endforeach
                 </optgroup>
 
+                @if($jenisDokumen->where('kategori', 'semua')->isNotEmpty())
                 <optgroup label="PERSYARATAN UMUM">
                   @foreach($jenisDokumen->where('kategori', 'semua') as $jd)
                     <option value="{{ $jd->id_jenis_dokumen }}" 
@@ -92,6 +101,7 @@
                     </option>
                   @endforeach
                 </optgroup>
+                @endif
               </select>
               @error('id_jenis_dokumen')
                 <div class="text-danger small mt-1">{{ $message }}</div>
@@ -132,36 +142,66 @@
             </div>
 
             <div class="section-divider my-4 border-top pt-3">
-              <h6 class="fw-bold text-primary mb-3"><i class="bi bi-shield-check me-2"></i>Verifikasi Berkas Panitia PPDB</h6>
+              <h6 class="fw-bold text-primary mb-3"><i class="bi bi-shield-check me-2"></i>Status & Verifikasi Berkas</h6>
             </div>
 
-            <!-- 4. Status Verifikasi -->
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <label for="status_verifikasi" class="form-label fw-semibold">Status Verifikasi <span class="text-danger">*</span></label>
-                <select name="status_verifikasi" id="status_verifikasi" class="form-select @error('status_verifikasi') is-invalid @enderror" required>
-                  <option value="menunggu" {{ old('status_verifikasi', $dokumen->status_verifikasi) == 'menunggu' ? 'selected' : '' }}>Menunggu Verifikasi</option>
-                  <option value="valid" {{ old('status_verifikasi', $dokumen->status_verifikasi) == 'valid' ? 'selected' : '' }}>Valid / Diterima</option>
-                  <option value="ditolak" {{ old('status_verifikasi', $dokumen->status_verifikasi) == 'ditolak' ? 'selected' : '' }}>Ditolak / Berkas Kurang</option>
-                </select>
-                @error('status_verifikasi')
-                  <div class="text-danger small mt-1">{{ $message }}</div>
-                @enderror
-              </div>
-
-              <div class="col-md-6">
-                <label for="catatan_verifikasi" class="form-label fw-semibold">Catatan Verifikasi</label>
-                <input type="text" name="catatan_verifikasi" id="catatan_verifikasi" class="form-control" value="{{ old('catatan_verifikasi', $dokumen->catatan_verifikasi) }}" placeholder="Contoh: Berkas telah diverifikasi lengkap">
-              </div>
-
-              @if($dokumen->verified_by)
-                <div class="col-12">
-                  <div class="text-muted small">
-                    <i class="bi bi-person-check me-1"></i> Terakhir diverifikasi oleh: <strong>{{ optional($dokumen->verifikator)->name ?? 'Petugas' }}</strong> pada {{ optional($dokumen->verified_at)->translatedFormat('d F Y H:i') }}
+            @if($isPendaftar)
+              <!-- Tampilan Khusus Pendaftar: Status Terkunci / Hanya Informasi -->
+              <div class="p-3 mb-3 bg-light rounded border">
+                <div class="row g-3 align-items-center">
+                  <div class="col-md-6">
+                    <span class="text-muted small d-block mb-1">Status Verifikasi Berkas:</span>
+                    @if($dokumen->status_verifikasi === 'valid')
+                      <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i> Valid / Berkas Diterima</span>
+                    @elseif($dokumen->status_verifikasi === 'ditolak')
+                      <span class="badge bg-danger fs-6"><i class="bi bi-x-circle me-1"></i> Ditolak / Berkas Kurang</span>
+                    @else
+                      <span class="badge bg-warning text-dark fs-6"><i class="bi bi-clock me-1"></i> Menunggu Verifikasi Panitia</span>
+                    @endif
+                  </div>
+                  <div class="col-md-6">
+                    <span class="text-muted small d-block mb-1">Catatan dari Panitia:</span>
+                    <div class="fw-semibold text-dark">
+                      {{ $dokumen->catatan_verifikasi ?: 'Belum ada catatan dari panitia.' }}
+                    </div>
                   </div>
                 </div>
-              @endif
-            </div>
+                @if($dokumen->verified_by)
+                  <hr class="my-2">
+                  <div class="text-muted small">
+                    <i class="bi bi-person-check me-1"></i> Diverifikasi oleh Panitia pada {{ optional($dokumen->verified_at)->translatedFormat('d F Y H:i') }} WIB
+                  </div>
+                @endif
+              </div>
+            @else
+              <!-- 4. Status Verifikasi (Admin / Petugas) -->
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="status_verifikasi" class="form-label fw-semibold">Status Verifikasi <span class="text-danger">*</span></label>
+                  <select name="status_verifikasi" id="status_verifikasi" class="form-select @error('status_verifikasi') is-invalid @enderror" required>
+                    <option value="menunggu" {{ old('status_verifikasi', $dokumen->status_verifikasi) == 'menunggu' ? 'selected' : '' }}>Menunggu Verifikasi</option>
+                    <option value="valid" {{ old('status_verifikasi', $dokumen->status_verifikasi) == 'valid' ? 'selected' : '' }}>Valid / Diterima</option>
+                    <option value="ditolak" {{ old('status_verifikasi', $dokumen->status_verifikasi) == 'ditolak' ? 'selected' : '' }}>Ditolak / Berkas Kurang</option>
+                  </select>
+                  @error('status_verifikasi')
+                    <div class="text-danger small mt-1">{{ $message }}</div>
+                  @enderror
+                </div>
+
+                <div class="col-md-6">
+                  <label for="catatan_verifikasi" class="form-label fw-semibold">Catatan Verifikasi</label>
+                  <input type="text" name="catatan_verifikasi" id="catatan_verifikasi" class="form-control" value="{{ old('catatan_verifikasi', $dokumen->catatan_verifikasi) }}" placeholder="Contoh: Berkas telah diverifikasi lengkap">
+                </div>
+
+                @if($dokumen->verified_by)
+                  <div class="col-12">
+                    <div class="text-muted small">
+                      <i class="bi bi-person-check me-1"></i> Terakhir diverifikasi oleh: <strong>{{ optional($dokumen->verifikator)->name ?? 'Petugas' }}</strong> pada {{ optional($dokumen->verified_at)->translatedFormat('d F Y H:i') }} WIB
+                    </div>
+                  </div>
+                @endif
+              </div>
+            @endif
 
             <hr class="my-4">
 
@@ -171,7 +211,11 @@
                 <i class="bi bi-arrow-left me-1"></i> Batal
               </a>
               <button type="submit" class="btn btn-primary">
-                <i class="bi bi-save me-1"></i> Simpan Perubahan & Verifikasi
+                @if($isPendaftar)
+                  <i class="bi bi-cloud-arrow-up-fill me-1"></i> Simpan Perubahan Dokumen
+                @else
+                  <i class="bi bi-save me-1"></i> Simpan Perubahan & Verifikasi
+                @endif
               </button>
             </div>
 

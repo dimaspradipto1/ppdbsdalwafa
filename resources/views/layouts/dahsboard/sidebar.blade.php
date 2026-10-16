@@ -147,7 +147,7 @@
                 </li>
               @endif
 
-              {{-- 11. Penghasilan --}}
+              {{-- 9. Penghasilan --}}
               @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
                   <a href="{{ route('penghasilan.index') }}" class="{{ request()->routeIs('penghasilan.*') ? 'active' : '' }}">
@@ -156,7 +156,7 @@
                 </li>
               @endif
 
-              {{-- 12. Pekerjaan --}}
+              {{-- 10. Pekerjaan --}}
               @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
                   <a href="{{ route('pekerjaan.index') }}" class="{{ request()->routeIs('pekerjaan.*') ? 'active' : '' }}">
@@ -165,7 +165,7 @@
                 </li>
               @endif
 
-              {{-- 13. Pendidikan --}}
+              {{-- 11. Pendidikan --}}
               @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
                   <a href="{{ route('pendidikan.index') }}" class="{{ request()->routeIs('pendidikan.*') ? 'active' : '' }}">
@@ -174,7 +174,7 @@
                 </li>
               @endif
 
-              {{-- 14. Agama --}}
+              {{-- 12. Agama --}}
               @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
                   <a href="{{ route('agama.index') }}" class="{{ request()->routeIs('agama.*') ? 'active' : '' }}">
@@ -183,7 +183,7 @@
                 </li>
               @endif
 
-              {{-- 15. Kebutuhan Khusus --}}
+              {{-- 13. Kebutuhan Khusus --}}
               @if($user->hasRole('super_admin', 'admin_ppdb'))
                 <li>
                   <a href="{{ route('kebutuhan-khusus.index') }}" class="{{ request()->routeIs('kebutuhan-khusus.*') ? 'active' : '' }}">

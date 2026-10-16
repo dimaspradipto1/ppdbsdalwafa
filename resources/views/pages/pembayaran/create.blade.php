@@ -37,14 +37,24 @@
 
             <div class="mb-3">
               <label for="id_calon_siswa" class="form-label fw-semibold">Pilih Calon Siswa <span class="text-danger">*</span></label>
-              <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required>
-                <option value="">-- Cari / Pilih Siswa --</option>
-                @foreach($daftarSiswa as $siswa)
-                  <option value="{{ $siswa->id_calon_siswa }}" {{ (old('id_calon_siswa', $selectedSiswaId) == $siswa->id_calon_siswa) ? 'selected' : '' }}>
-                    {{ $siswa->nama_lengkap }} ({{ $siswa->no_pendaftaran ?: str_pad($siswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }})
-                  </option>
-                @endforeach
-              </select>
+              @if($isPendaftar && $daftarSiswa->count() === 1)
+                @php $singleSiswa = $daftarSiswa->first(); @endphp
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-person-fill text-primary"></i></span>
+                  <input type="text" class="form-control bg-light" value="{{ $singleSiswa->nama_lengkap }} ({{ $singleSiswa->no_pendaftaran ?: str_pad($singleSiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}) - {{ $singleSiswa->jenis_kelamin ?? '' }}" readonly>
+                  <input type="hidden" name="id_calon_siswa" value="{{ $singleSiswa->id_calon_siswa }}">
+                </div>
+                <div class="form-text text-muted">Akun Anda otomatis terhubung dengan calon siswa ini.</div>
+              @else
+                <select name="id_calon_siswa" id="id_calon_siswa" class="form-select @error('id_calon_siswa') is-invalid @enderror" required>
+                  <option value="">-- Cari / Pilih Siswa --</option>
+                  @foreach($daftarSiswa as $siswa)
+                    <option value="{{ $siswa->id_calon_siswa }}" {{ (old('id_calon_siswa', $selectedSiswaId) == $siswa->id_calon_siswa) ? 'selected' : '' }}>
+                      {{ $siswa->nama_lengkap }} ({{ $siswa->no_pendaftaran ?: str_pad($siswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }})
+                    </option>
+                  @endforeach
+                </select>
+              @endif
               @error('id_calon_siswa')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
 
@@ -97,21 +107,23 @@
             </div>
 
             <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <label for="bukti_transfer" class="form-label fw-semibold">Upload Bukti Transfer / Resi</label>
-                <input type="file" name="bukti_transfer" id="bukti_transfer" class="form-control @error('bukti_transfer') is-invalid @enderror" accept=".jpg,.jpeg,.png,.pdf">
+              <div class="{{ $isPendaftar ? 'col-md-12' : 'col-md-6' }}">
+                <label for="bukti_transfer" class="form-label fw-semibold">Upload Bukti Transfer / Resi <span class="text-danger">*</span></label>
+                <input type="file" name="bukti_transfer" id="bukti_transfer" class="form-control @error('bukti_transfer') is-invalid @enderror" accept=".jpg,.jpeg,.png,.pdf" {{ $isPendaftar ? 'required' : '' }}>
                 <small class="text-muted">Format: JPG, PNG, PDF (Maks. 3 MB)</small>
                 @error('bukti_transfer')<div class="invalid-feedback">{{ $message }}</div>@enderror
               </div>
 
-              <div class="col-md-6">
-                <label for="status_pembayaran" class="form-label fw-semibold">Status Transaksi</label>
-                <select name="status_pembayaran" id="status_pembayaran" class="form-select">
-                  <option value="lunas" {{ old('status_pembayaran') == 'lunas' ? 'selected' : '' }}>Lunas (Terkonfirmasi)</option>
-                  <option value="menunggu_konfirmasi" {{ old('status_pembayaran') == 'menunggu_konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-                  <option value="ditolak" {{ old('status_pembayaran') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                </select>
-              </div>
+              @if(!$isPendaftar)
+                <div class="col-md-6">
+                  <label for="status_pembayaran" class="form-label fw-semibold">Status Transaksi</label>
+                  <select name="status_pembayaran" id="status_pembayaran" class="form-select">
+                    <option value="lunas" {{ old('status_pembayaran') == 'lunas' ? 'selected' : '' }}>Lunas (Terkonfirmasi)</option>
+                    <option value="menunggu_konfirmasi" {{ old('status_pembayaran', 'menunggu_konfirmasi') == 'menunggu_konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                    <option value="ditolak" {{ old('status_pembayaran') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                  </select>
+                </div>
+              @endif
             </div>
 
             <div class="mb-4">

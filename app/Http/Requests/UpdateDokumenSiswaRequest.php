@@ -21,11 +21,14 @@ class UpdateDokumenSiswaRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = $this->user();
+        $isPendaftar = $user && ($user->role === 'pendaftar' || $user->role === 'user');
+
         return [
-            'id_calon_siswa'     => 'required|exists:calon_siswa,id_calon_siswa',
+            'id_calon_siswa'     => $isPendaftar ? 'nullable|exists:calon_siswa,id_calon_siswa' : 'required|exists:calon_siswa,id_calon_siswa',
             'id_jenis_dokumen'   => 'required|exists:ref_jenis_dokumen,id_jenis_dokumen',
             'berkas'             => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:3072',
-            'status_verifikasi'  => 'required|in:menunggu,valid,ditolak',
+            'status_verifikasi'  => $isPendaftar ? 'nullable|in:menunggu,valid,ditolak' : 'required|in:menunggu,valid,ditolak',
             'catatan_verifikasi' => 'nullable|string|max:255',
         ];
     }

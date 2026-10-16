@@ -88,8 +88,11 @@
               <h5 class="card-title p-0 m-0">Daftar Transaksi Pembayaran Calon Siswa</h5>
               <p class="text-muted small mb-0">Kelola konfirmasi pembayaran formulir, uang pangkal, SPP, dan penerbitan kwitansi resmi.</p>
             </div>
+            @php
+              $isPendaftar = Auth::check() && in_array(Auth::user()->role, ['pendaftar', 'user']);
+            @endphp
             <a href="{{ route('pembayaran.create') }}" class="btn btn-primary btn-sm">
-              <i class="bi bi-cash-stack me-1"></i> Catat Pembayaran Baru
+              <i class="bi bi-cash-stack me-1"></i> {{ $isPendaftar ? 'Unggah Bukti Pembayaran' : 'Catat Pembayaran Baru' }}
             </a>
           </div>
 
@@ -121,7 +124,8 @@
   </div>
 </section>
 
-<!-- Modal Quick Update Status Bayar -->
+@if(!$isPendaftar)
+<!-- Modal Quick Update Status Bayar (Khusus Bendahara & Admin) -->
 <div class="modal fade" id="modalStatusBayar" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
@@ -160,6 +164,7 @@
     </div>
   </div>
 </div>
+@endif
 @endsection
 
 @push('scripts')

@@ -67,13 +67,28 @@ class PengumumanController extends Controller
                 ->make(true);
         }
 
-        // Summary status siswa
-        $totalPendaftar = CalonSiswa::count();
-        $totalDiterima = CalonSiswa::where('status', 'diterima')->count();
-        $totalDiverifikasi = CalonSiswa::where('status', 'diverifikasi')->count();
-        $totalDitolak = CalonSiswa::where('status', 'ditolak')->count();
+        // Role check
+        $user = Auth::user();
+        $isPendaftar = $user && in_array($user->role, ['pendaftar', 'user']);
 
-        return view('pages.pengumuman.index', compact('totalPendaftar', 'totalDiterima', 'totalDiverifikasi', 'totalDitolak'));
+        $mySiswa = null;
+        if ($isPendaftar) {
+            $mySiswa = CalonSiswa::with(['tahunAjaran', 'gelombang', 'jalur', 'nilaiSeleksi'])
+                ->where('user_id', $user->id)
+                ->first();
+            $totalPendaftar = 0;
+            $totalDiterima = 0;
+            $totalDiverifikasi = 0;
+            $totalDitolak = 0;
+        } else {
+            // Summary status siswa untuk Admin / Petugas
+            $totalPendaftar = CalonSiswa::count();
+            $totalDiterima = CalonSiswa::where('status', 'diterima')->count();
+            $totalDiverifikasi = CalonSiswa::where('status', 'diverifikasi')->count();
+            $totalDitolak = CalonSiswa::where('status', 'ditolak')->count();
+        }
+
+        return view('pages.pengumuman.index', compact('totalPendaftar', 'totalDiterima', 'totalDiverifikasi', 'totalDitolak', 'isPendaftar', 'mySiswa'));
     }
 
     /**
