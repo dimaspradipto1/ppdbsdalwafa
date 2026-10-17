@@ -113,6 +113,13 @@ Route::middleware(['checkrole:*'])->group(function () {
             ->middleware('checkrole:super_admin,admin_ppdb,verifikator,kepala_sekolah')
             ->name('calon-siswa.update-status');
         Route::resource('calon-siswa', CalonSiswaController::class)->parameters(['calon-siswa' => 'calonSiswa']);
+        Route::get('dokumen/siswa/{calonSiswa}', [DokumenSiswaController::class, 'getDokumenBySiswa'])->name('dokumen.by-siswa');
+        Route::patch('dokumen/siswa/{calonSiswa}/verifikasi-semua', [DokumenSiswaController::class, 'verifikasiSemua'])
+            ->middleware('checkrole:super_admin,admin_ppdb,verifikator,kepala_sekolah')
+            ->name('dokumen.verifikasi-semua');
+        Route::patch('dokumen/{dokumen}/quick-verifikasi', [DokumenSiswaController::class, 'quickVerifikasi'])
+            ->middleware('checkrole:super_admin,admin_ppdb,verifikator,kepala_sekolah')
+            ->name('dokumen.quick-verifikasi');
         Route::resource('dokumen', DokumenSiswaController::class)->parameters(['dokumen' => 'dokumen']);
     });
 
