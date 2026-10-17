@@ -76,7 +76,6 @@
                   <th>Nama Kebutuhan Khusus</th>
                   <th>Keterangan</th>
                   <th style="width: 12%" class="text-center">Status</th>
-                  <th style="width: 16%">Dibuat Pada</th>
                   <th style="width: 15%" class="text-center">Aksi</th>
                 </tr>
               </thead>
@@ -110,7 +109,6 @@
           { data: 'nama', name: 'nama' },
           { data: 'keterangan', name: 'keterangan' },
           { data: 'is_active', name: 'is_active', className: 'text-center' },
-          { data: 'created_at', name: 'created_at' },
           { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-center text-nowrap' },
         ],
         order: [[1, 'asc']],

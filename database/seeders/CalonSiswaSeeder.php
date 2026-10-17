@@ -38,7 +38,6 @@ class CalonSiswaSeeder extends Seeder
         $siswa1 = CalonSiswa::create([
             'nama_lengkap'           => 'Muhammad Fauzan Azhim',
             'jenis_kelamin'          => 'Laki-laki',
-            'nik'                    => '2171011205180001',
             'nisn'                   => '3181234567',
             'tempat_lahir'           => 'Batam',
             'tanggal_lahir'          => '2018-05-12',
@@ -109,7 +108,6 @@ class CalonSiswaSeeder extends Seeder
         $siswa2 = CalonSiswa::create([
             'nama_lengkap'           => 'Aisyah Putri Rahmadani',
             'jenis_kelamin'          => 'Perempuan',
-            'nik'                    => '2171025508180002',
             'nisn'                   => '3189876543',
             'tempat_lahir'           => 'Tanjung Pinang',
             'tanggal_lahir'          => '2018-08-15',

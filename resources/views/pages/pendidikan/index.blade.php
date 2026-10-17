@@ -75,7 +75,6 @@
                   <th>Jenjang Pendidikan</th>
                   <th>Keterangan</th>
                   <th style="width: 15%" class="text-center">Status</th>
-                  <th style="width: 18%">Dibuat Pada</th>
                   <th style="width: 15%" class="text-center">Aksi</th>
                 </tr>
               </thead>
@@ -108,7 +107,6 @@
           { data: 'nama_pendidikan', name: 'nama_pendidikan' },
           { data: 'keterangan', name: 'keterangan' },
           { data: 'is_active', name: 'is_active', className: 'text-center' },
-          { data: 'created_at', name: 'created_at' },
           { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-center text-nowrap' },
         ],
         language: {

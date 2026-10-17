@@ -21,7 +21,7 @@ class GelombangSeeder extends Seeder
         $daftarGelombang = [
             [
                 'id_tahun_ajaran' => optional($tahunAjaran)->id_tahun_ajaran,
-                'nama_gelombang'  => 'Gelombang 1 (Indent / Early Bird)',
+                'nama_gelombang'  => 'Gelombang 1',
                 'tanggal_mulai'   => '2026-10-01',
                 'tanggal_selesai' => '2026-12-31',
                 'kuota'           => 60,
@@ -30,7 +30,7 @@ class GelombangSeeder extends Seeder
             ],
             [
                 'id_tahun_ajaran' => optional($tahunAjaran)->id_tahun_ajaran,
-                'nama_gelombang'  => 'Gelombang 2 (Reguler)',
+                'nama_gelombang'  => 'Gelombang 2',
                 'tanggal_mulai'   => '2027-01-01',
                 'tanggal_selesai' => '2027-04-30',
                 'kuota'           => 60,

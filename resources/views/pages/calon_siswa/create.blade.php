@@ -275,7 +275,7 @@
                   <div class="col-md-6">
                     <label for="id_kebutuhan_khusus" class="form-label fw-semibold">Berkebutuhan Khusus</label>
                     <select name="id_kebutuhan_khusus" id="id_kebutuhan_khusus" class="form-select">
-                      <option value="">-- Tidak Ada / Normal --</option>
+                      <option value="">-- Pilih --</option>
                       @foreach($daftarKebutuhanKhusus as $k)
                         <option value="{{ $k->id_kebutuhan }}" {{ old('id_kebutuhan_khusus') == $k->id_kebutuhan ? 'selected' : '' }}>
                           {{ $k->kode }} - {{ $k->nama }}
