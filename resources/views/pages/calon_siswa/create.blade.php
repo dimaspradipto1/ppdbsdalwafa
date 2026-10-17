@@ -300,8 +300,8 @@
                     <div class="col-md-6">
                       <label class="form-label fw-semibold">Status Pendaftaran</label>
                       <div class="p-2 border rounded bg-light d-flex align-items-center justify-content-between">
-                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 fs-6">
-                          <i class="bi bi-hourglass-split me-1"></i> Menunggu Verifikasi
+                        <span class="badge bg-warning text-dark border border-warning px-3 py-2 fs-6 fw-bold shadow-sm">
+                          <i class="bi bi-hourglass-split me-1 text-dark"></i> Menunggu Verifikasi
                         </span>
                         <span class="badge bg-white text-muted border small"><i class="bi bi-lock-fill me-1"></i> Read Only (Calon Siswa / Wali)</span>
                       </div>

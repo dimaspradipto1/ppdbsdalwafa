@@ -144,11 +144,11 @@
                 @php
                   $status = $calonSiswa->status ?: 'menunggu_verifikasi';
                   $badges = [
-                    'draft'               => 'bg-secondary-subtle text-secondary border-secondary-subtle',
-                    'menunggu_verifikasi' => 'bg-warning-subtle text-warning-emphasis border-warning-subtle',
-                    'diverifikasi'        => 'bg-info-subtle text-info-emphasis border-info-subtle',
-                    'diterima'            => 'bg-success-subtle text-success border-success-subtle',
-                    'ditolak'             => 'bg-danger-subtle text-danger border-danger-subtle',
+                    'draft'               => 'bg-secondary text-white border-secondary',
+                    'menunggu_verifikasi' => 'bg-warning text-dark border-warning',
+                    'diverifikasi'        => 'bg-info text-dark border-info',
+                    'diterima'            => 'bg-success text-white border-success',
+                    'ditolak'             => 'bg-danger text-white border-danger',
                   ];
                   $icons = [
                     'draft'               => 'bi-file-earmark-text',
@@ -474,7 +474,7 @@
                             @elseif($dok->status_verifikasi === 'ditolak')
                               <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1"><i class="bi bi-x-circle me-1"></i>Ditolak</span>
                             @else
-                              <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>Menunggu</span>
+                              <span class="badge bg-warning text-dark border border-warning px-2 py-1"><i class="bi bi-hourglass-split me-1 text-dark"></i>Menunggu</span>
                             @endif
                           </td>
                           <td class="text-center text-nowrap">

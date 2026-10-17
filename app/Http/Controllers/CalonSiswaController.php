@@ -136,15 +136,15 @@ class CalonSiswaController extends Controller
                         return '<span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1"><i class="bi bi-check2-all me-1"></i>' . $valid . '/' . $total . ' Valid</span>';
                     }
 
-                    return '<span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>' . $valid . '/' . $total . ' Valid</span>';
+                    return '<span class="badge bg-warning text-dark border border-warning px-2 py-1"><i class="bi bi-hourglass-split me-1 text-dark"></i>' . $valid . '/' . $total . ' Valid</span>';
                 })
                 ->editColumn('status', function ($row) {
                     $badges = [
-                        'draft'               => 'bg-secondary-subtle text-secondary border-secondary-subtle',
-                        'menunggu_verifikasi' => 'bg-warning-subtle text-warning-emphasis border-warning-subtle',
-                        'diverifikasi'        => 'bg-info-subtle text-info-emphasis border-info-subtle',
-                        'diterima'            => 'bg-success-subtle text-success border-success-subtle',
-                        'ditolak'             => 'bg-danger-subtle text-danger border-danger-subtle',
+                        'draft'               => 'btn-secondary text-white border-secondary',
+                        'menunggu_verifikasi' => 'btn-warning text-dark fw-bold border-warning',
+                        'diverifikasi'        => 'btn-info text-dark border-info',
+                        'diterima'            => 'btn-success text-white border-success',
+                        'ditolak'             => 'btn-danger text-white border-danger',
                     ];
                     $labels = [
                         'draft'               => 'Draft',

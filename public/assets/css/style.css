@@ -1258,3 +1258,68 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+/*--------------------------------------------------------------
+# PPDB Badge & Status Custom Styling (High Contrast)
+--------------------------------------------------------------*/
+.badge.bg-warning,
+.badge.bg-warning-subtle,
+.btn-warning {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+  font-weight: 600;
+}
+
+.badge.bg-warning i,
+.badge.bg-warning-subtle i,
+.btn-warning i {
+  color: #212529 !important;
+}
+
+.badge.text-dark {
+  color: #212529 !important;
+}
+
+/* Subtle utility emulation for Bootstrap 5.2 */
+.bg-warning-subtle {
+  background-color: #fff3cd !important;
+}
+.text-warning-emphasis {
+  color: #664d03 !important;
+}
+.border-warning-subtle {
+  border-color: #ffe69c !important;
+}
+.bg-success-subtle {
+  background-color: #d1e7dd !important;
+}
+.text-success-emphasis {
+  color: #0f5132 !important;
+}
+.border-success-subtle {
+  border-color: #a3cfbb !important;
+}
+.bg-info-subtle {
+  background-color: #cff4fc !important;
+}
+.text-info-emphasis {
+  color: #055160 !important;
+}
+.border-info-subtle {
+  border-color: #9eeaf9 !important;
+}
+.bg-danger-subtle {
+  background-color: #f8d7da !important;
+}
+.text-danger-emphasis {
+  color: #842029 !important;
+}
+.border-danger-subtle {
+  border-color: #f1aeb5 !important;
+}
+.bg-secondary-subtle {
+  background-color: #e2e3e5 !important;
+}
+.border-secondary-subtle {
+  border-color: #c4c8cb !important;
+}
