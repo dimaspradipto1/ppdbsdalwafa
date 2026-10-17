@@ -729,7 +729,7 @@
                 Setelah pembayaran terkonfirmasi, isi data calon siswa secara lengkap dan valid sesuai dengan data pada Kartu Keluarga (KK) dan Akta Kelahiran:
               </p>
               <ul class="text-secondary small mb-0 ps-3">
-                <li><strong>Identitas Anak:</strong> NIK, Nama Lengkap, Nama Panggilan, Tempat &amp; Tanggal Lahir, Jenis Kelamin, Anak ke-berapa.</li>
+                <li><strong>Identitas Anak:</strong> Nama Lengkap, Nama Panggilan, Tempat &amp; Tanggal Lahir, Jenis Kelamin, Anak ke-berapa.</li>
                 <li><strong>Data Orang Tua/Wali:</strong> NIK Ayah &amp; Ibu, Nama Lengkap, Pekerjaan, Pendidikan Terakhir, dan Nomor Telepon/WhatsApp.</li>
                 <li><strong>Data Tempat Tinggal:</strong> Alamat lengkap domisili, RT/RW, Kelurahan, Kecamatan, dan Kode Pos.</li>
               </ul>

@@ -215,7 +215,12 @@
                     @error('nama_lengkap')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
 
-                  <div class="col-md-3">
+                  <div class="col-md-6">
+                    <label for="nisn" class="form-label fw-semibold">NISN (Nomor Induk Siswa Nasional)</label>
+                    <input type="text" name="nisn" id="nisn" maxlength="10" class="form-control font-monospace @error('nisn') is-invalid @enderror" value="{{ old('nisn', $calonSiswa->nisn) }}" placeholder="10 digit NISN jika sudah ada">
+                  </div>
+
+                  <div class="col-md-6">
                     <label for="jenis_kelamin" class="form-label fw-semibold">Jenis Kelamin <span class="text-danger">*</span></label>
                     <select name="jenis_kelamin" id="jenis_kelamin" class="form-select @error('jenis_kelamin') is-invalid @enderror" required>
                       <option value="">-- Pilih Jenis Kelamin --</option>
@@ -225,7 +230,7 @@
                     @error('jenis_kelamin')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
 
-                  <div class="col-md-3">
+                  <div class="col-md-6">
                     <label for="id_agama" class="form-label fw-semibold">Agama</label>
                     <select name="id_agama" id="id_agama" class="form-select @error('id_agama') is-invalid @enderror">
                       <option value="">-- Pilih Agama --</option>
@@ -233,17 +238,6 @@
                         <option value="{{ $ag->id_agama }}" {{ old('id_agama', $calonSiswa->id_agama) == $ag->id_agama ? 'selected' : '' }}>{{ $ag->nama_agama }}</option>
                       @endforeach
                     </select>
-                  </div>
-
-                  <div class="col-md-6">
-                    <label for="nik" class="form-label fw-semibold">NIK (Nomor Induk Kependudukan)</label>
-                    <input type="text" name="nik" id="nik" maxlength="16" class="form-control font-monospace @error('nik') is-invalid @enderror" value="{{ old('nik', $calonSiswa->nik) }}" placeholder="16 digit NIK calon siswa">
-                    @error('nik')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                  </div>
-
-                  <div class="col-md-6">
-                    <label for="nisn" class="form-label fw-semibold">NISN (Nomor Induk Siswa Nasional)</label>
-                    <input type="text" name="nisn" id="nisn" maxlength="10" class="form-control font-monospace @error('nisn') is-invalid @enderror" value="{{ old('nisn', $calonSiswa->nisn) }}" placeholder="10 digit NISN jika sudah ada">
                   </div>
 
                   <div class="col-md-6">

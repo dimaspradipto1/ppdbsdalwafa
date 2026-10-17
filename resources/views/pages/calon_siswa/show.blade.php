@@ -223,10 +223,8 @@
                     <td>{{ $calonSiswa->jenis_kelamin }}</td>
                   </tr>
                   <tr>
-                    <th>NIK</th>
-                    <td class="font-monospace">{{ $calonSiswa->nik ?? '-' }}</td>
                     <th>NISN</th>
-                    <td class="font-monospace">{{ $calonSiswa->nisn ?? '-' }}</td>
+                    <td class="font-monospace" colspan="3">{{ $calonSiswa->nisn ?? '-' }}</td>
                   </tr>
                   <tr>
                     <th>Tempat, Tanggal Lahir</th>
@@ -524,10 +522,8 @@
                 <td>{{ $calonSiswa->jenis_kelamin }}</td>
               </tr>
               <tr>
-                <th>NIK</th>
-                <td class="font-monospace">{{ $calonSiswa->nik ?? '-' }}</td>
                 <th>NISN</th>
-                <td class="font-monospace">{{ $calonSiswa->nisn ?? '-' }}</td>
+                <td class="font-monospace" colspan="3">{{ $calonSiswa->nisn ?? '-' }}</td>
               </tr>
               <tr>
                 <th>Tempat, Tanggal Lahir</th>

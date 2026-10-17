@@ -30,7 +30,7 @@ class StoreCalonSiswaRequest extends FormRequest
             // 1. Identitas Peserta Didik
             'nama_lengkap'           => 'required|string|max:150',
             'jenis_kelamin'          => 'required|in:Laki-laki,Perempuan',
-            'nik'                    => 'nullable|string|size:16',
+            'nik'                    => 'nullable|string|max:16',
             'nisn'                   => 'nullable|string|max:10',
             'tempat_lahir'           => 'required|string|max:100',
             'tanggal_lahir'          => 'required|date',

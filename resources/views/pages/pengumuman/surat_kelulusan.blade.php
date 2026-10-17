@@ -129,9 +129,9 @@
         <td class="fw-bold text-uppercase">{{ $calonSiswa->nama_lengkap }}</td>
       </tr>
       <tr>
-        <td>NISN / NIK</td>
+        <td>NISN</td>
         <td>:</td>
-        <td>{{ $calonSiswa->nisn ?: '-' }} / {{ $calonSiswa->nik ?: '-' }}</td>
+        <td>{{ $calonSiswa->nisn ?: '-' }}</td>
       </tr>
       <tr>
         <td>Tempat, Tanggal Lahir</td>

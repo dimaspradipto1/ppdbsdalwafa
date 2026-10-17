@@ -134,7 +134,6 @@
                   <h5 class="fw-bold text-dark mb-1">{{ $mySiswa->nama_lengkap }}</h5>
                   <div class="text-muted small mb-2">
                     No. Registrasi: <strong class="font-monospace text-dark">{{ $mySiswa->no_pendaftaran ?: str_pad($mySiswa->id_calon_siswa, 8, '0', STR_PAD_LEFT) }}</strong> &bull; 
-                    NIK: {{ $mySiswa->nik ?? '-' }} &bull; 
                     Jalur: <strong>{{ $mySiswa->jalur->nama_jalur ?? 'Reguler' }}</strong> &bull; 
                     Gelombang: <strong>{{ $mySiswa->gelombang->nama_gelombang ?? '-' }}</strong> ({{ $mySiswa->tahunAjaran->tahun_ajaran ?? '-' }})
                   </div>
