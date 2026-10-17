@@ -57,8 +57,9 @@
     text-decoration: none;
   }
   .uis-logo img {
-    height: 48px;
+    height: 44px;
     width: auto;
+    object-fit: contain;
   }
   .uis-logo-subtitle {
     font-size: 0.7rem;

@@ -64,8 +64,9 @@
     text-decoration: none;
   }
   .uis-logo img {
-    height: 48px;
+    height: 44px;
     width: auto;
+    object-fit: contain;
   }
   .uis-logo-subtitle {
     font-size: 0.7rem;
@@ -149,9 +150,19 @@
   .hero-uis {
     background: linear-gradient(135deg, #044d2e 0%, #035e38 60%, #05824e 100%);
     position: relative;
-    padding: 60px 0 95px;
+    padding: 60px 0 115px;
     color: #ffffff;
     overflow: hidden;
+  }
+  .hero-logo-img {
+    max-height: 105px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
+    transition: transform 0.3s ease;
+  }
+  .hero-logo-img:hover {
+    transform: scale(1.05);
   }
   .hero-uis::before {
     content: '';
@@ -664,7 +675,7 @@
 <nav class="navbar navbar-expand-lg navbar-uis sticky-top" id="mainNav">
   <div class="container">
     <a class="uis-logo" href="{{ url('/') }}">
-      <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo SD Islam Plus Al-Wafa Batam" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+      <img src="{{ $sekolah ? $sekolah->logo_url : asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="Logo SD Islam Plus Al-Wafa Batam" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
       <div>
         <div class="uis-logo-subtitle text-uppercase">Penerimaan Siswa Baru</div>
         <div class="uis-logo-title">SD ISLAM PLUS AL-WAFA</div>
@@ -723,7 +734,10 @@
         </p>
       </div>
       <div class="col-lg-4 text-end d-none d-lg-block">
-        <img src="{{ asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" alt="SD Islam Plus Al-Wafa Batam" style="max-height: 150px; opacity: 0.9;" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
+        <img src="{{ $sekolah ? $sekolah->logo_url : asset('assets/img/cropped-lodo-sdip-alwafa.webp') }}" 
+             alt="SD Islam Plus Al-Wafa Batam" 
+             class="hero-logo-img" 
+             onerror="this.src='{{ asset('assets/img/logo.png') }}'">
       </div>
     </div>
   </div>

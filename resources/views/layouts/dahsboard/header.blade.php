@@ -3,7 +3,11 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ route('dashboard') }}" class="logo d-flex align-items-center">
-        <img src="{{ asset('assets/img/logo.png') }}" alt="Logo SD Al Wafa">
+        @php
+          $headerSekolah = \App\Models\Sekolah::first();
+          $headerLogoUrl = $headerSekolah ? $headerSekolah->logo_url : asset('assets/img/cropped-lodo-sdip-alwafa.webp');
+        @endphp
+        <img src="{{ $headerLogoUrl }}" alt="Logo SD Al Wafa" onerror="this.src='{{ asset('assets/img/logo.png') }}'">
         <span class="d-none d-lg-block">SD AL WAFA</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
